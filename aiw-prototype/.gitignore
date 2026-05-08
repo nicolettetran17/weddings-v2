@@ -1,0 +1,11 @@
+.DS_Store
+*.log
+
+# Local tooling / scratch (never deploy)
+.tools/
+.vercel/
+node_modules/
+
+# Local-only working files
+customer-insights.pptx
+_build_customer_insights_pptx.py

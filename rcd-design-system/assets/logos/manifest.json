@@ -1,0 +1,59 @@
+{
+  "$schema": "manifest of brand logos for RCD / All-In-Weddings",
+  "basePath": "./assets/logos",
+  "naming": "aiw-{lockup}-{color}.png",
+  "lockups": [
+    {
+      "id": "arch",
+      "label": "Arch",
+      "description": "Primary mark — full arch lockup. Use as the dominant brand expression."
+    },
+    {
+      "id": "circle",
+      "label": "Circle",
+      "description": "Circle badge lockup. Best for stamps, social avatars, watermarks."
+    },
+    {
+      "id": "semi-arch",
+      "label": "Semi Arch",
+      "description": "Half-arch lockup. Compact mark for headers and corners."
+    },
+    {
+      "id": "horizontal",
+      "label": "Horizontal",
+      "description": "Wide horizontal lockup. Best for narrow header/footer strips."
+    },
+    {
+      "id": "vertical",
+      "label": "Vertical",
+      "description": "Vertical stack lockup. Best for square placements (cards, badges)."
+    },
+    {
+      "id": "url",
+      "label": "URL",
+      "description": "Wordmark of the website URL. Use for footers and contact blocks."
+    }
+  ],
+  "colors": [
+    { "id": "black",  "label": "Black",  "hex": "#000000", "useOn": "light surfaces" },
+    { "id": "white",  "label": "White",  "hex": "#FFFFFF", "useOn": "dark or photographic surfaces" },
+    { "id": "gray",   "label": "Gray",   "hex": "#7A7A7A", "useOn": "muted neutrals, secondary placements" },
+    { "id": "blue",   "label": "Blue",   "hex": "#1F4A7A", "useOn": "blue brand contexts" },
+    { "id": "green",  "label": "Green",  "hex": "#3F6F3F", "useOn": "green brand contexts" },
+    { "id": "orange", "label": "Orange", "hex": "#C66A2E", "useOn": "warm / copper brand contexts (closest to RCD copper token)" }
+  ],
+  "matrix": {
+    "arch":       ["black", "blue", "gray", "green", "orange", "white"],
+    "circle":     ["black", "blue", "gray", "green", "orange", "white"],
+    "semi-arch":  ["black", "blue", "gray", "green", "orange", "white"],
+    "vertical":   ["black", "blue", "gray", "green", "orange", "white"],
+    "horizontal": ["gray", "green", "orange", "white"],
+    "url":        ["blue", "gray", "green", "orange", "white"]
+  },
+  "recommendations": {
+    "primary": "aiw-arch-black.png",
+    "onDarkSurface": "aiw-arch-white.png",
+    "onCanvas": "aiw-arch-orange.png",
+    "favicon": "aiw-circle-black.png"
+  }
+}

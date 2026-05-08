@@ -1,0 +1,1551 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>All In Weddings — Destination weddings, designed with you</title>
+  <meta name="description" content="Hard Rock, UNICO 20°87°, Nobu, and AVA — fourteen destination wedding properties, one AI-powered planner." />
+
+  <link rel="icon" href="../rcd-design-system/assets/logos/aiw-circle-black.png" />
+
+  <link rel="stylesheet" href="../rcd-design-system/tokens.css" />
+  <link rel="stylesheet" href="./_theme.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <style type="text/tailwindcss">
+    /* Figma RCD · node 182:98 — sharp containers, 12/24px rhythm, surface/page */
+    @theme {
+      --color-ink:            #2A2A28;
+      --color-ink-soft:       #5A554D;
+      --color-ink-muted:      #6B7568;
+      --color-paper:          #FFFFFF;
+      --color-sage-bg:        #D8E4D6;
+      --color-sage-bg-deep:   #C4D4C1;
+      --color-sage-nav:       #F6FAF5;
+      --color-sage-border:    #A8B9A3;
+      --color-sage-ink:       #2F382E;
+      --color-sage-ink-soft:  #4A5548;
+      --color-sage-deep:      #3D4A3A;
+      --color-canvas:         #EDF3EC;
+      --color-cream:          #E8F0E6;
+      --color-cream-soft:     #F2F7F1;
+      --color-copper:         #8B6A42;
+      --color-copper-hover:   #735632;
+      --color-copper-active:  #5C4528;
+      --color-copper-soft:    #D4C4A8;
+      --color-disabled-bg:    #D5DED3;
+      --color-disabled-fg:    #8A9387;
+      --color-border-strong:  #3D4A3A;
+      --color-border-default: #C5D1C2;
+      --color-border-subtle:  #B8C9B4;
+      --color-rcd-page:       #f8f8f6;
+      --color-rcd-rule:       #dad6ce;
+      --font-sans:            "Poppins","Inter",system-ui,sans-serif;
+      --font-title:           "Isabella Grand","Cormorant Garamond",serif;
+      --font-title-plain:     "Isabella Grand Plain","Cormorant Garamond",serif;
+      --radius-pill:          9999px;
+    }
+
+    @layer components {
+      /* ---- Button (matches rcd-design-system/index.html) ---- */
+      .btn {
+        @apply inline-flex items-center justify-center gap-2
+               font-sans font-semibold leading-none whitespace-nowrap
+               rounded-none select-none cursor-pointer
+               transition-colors duration-200
+               focus:outline-none focus-visible:ring-[3px] focus-visible:ring-offset-2
+               focus-visible:ring-offset-canvas focus-visible:ring-ink;
+      }
+      .btn--default { @apply h-11 px-6 text-base; }
+      .btn--small   { @apply h-9  px-[18px] text-sm; }
+      .btn--icon    { @apply h-11 w-11 p-0 text-base; }
+      .btn--icon-sm { @apply h-9  w-9  p-0 text-sm; }
+      .btn--primary {
+        @apply bg-ink text-paper hover:bg-ink-soft active:bg-black;
+      }
+      .btn--secondary {
+        @apply bg-copper text-paper hover:bg-copper-hover active:bg-copper-active;
+      }
+      .btn--ghost {
+        @apply border border-ink bg-transparent text-ink
+               hover:bg-cream active:bg-cream-soft;
+      }
+      .btn--invert {
+        @apply bg-paper text-ink hover:bg-cream;
+      }
+      .btn--block {
+        @apply w-full max-w-none justify-center;
+      }
+      .btn[disabled],
+      .btn.is-disabled {
+        @apply pointer-events-none;
+      }
+      .btn--primary[disabled], .btn--primary.is-disabled,
+      .btn--secondary[disabled], .btn--secondary.is-disabled {
+        @apply bg-disabled-bg text-disabled-fg;
+      }
+      .btn--ghost[disabled], .btn--ghost.is-disabled {
+        @apply border-border-subtle bg-transparent text-disabled-fg;
+      }
+
+      /* ---- Form: field + input (matches design system) ---- */
+      .field {
+        @apply flex w-full min-h-11 items-center justify-between gap-3 rounded-none
+               border border-[color:var(--color-rcd-rule)] bg-paper px-3 py-2 font-sans text-ink shadow-[0_1px_1px_rgba(0,0,0,0.05)]
+               text-left transition-[border-color,box-shadow,colors] duration-200
+               hover:border-ink/20;
+      }
+      a.field {
+        @apply cursor-pointer no-underline;
+      }
+      button.field {
+        @apply cursor-pointer appearance-none bg-paper text-left;
+      }
+      a.field:focus-visible,
+      button.field:focus-visible {
+        @apply outline-none ring-[3px] ring-offset-2 ring-ink ring-offset-paper;
+      }
+      .field__value {
+        @apply min-w-0 flex-1 truncate font-title text-2xl leading-none text-ink;
+      }
+      .field__trail {
+        @apply shrink-0 text-ink-muted;
+      }
+      .field--select select {
+        @apply min-w-0 flex-1 cursor-pointer truncate border-0 bg-transparent p-0 font-title text-2xl leading-none text-ink shadow-none outline-none appearance-none;
+      }
+      .field--select:focus-within {
+        @apply border-ink/30;
+      }
+      .input {
+        @apply box-border h-11 min-h-11 w-full rounded-none border border-[color:var(--color-rcd-rule)] bg-paper
+               px-3 font-sans text-base font-normal leading-normal text-ink shadow-[0_1px_1px_rgba(0,0,0,0.05)]
+               placeholder:text-ink-muted
+               transition-[border-color,box-shadow] duration-200
+               hover:border-ink/15
+               focus:border-ink focus:outline-none focus:ring-[3px] focus:ring-ink/25
+               focus:ring-offset-2 focus:ring-offset-canvas;
+      }
+      .input:disabled {
+        @apply cursor-not-allowed border-border-subtle bg-disabled-bg text-disabled-fg;
+      }
+    }
+
+    .landing-sage-bg {
+      background-color: var(--color-sage-bg);
+      background-image:
+        radial-gradient(900px 600px at 10% 0%, rgba(255,255,255,0.5), transparent 55%),
+        linear-gradient(180deg, var(--color-sage-bg) 0%, var(--color-sage-bg-deep) 100%);
+    }
+    /* Horizontal center, vertical anchor at top (crop favors upper frame).
+       The still photo is now a fallback/poster behind the video montage. */
+    #hero-photo {
+      display: block;
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+      object-fit: cover;
+      object-position: 50% 0%;
+      transform: scale(1.04);
+      transform-origin: center top;
+      will-change: transform;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      #hero-photo {
+        animation: hero-kenburns 28s ease-in-out infinite;
+      }
+    }
+    @keyframes hero-kenburns {
+      0%   { transform: scale(1.04) translate3d(0, 0, 0); }
+      50%  { transform: scale(1.10) translate3d(-1%, -0.8%, 0); }
+      100% { transform: scale(1.04) translate3d(0, 0, 0); }
+    }
+
+    /* Hero background video — muted, looping, self-hosted. Object-fit covers
+       the hero area; the still photo behind acts as poster (visible during
+       the brief load flash and any prefers-reduced-motion fallback). */
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 700ms cubic-bezier(0.4, 0.2, 0.2, 1);
+    }
+    .hero-video.is-ready { opacity: 1; }
+    .hero-video__el {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      pointer-events: none;
+    }
+
+    /* Full-bleed hero — form overlaid on photo (no white card) */
+    .hero-fullbleed {
+      position: relative;
+      width: 100%;
+      min-height: calc(100dvh - 5rem);
+      overflow: hidden;
+    }
+    .hero-fullbleed__media {
+      position: absolute;
+      inset: 0;
+      translate: 0 var(--hero-parallax, 0px);
+      transition: translate 0.05s linear;
+    }
+    .hero-form-on-image .field {
+      /* Near-opaque “paper” chip so labels/icons stay readable on any hero photo */
+      background: rgba(252, 249, 248, 0.94);
+      border-color: rgba(27, 28, 28, 0.22);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.85) inset,
+        0 2px 12px rgba(27, 28, 28, 0.08);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .hero-form-on-image .field:hover {
+      border-color: rgba(27, 28, 28, 0.34);
+      background: rgba(255, 255, 255, 0.98);
+    }
+    .hero-form-on-image .field--select:focus-within {
+      border-color: rgba(180, 129, 77, 0.75);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.9) inset,
+        0 0 0 3px rgba(180, 129, 77, 0.22);
+    }
+    .hero-form-on-image .field__trail {
+      color: #4a4540;
+    }
+    .hero-form-on-image .field--select select {
+      color: #1b1c1c;
+    }
+    .hero-form-on-image .field--select select option {
+      color: #1b1c1c;
+      background: #fff;
+    }
+    .hero-marquee--on-photo {
+      border-color: rgba(255, 255, 255, 0.14);
+      background: rgba(0, 0, 0, 0.28);
+    }
+    .hero-marquee--on-photo .hero-marquee__track {
+      color: rgba(255, 255, 255, 0.88);
+    }
+    .hero-marquee--on-photo strong {
+      color: #f0d9c2;
+    }
+    .hero-marquee--on-photo .text-ink-soft {
+      color: rgba(255, 255, 255, 0.78);
+    }
+    .hero-marquee--on-photo .hero-marquee-sep {
+      color: rgba(255, 255, 255, 0.38);
+    }
+    @keyframes hero-marquee-scroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    .hero-marquee {
+      overflow: hidden;
+    }
+    .hero-marquee__track {
+      display: flex;
+      width: max-content;
+      animation: hero-marquee-scroll 42s linear infinite;
+    }
+    .hero-marquee:hover .hero-marquee__track {
+      animation-play-state: paused;
+    }
+    .hero-marquee__segment {
+      flex-shrink: 0;
+      padding-right: 2.5rem;
+    }
+    /* Portfolio — interactive investment spectrum (synced to carousel) */
+    .portfolio-spectrum-track {
+      position: relative;
+      height: 10px;
+    }
+    .portfolio-spectrum-bar {
+      display: flex;
+      height: 8px;
+      width: 100%;
+      border-radius: 9999px;
+      overflow: hidden;
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+    }
+    .portfolio-spectrum-bar > span {
+      flex: 1 1 0;
+      display: block;
+      transition: filter 0.25s ease;
+    }
+    .portfolio-spectrum-track[data-active-tier="0"] .portfolio-spectrum-bar > span:nth-child(1),
+    .portfolio-spectrum-track[data-active-tier="1"] .portfolio-spectrum-bar > span:nth-child(2),
+    .portfolio-spectrum-track[data-active-tier="2"] .portfolio-spectrum-bar > span:nth-child(3),
+    .portfolio-spectrum-track[data-active-tier="3"] .portfolio-spectrum-bar > span:nth-child(4),
+    .portfolio-spectrum-track[data-active-tier="4"] .portfolio-spectrum-bar > span:nth-child(5) {
+      filter: brightness(1.18) saturate(1.1);
+    }
+    .portfolio-spectrum-marker {
+      position: absolute;
+      top: -10px;
+      left: 0;
+      transform: translateX(calc(var(--marker-pct, 0%) - 50%));
+      color: var(--color-ink, #2a2a28);
+      filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2));
+      transition: transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1), opacity 0.25s ease;
+      pointer-events: none;
+      opacity: 0;
+    }
+    .portfolio-spectrum-marker.is-visible {
+      opacity: 1;
+    }
+    .portfolio-spectrum-tiers {
+      margin-top: 0.65rem;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 1px;
+    }
+    .portfolio-spectrum-tier {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      padding: 10px 4px 0;
+      font: inherit;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-ink-muted, #6b7568);
+      text-align: center;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      transition: color 0.2s ease, border-top-color 0.2s ease, transform 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .portfolio-spectrum-tier-icon {
+      font-size: 16px;
+      line-height: 1;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.25s ease;
+      filter: grayscale(0.4) saturate(0.85);
+    }
+    .portfolio-spectrum-tier-label { display: inline-block; }
+    @media (min-width: 640px) {
+      .portfolio-spectrum-tier { font-size: 11px; padding-top: 12px; }
+      .portfolio-spectrum-tier-icon { font-size: 18px; }
+    }
+    .portfolio-spectrum-tier:hover {
+      color: var(--color-ink, #2a2a28);
+      border-top-color: rgba(0, 0, 0, 0.4);
+    }
+    .portfolio-spectrum-tier:hover .portfolio-spectrum-tier-icon {
+      transform: translateY(-1px) scale(1.08);
+      filter: grayscale(0) saturate(1);
+    }
+    .portfolio-spectrum-tier.is-active {
+      color: var(--color-ink, #2a2a28);
+      border-top-color: var(--color-copper, #8b6a42);
+      transform: translateY(-1px);
+    }
+    .portfolio-spectrum-tier.is-active .portfolio-spectrum-tier-icon {
+      transform: scale(1.12);
+      filter: grayscale(0) saturate(1.1);
+    }
+    .portfolio-spectrum-tier:focus-visible {
+      outline: 2px solid var(--color-copper, #8b6a42);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .portfolio-spectrum-marker,
+      .portfolio-spectrum-tier { transition: none; }
+    }
+
+    /* Portfolio — property carousel */
+    .portfolio-carousel {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      padding: 0.25rem 0 0.75rem;
+      margin: 0 -0.25rem;
+      scrollbar-color: rgba(180, 170, 158, 0.7) transparent;
+      -webkit-overflow-scrolling: touch;
+    }
+    .portfolio-carousel::-webkit-scrollbar {
+      height: 6px;
+    }
+    .portfolio-carousel::-webkit-scrollbar-thumb {
+      background: rgba(180, 170, 158, 0.75);
+      border-radius: 999px;
+    }
+    .portfolio-carousel::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .portfolio-carousel {
+        scroll-behavior: auto;
+      }
+    }
+    .portfolio-carousel:focus {
+      outline: none;
+    }
+    .portfolio-carousel:focus-visible {
+      outline: 2px solid var(--color-copper, #8b6a42);
+      outline-offset: 4px;
+    }
+    .portfolio-slide {
+      flex: 0 0 min(100%, calc(100vw - 3rem));
+      max-width: 52rem;
+      scroll-snap-align: center;
+    }
+    @media (min-width: 768px) {
+      .portfolio-slide {
+        flex: 0 0 min(88%, 48rem);
+      }
+    }
+    .portfolio-nav-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.75rem;
+      height: 2.75rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(207, 197, 187, 0.55);
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--color-ink, #2a2a28);
+      box-shadow: 0 2px 12px rgba(42, 40, 38, 0.08);
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+    }
+    .portfolio-nav-btn:hover {
+      background: #fff;
+      border-color: rgba(139, 106, 66, 0.45);
+    }
+    .portfolio-nav-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-marquee__track {
+        animation: none;
+        flex-wrap: wrap;
+        width: 100%;
+        max-width: 100%;
+        justify-content: center;
+        row-gap: 0.35rem;
+      }
+      .hero-marquee__segment {
+        padding-right: 0;
+        white-space: normal;
+        text-align: center;
+        text-wrap: balance;
+      }
+      .hero-marquee__segment--duplicate {
+        display: none;
+      }
+    }
+
+    /* Hero social-proof moment — appears when the user picks a season.
+       A lead row with overlapping avatars + live pulse, plus three stats that
+       cascade in to communicate "real people are doing this right now." */
+    .hero-proof {
+      margin-top: 0.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      padding: 0.7rem 0.85rem 0.75rem;
+      border-radius: 14px;
+      background: rgba(252, 249, 248, 0.94);
+      border: 1px solid rgba(27, 28, 28, 0.16);
+      color: #2a2826;
+      font-family: var(--font-sans, system-ui);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.85),
+        0 6px 22px rgba(27, 28, 28, 0.16);
+      opacity: 0;
+      transform: translateY(-6px);
+      transition: opacity 320ms cubic-bezier(0.4, 0.2, 0.2, 1), transform 320ms cubic-bezier(0.4, 0.2, 0.2, 1);
+    }
+    .hero-proof[hidden] { display: none; }
+    .hero-proof.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .hero-proof__lead {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+    .hero-proof__avatars {
+      display: inline-flex;
+      flex-shrink: 0;
+    }
+    .hero-proof__avatar {
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      border-radius: 9999px;
+      border: 2px solid #FCF9F8;
+      margin-left: -7px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+    }
+    .hero-proof__avatar:first-child { margin-left: 0; }
+    .hero-proof__text {
+      flex: 1 1 auto;
+      margin: 0;
+      font-size: 0.78rem;
+      line-height: 1.3;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      color: #2a2826;
+    }
+    .hero-proof__text strong {
+      font-weight: 600;
+      color: #1b1c1c;
+    }
+    .hero-proof__pulse {
+      width: 7px;
+      height: 7px;
+      border-radius: 9999px;
+      background: #b4814d;
+      box-shadow: 0 0 0 0 rgba(180, 129, 77, 0.45);
+      animation: hero-proof-pulse 1.7s ease-out infinite;
+      flex-shrink: 0;
+    }
+    @keyframes hero-proof-pulse {
+      0%   { box-shadow: 0 0 0 0   rgba(180, 129, 77, 0.45); }
+      70%  { box-shadow: 0 0 0 9px rgba(180, 129, 77, 0); }
+      100% { box-shadow: 0 0 0 0   rgba(180, 129, 77, 0); }
+    }
+    .hero-proof__stats {
+      list-style: none;
+      margin: 0;
+      padding: 0.55rem 0 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.4rem;
+      border-top: 1px dashed rgba(27, 28, 28, 0.14);
+    }
+    .hero-proof__stat {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .hero-proof__stat-num {
+      font-family: var(--font-title, Georgia, serif);
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1;
+      color: #1b1c1c;
+      letter-spacing: -0.01em;
+    }
+    .hero-proof__stat-unit {
+      font-size: 0.7em;
+      font-weight: 600;
+      margin-left: 1px;
+      color: #1b1c1c;
+    }
+    .hero-proof__stat-label {
+      font-size: 9.5px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(76, 70, 63, 0.78);
+      line-height: 1.25;
+    }
+    /* Each row + stat cascades in via --proof-i (set per element in HTML). */
+    .hero-proof.is-visible .hero-proof__lead,
+    .hero-proof.is-visible .hero-proof__stat {
+      animation: hero-proof-rise 380ms cubic-bezier(0.4, 0.2, 0.2, 1) both;
+      animation-delay: calc(var(--proof-i, 0) * 70ms);
+    }
+    @keyframes hero-proof-rise {
+      0%   { opacity: 0; transform: translateY(6px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-proof { transition: none; }
+      .hero-proof.is-visible .hero-proof__lead,
+      .hero-proof.is-visible .hero-proof__stat { animation: none; }
+      .hero-proof__pulse { animation: none; }
+    }
+
+    /* ============ Home animations — entrance, sparkles, scroll reveals ============ */
+
+    /* Drifting copper sparkles in the hero */
+    .hero-sparkle-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 5;
+      overflow: hidden;
+    }
+    .hero-sparkle {
+      position: absolute;
+      width: var(--size, 12px);
+      height: var(--size, 12px);
+      color: rgba(255, 226, 188, 0.85);
+      filter: drop-shadow(0 0 6px rgba(255, 220, 175, 0.55));
+      opacity: 0;
+      animation: hero-sparkle var(--dur, 9s) ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+    }
+    .hero-sparkle svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    @keyframes hero-sparkle {
+      0%   { transform: translate3d(0, 0, 0) scale(0.5) rotate(0deg); opacity: 0; }
+      18%  { opacity: var(--peak, 0.9); }
+      50%  { transform: translate3d(var(--dx, 6px), -28px, 0) scale(1.08) rotate(140deg); }
+      82%  { opacity: var(--peak, 0.5); }
+      100% { transform: translate3d(0, -44px, 0) scale(0.5) rotate(260deg); opacity: 0; }
+    }
+
+    /* Scroll reveals (gated by body.aiw-anim-ready so non-JS users still see content) */
+    body.aiw-anim-ready .aiw-reveal,
+    body.aiw-anim-ready .aiw-stagger > .aiw-stagger-item {
+      opacity: 0;
+      transform: translateY(22px);
+      transition:
+        opacity 0.85s cubic-bezier(0.22, 0.61, 0.36, 1),
+        transform 0.85s cubic-bezier(0.22, 0.61, 0.36, 1);
+      transition-delay: var(--reveal-delay, 0ms);
+      will-change: opacity, transform;
+    }
+    body.aiw-anim-ready .aiw-reveal--soft {
+      filter: blur(6px);
+      transition:
+        opacity 0.85s cubic-bezier(0.22, 0.61, 0.36, 1),
+        transform 0.85s cubic-bezier(0.22, 0.61, 0.36, 1),
+        filter 0.85s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+    body.aiw-anim-ready .aiw-stagger > .aiw-stagger-item {
+      transition-delay: calc(var(--stagger-i, 0) * 90ms + var(--stagger-base, 0ms));
+    }
+    body.aiw-anim-ready .aiw-reveal.is-visible,
+    body.aiw-anim-ready .aiw-stagger.is-visible > .aiw-stagger-item {
+      opacity: 1;
+      transform: none;
+      filter: none;
+    }
+
+    /* Hero headline: letter-by-letter reveal */
+    body.aiw-anim-ready .aiw-headline .aiw-letter {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(0.45em);
+      filter: blur(6px);
+      transition:
+        opacity 0.95s cubic-bezier(0.22, 0.61, 0.36, 1),
+        transform 0.95s cubic-bezier(0.22, 0.61, 0.36, 1),
+        filter 0.95s ease;
+      transition-delay: calc(var(--i, 0) * 55ms + 220ms);
+    }
+    body.aiw-anim-ready .aiw-headline.is-visible .aiw-letter {
+      opacity: 1;
+      transform: none;
+      filter: none;
+    }
+
+    /* Copper flourish line that draws in under headlines opting in */
+    .aiw-headline-flourish {
+      position: relative;
+    }
+    .aiw-headline-flourish::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -0.45rem;
+      height: 2px;
+      width: 64px;
+      background: linear-gradient(90deg, transparent, var(--color-copper, #8B6A42), transparent);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 1s cubic-bezier(0.4, 0.2, 0.2, 1) 0.35s;
+    }
+    .aiw-headline-flourish.is-visible::after {
+      transform: scaleX(1);
+    }
+
+    /* Shimmer sweep across CTA buttons on hover/focus */
+    .aiw-cta-shimmer {
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .aiw-cta-shimmer::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.32) 50%, transparent 70%);
+      transform: translateX(-140%);
+      transition: transform 0.9s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .aiw-cta-shimmer:hover::after,
+    .aiw-cta-shimmer:focus-visible::after {
+      transform: translateX(140%);
+    }
+
+    /* Soft ambient pulse on the dark CTA section */
+    @keyframes aiw-cta-glow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(180, 129, 77, 0.0), 0 22px 60px rgba(0, 0, 0, 0.18); }
+      50%      { box-shadow: 0 0 0 1px rgba(180, 129, 77, 0.08), 0 30px 80px rgba(0, 0, 0, 0.32); }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .aiw-final-cta {
+        animation: aiw-cta-glow 6.5s ease-in-out infinite;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-sparkle-layer { display: none; }
+      body.aiw-anim-ready .aiw-letter,
+      body.aiw-anim-ready .aiw-reveal,
+      body.aiw-anim-ready .aiw-reveal--soft,
+      body.aiw-anim-ready .aiw-stagger > .aiw-stagger-item {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+        filter: none !important;
+        opacity: 1 !important;
+      }
+      .aiw-headline-flourish::after { transition: none; transform: scaleX(1); }
+      .aiw-cta-shimmer::after { display: none; }
+    }
+  </style>
+</head>
+
+<body class="min-h-dvh overflow-x-hidden bg-[color:var(--color-rcd-page)] text-ink font-sans antialiased pb-[env(safe-area-inset-bottom)]">
+
+  <!-- Site header — full width; content capped at max-w-7xl -->
+  <header class="sticky top-0 z-50 border-b border-[color:var(--color-rcd-rule)] bg-paper/95 backdrop-blur-md supports-[backdrop-filter]:bg-paper/90">
+    <div class="mx-auto flex h-20 max-w-7xl items-center gap-3 px-6 sm:gap-4 lg:px-10">
+      <button type="button" class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sage-deep hover:bg-sage-bg active:bg-sage-bg md:hidden" aria-label="Open menu">
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" aria-hidden="true">
+          <path d="M0 1h18M0 6h18M0 11h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <a href="./index.html" class="min-w-0 shrink pt-0.5" aria-label="All In Weddings — home">
+        <img src="../rcd-design-system/assets/logos/aiw-horizontal-gray.png" alt="All In Weddings" class="h-7 w-auto max-w-[160px] object-contain object-left sm:h-8 sm:max-w-[200px]"/>
+      </a>
+      <span class="sr-only">ALL IN WEDDINGS</span>
+      <nav class="ml-auto hidden items-center gap-6 text-sm font-semibold text-ink-soft md:flex" aria-label="Primary">
+        <a href="#portfolio" class="transition hover:text-copper">Portfolio</a>
+        <a href="#stories" class="transition hover:text-copper">Stories</a>
+        <a href="./plan.html" class="btn btn--primary btn--small">Start planning</a>
+      </nav>
+      <button type="button" class="ml-auto flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-sage-border/80 bg-gradient-to-br from-cream to-sage-bg shadow-inner ring-1 ring-paper/60 md:ml-0" aria-label="Account">
+        <span class="font-title text-lg leading-none text-sage-deep">N</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero — full-bleed YouTube video (muted, looping; still photo as poster + reduced-motion fallback) -->
+  <section class="hero-fullbleed border-b border-[color:var(--color-rcd-rule)]">
+    <div class="hero-fullbleed__media" aria-hidden="true">
+      <img
+        id="hero-photo"
+        src="./assets/hero-nobu-los-cabos-wedding.png"
+        alt=""
+        width="1024"
+        height="683"
+        fetchpriority="high"
+        decoding="async"
+      />
+      <div class="hero-video" data-hero-video>
+        <video
+          class="hero-video__el"
+          src="./assets/videos/nobu-hero.mp4"
+          poster="./assets/hero-nobu-los-cabos-wedding.png"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="auto"
+          aria-hidden="true"
+        ></video>
+      </div>
+    </div>
+
+    <div id="hero-sparkles" class="hero-sparkle-layer" aria-hidden="true"></div>
+
+    <div class="relative z-10 flex min-h-[calc(100dvh-5rem)] flex-col justify-between">
+      <div class="mx-auto w-full max-w-[min(100%,56rem)] px-6 pt-20 sm:px-8 sm:pt-24 lg:max-w-7xl lg:pt-28">
+        <h1
+          class="aiw-headline aiw-reveal text-center font-title tracking-[-0.03em] text-paper drop-shadow-[0_4px_40px_rgba(0,0,0,0.55)] [text-shadow:0_2px_18px_rgba(0,0,0,0.6),0_1px_3px_rgba(0,0,0,0.55)] [font-size:clamp(4.125rem,16.5vw,6.75rem)] [line-height:1.02] sm:[font-size:clamp(4.875rem,13.5vw,6.75rem)] lg:[font-size:clamp(6.75rem,11.25vw,9rem)]"
+          data-hero-reveal
+        >
+          Imagine yourself here
+        </h1>
+      </div>
+
+      <div class="mt-auto w-full">
+      <div class="mx-auto w-full max-w-lg px-6 pb-6 sm:max-w-xl sm:pb-8 lg:max-w-2xl">
+        <p class="aiw-reveal mb-5 text-center font-sans text-[11px] font-semibold uppercase tracking-[0.22em] text-white [text-shadow:0_1px_2px_rgba(0,0,0,0.45),0_2px_12px_rgba(0,0,0,0.55)] sm:text-left" data-hero-reveal style="--reveal-delay:120ms">
+          i want to get married…
+        </p>
+        <form class="hero-form-on-image aiw-reveal space-y-3" method="get" action="./plan.html" data-hero-reveal style="--reveal-delay:240ms">
+          <div class="field field--select group">
+            <label class="sr-only" for="hero-when">Season or timing</label>
+            <select id="hero-when" name="when" class="text-paper">
+              <option value="spring-2026">Spring 2026</option>
+              <option value="summer-2026">Summer 2026</option>
+              <option value="fall-2026">Fall 2026</option>
+              <option value="winter-2026-27">Winter 2026–27</option>
+              <option value="spring-2027">Spring 2027</option>
+              <option value="summer-2027" selected>Summer 2027</option>
+              <option value="fall-2027">Fall 2027</option>
+              <option value="winter-2027-28">Winter 2027–28</option>
+              <option value="spring-2028">Spring 2028</option>
+              <option value="summer-2028">Summer 2028</option>
+            </select>
+            <span class="field__trail pointer-events-none" aria-hidden="true">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </span>
+          </div>
+          <div
+            id="hero-proof"
+            class="hero-proof"
+            role="status"
+            aria-live="polite"
+            hidden
+          >
+            <div class="hero-proof__lead" style="--proof-i:0">
+              <span class="hero-proof__avatars" aria-hidden="true">
+                <span class="hero-proof__avatar" style="background:linear-gradient(135deg,#f5cfa3,#b4814d)"></span>
+                <span class="hero-proof__avatar" style="background:linear-gradient(135deg,#e7c4cf,#a04663)"></span>
+                <span class="hero-proof__avatar" style="background:linear-gradient(135deg,#cfd9b8,#5d6b3f)"></span>
+                <span class="hero-proof__avatar" style="background:linear-gradient(135deg,#cfd1d8,#4a4f5a)"></span>
+              </span>
+              <p class="hero-proof__text">
+                <strong id="hero-proof-count">500</strong> brides are picturing
+                <strong id="hero-proof-label">this date</strong> right now.
+              </p>
+              <span class="hero-proof__pulse" aria-hidden="true"></span>
+            </div>
+            <ul class="hero-proof__stats">
+              <li class="hero-proof__stat" style="--proof-i:1">
+                <span class="hero-proof__stat-num" id="hero-proof-locks">12</span>
+                <span class="hero-proof__stat-label">locked in <span id="hero-proof-locks-label">this season</span></span>
+              </li>
+              <li class="hero-proof__stat" style="--proof-i:2">
+                <span class="hero-proof__stat-num" id="hero-proof-match">94<span class="hero-proof__stat-unit">%</span></span>
+                <span class="hero-proof__stat-label">love their venue match</span>
+              </li>
+              <li class="hero-proof__stat" style="--proof-i:3">
+                <span class="hero-proof__stat-num">$<span id="hero-proof-saved">11</span>k</span>
+                <span class="hero-proof__stat-label">avg saved with All In</span>
+              </li>
+            </ul>
+          </div>
+          <div class="field field--select group">
+            <label class="sr-only" for="hero-where">Destination</label>
+            <select id="hero-where" name="where" class="text-paper">
+              <option value="cancun" selected>in Cancun</option>
+              <option value="punta-cana">in Punta Cana</option>
+              <option value="los-cabos">in Los Cabos</option>
+            </select>
+            <span class="field__trail pointer-events-none w-5" aria-hidden="true">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none">
+                <path d="M12 21s7-4.35 7-10a7 7 0 10-14 0c0 5.65 7 10 7 10z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                <circle cx="12" cy="11" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+            </span>
+          </div>
+          <div class="mt-6 space-y-3">
+            <button
+              type="submit"
+              name="journey"
+              value="dreaming"
+              class="btn btn--invert btn--default btn--block h-auto min-h-11 w-full whitespace-normal px-5 py-3.5 text-center text-[11px] font-semibold uppercase leading-snug tracking-[0.14em] shadow-md hover:bg-white sm:text-xs sm:tracking-[0.16em]"
+            >
+              PLAN MY DREAM WEDDING
+            </button>
+            <button
+              type="submit"
+              name="journey"
+              value="book"
+              class="btn btn--default btn--block h-auto min-h-11 w-full whitespace-normal border border-white/70 bg-black/45 px-5 py-3.5 text-center text-[11px] font-semibold uppercase leading-snug tracking-[0.14em] text-paper shadow-[0_4px_18px_rgba(0,0,0,0.32)] backdrop-blur-md hover:border-white hover:bg-black/60 sm:text-xs sm:tracking-[0.18em]"
+            >
+              I'm ready to book
+            </button>
+          </div>
+        </form>
+        <p class="sr-only">
+          Exclusive properties include Hard Rock Hotels Los Cabos, Nobu Hotel Los Cabos, Unico 20°87° Riviera Maya, Eden Roc Miami Beach, and AVA Resort Cancun.
+        </p>
+      </div>
+
+      <div
+        class="hero-marquee hero-marquee--on-photo aiw-reveal mt-6 border-y py-3"
+        role="presentation"
+        data-hero-reveal
+        style="--reveal-delay:360ms"
+      >
+        <div class="hero-marquee__track font-sans text-[11px] font-medium leading-relaxed tracking-wide sm:text-xs">
+          <div class="hero-marquee__segment whitespace-nowrap pl-6 sm:pl-8">
+            <strong class="font-semibold">Exclusive properties:</strong>
+            <span class="text-ink-soft"> Hard Rock Hotels: Los Cabos</span>
+            <span class="hero-marquee-sep mx-2" aria-hidden="true">—</span>
+            <span class="text-ink-soft">Nobu Hotel: Los Cabos</span>
+            <span class="hero-marquee-sep mx-2" aria-hidden="true">—</span>
+            <span class="text-ink-soft">Unico 20°87°: Riviera Maya</span>
+            <span class="hero-marquee-sep mx-2" aria-hidden="true">—</span>
+            <span class="text-ink-soft">Eden Roc: Miami Beach</span>
+            <span class="hero-marquee-sep mx-2" aria-hidden="true">—</span>
+            <span class="text-ink-soft">AVA Resort: Cancun</span>
+          </div>
+          <div class="hero-marquee__segment hero-marquee__segment--duplicate whitespace-nowrap pl-6 sm:pl-8" aria-hidden="true">
+            <strong class="font-semibold">Exclusive properties:</strong>
+            <span class="text-ink-soft"> Hard Rock Hotels: Los Cabos</span>
+            <span class="hero-marquee-sep mx-2" aria-hidden="true">—</span>
+            <span class="text-ink-soft">Nobu Hotel: Los Cabos</span>
+            <span class="hero-marquee-sep mx-2" aria-hidden="true">—</span>
+            <span class="text-ink-soft">Unico 20°87°: Riviera Maya</span>
+            <span class="hero-marquee-sep mx-2" aria-hidden="true">—</span>
+            <span class="text-ink-soft">Eden Roc: Miami Beach</span>
+            <span class="hero-marquee-sep mx-2" aria-hidden="true">—</span>
+            <span class="text-ink-soft">AVA Resort: Cancun</span>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Below the fold -->
+  <div class="mx-auto w-full max-w-7xl px-6 pb-16 pt-10 lg:px-10">
+
+    <section id="all-in-perks" class="border border-[color:var(--color-rcd-rule)] bg-paper py-12 sm:py-14" aria-labelledby="all-in-perks-heading">
+      <div class="px-6 sm:px-8">
+        <div class="mb-10 grid grid-cols-1 gap-6 sm:mb-12 lg:grid-cols-12 lg:items-end lg:gap-10">
+          <div class="aiw-reveal lg:col-span-7">
+            <img src="../rcd-design-system/assets/logos/aiw-semi-arch-green.png" alt="" aria-hidden="true" class="mb-3 h-10 w-auto object-contain object-left sm:h-12"/>
+            <p class="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-copper">All In Bride Perks</p>
+            <h2 id="all-in-perks-heading" class="aiw-headline-flourish aiw-reveal font-title text-3xl tracking-tight text-ink sm:text-4xl lg:text-5xl">
+              Book direct through the All In network of exclusive hotels.
+            </h2>
+          </div>
+          <p class="aiw-reveal text-sm text-ink-soft sm:text-base lg:col-span-5" style="--reveal-delay:120ms">
+            Other aggregators hand you a spreadsheet of resorts and a 1-800. We're plugged
+            <em>directly</em> into <strong>Hard Rock</strong>, <strong>Nobu</strong>,
+            <strong>Unico 20°87°</strong>, <strong>Eden Roc</strong>, and <strong>AVA</strong> —
+            so the moment you sign on, you skip the middle layer and land on-property as a VIP.
+          </p>
+        </div>
+
+        <ul class="aiw-stagger grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
+          <li class="aiw-stagger-item border border-[color:var(--color-rcd-rule)] bg-cream/50 p-6 transition hover:bg-cream sm:p-7" style="--stagger-i:0">
+            <div class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-full border border-copper/40 bg-paper text-copper">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 2l2.39 4.84 5.34.78-3.86 3.77.91 5.31L12 14.77l-4.78 2.51.91-5.31L4.27 8.62l5.34-.78L12 2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3 class="mb-2 font-title text-2xl tracking-tight text-ink">First-priority booking</h3>
+            <p class="text-sm text-ink-soft sm:text-[15px]">
+              Get on the calendar before public availability opens — yes, even those peak Saturdays
+              that quietly disappear at our most-requested resorts. The dates the public never sees? Yours first.
+            </p>
+          </li>
+
+          <li class="aiw-stagger-item border border-[color:var(--color-rcd-rule)] bg-cream/50 p-6 transition hover:bg-cream sm:p-7" style="--stagger-i:1">
+            <div class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-full border border-copper/40 bg-paper text-copper">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 21s7-4.35 7-10a7 7 0 10-14 0c0 5.65 7 10 7 10z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                <circle cx="12" cy="11" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <h3 class="mb-2 font-title text-2xl tracking-tight text-ink">Insider site visits</h3>
+            <p class="text-sm text-ink-soft sm:text-[15px]">
+              Exclusive discounts on guided property tours — walk the aisle, taste the menu, meet the team
+              <em>before</em> you commit. Other sites send a PDF; we send you through the front door.
+            </p>
+          </li>
+
+          <li class="aiw-stagger-item border border-[color:var(--color-rcd-rule)] bg-cream/50 p-6 transition hover:bg-cream sm:p-7" style="--stagger-i:2">
+            <div class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-full border border-copper/40 bg-paper text-copper">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M3 11l9-7 9 7v9a2 2 0 01-2 2h-4v-7H10v7H6a2 2 0 01-2-2v-9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3 class="mb-2 font-title text-2xl tracking-tight text-ink">Discounted room blocks</h3>
+            <p class="text-sm text-ink-soft sm:text-[15px]">
+              Negotiated group rates that beat third-party booking sites — plus complimentary upgrades
+              for the couple. Your guests pay less. Your suite gets bigger. You look like the host of the year.
+            </p>
+          </li>
+
+          <li class="aiw-stagger-item border border-[color:var(--color-rcd-rule)] bg-cream/50 p-6 transition hover:bg-cream sm:p-7" style="--stagger-i:3">
+            <div class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-full border border-copper/40 bg-paper text-copper">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M9 12l2 2 4-4M12 22a10 10 0 110-20 10 10 0 010 20z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3 class="mb-2 font-title text-2xl tracking-tight text-ink">Verified vendor marketplace</h3>
+            <p class="text-sm text-ink-soft sm:text-[15px]">
+              Photographers, florists, hair &amp; makeup, DJs — every name is already pre-approved at
+              your venue. No insurance gauntlet. No last-minute surprises. Just trusted talent on speed-dial.
+            </p>
+          </li>
+        </ul>
+
+        <div class="mt-10 flex flex-col items-center gap-4 sm:mt-12 sm:flex-row sm:justify-between">
+          <p class="max-w-xl text-center text-sm text-ink-soft sm:text-left sm:text-base">
+            All-inclusive doesn't have to mean cookie-cutter. Pair direct-to-property power with a planner
+            who knows every aisle, every sunset, and every vendor by name — and watch destination
+            perfection actually feel that way.
+          </p>
+          <a href="./plan.html?journey=dreaming" class="btn btn--primary btn--default whitespace-nowrap">Unlock my perks</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="portfolio" class="border-t border-[color:var(--color-rcd-rule)] py-14 sm:py-20">
+      <div class="mb-10 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+        <div class="aiw-reveal">
+          <p class="mb-2 text-xs uppercase tracking-[0.2em] text-ink-muted">The portfolio</p>
+          <h2 class="aiw-headline-flourish aiw-reveal max-w-2xl font-title text-3xl tracking-tight text-ink sm:text-4xl lg:text-5xl">Four brands, one planner, fourteen unforgettable backdrops.</h2>
+        </div>
+        <p class="aiw-reveal max-w-md text-sm text-ink-soft sm:text-base" style="--reveal-delay:140ms">
+          Every property is fully verified, fully bookable, and fully integrated into our planner.
+          Pick a vibe, not a brand — we'll find the place that already speaks it.
+        </p>
+      </div>
+
+      <div class="portfolio-spectrum aiw-reveal mx-auto mb-10 max-w-3xl px-1">
+        <div class="mb-3 flex flex-col items-center gap-1 text-center sm:flex-row sm:items-baseline sm:justify-between sm:gap-3 sm:text-left">
+          <p class="font-title text-base italic tracking-tight text-ink sm:text-lg">What kind of day are you picturing?</p>
+          <p class="text-[11px] text-ink-muted">Pick a feel — we'll jump to venues that match.</p>
+        </div>
+        <div id="portfolio-spectrum-track" class="portfolio-spectrum-track relative">
+          <div class="portfolio-spectrum-bar" aria-hidden="true">
+            <span style="background:#8C2A2A"></span>
+            <span style="background:#a23a25"></span>
+            <span style="background:#c76f2a"></span>
+            <span style="background:#B4814D"></span>
+            <span style="background:#1b1c1c"></span>
+          </div>
+          <div id="portfolio-spectrum-marker" class="portfolio-spectrum-marker" aria-hidden="true">
+            <svg viewBox="0 0 12 8" width="12" height="8" aria-hidden="true"><path d="M0 0h12L6 8z" fill="currentColor"/></svg>
+          </div>
+        </div>
+        <div id="portfolio-spectrum-tiers" class="portfolio-spectrum-tiers" role="tablist" aria-label="Choose a celebration style"></div>
+        <p class="mt-3 text-center text-[11px] leading-snug text-ink-muted">No bad pick — same planner from easygoing to showstopper. Browse the gallery and the bar follows along.</p>
+      </div>
+
+      <div class="relative">
+        <button type="button" id="portfolio-carousel-prev" class="portfolio-nav-btn absolute left-0 top-1/2 z-20 hidden -translate-x-1 sm:-translate-x-2 sm:flex" aria-controls="portfolio-carousel" aria-label="Previous property">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button type="button" id="portfolio-carousel-next" class="portfolio-nav-btn absolute right-0 top-1/2 z-20 hidden translate-x-1 sm:translate-x-2 sm:flex" aria-controls="portfolio-carousel" aria-label="Next property">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div id="portfolio-carousel" class="portfolio-carousel" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Featured properties"></div>
+        <div id="portfolio-carousel-dots" class="mt-4 flex flex-wrap items-center justify-center gap-2"></div>
+      </div>
+    </section>
+
+    <section id="stories" class="border-t border-[color:var(--color-rcd-rule)] py-14 sm:py-20">
+      <p class="aiw-reveal mb-2 text-xs uppercase tracking-[0.2em] text-ink-muted">Real couples, real bookings</p>
+      <h2 class="aiw-headline-flourish aiw-reveal mb-10 max-w-3xl font-title text-3xl tracking-tight text-ink sm:mb-12 sm:text-4xl lg:text-5xl" style="--reveal-delay:80ms">A few weddings already planned this way.</h2>
+      <div id="story-grid" class="aiw-stagger grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4"></div>
+    </section>
+
+    <section class="aiw-final-cta aiw-reveal mt-10 border border-[color:var(--color-rcd-rule)] bg-ink px-6 py-14 text-paper sm:px-10 sm:py-20">
+      <div class="mx-auto max-w-2xl text-center">
+        <h2 class="aiw-reveal font-title text-4xl italic tracking-tight sm:text-5xl lg:text-6xl" style="--reveal-delay:120ms">Forever &amp; always — let's start.</h2>
+        <p class="aiw-reveal mt-4 text-sm text-paper/75 sm:text-base" style="--reveal-delay:240ms">
+          Tell our planner the date, the city, the feeling. We'll handle the rest in one conversation.
+        </p>
+        <div class="aiw-reveal mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:flex-wrap sm:justify-center" style="--reveal-delay:360ms">
+          <a href="./plan.html" class="btn btn--secondary btn--default aiw-cta-shimmer">Begin planning</a>
+          <a href="#portfolio" class="btn btn--invert btn--default aiw-cta-shimmer">See properties</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="footer-mount"></div>
+
+  <script type="module">
+    import { HOTELS, BRANDS, BRIDES, byId, hotelCardImageUrl, storyCardImageUrl } from "./_data.js";
+    import { renderFooter, $h, usd } from "./_app.js";
+
+    document.getElementById("footer-mount").innerHTML = renderFooter();
+
+    function escHtml(s) {
+      return String(s).replace(/[<>&"']/g, ch => ({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;","'":"&#39;"}[ch]));
+    }
+
+    const portfolioCarousel = document.getElementById("portfolio-carousel");
+    const portfolioPrev = document.getElementById("portfolio-carousel-prev");
+    const portfolioNext = document.getElementById("portfolio-carousel-next");
+    const portfolioDots = document.getElementById("portfolio-carousel-dots");
+
+    if (portfolioCarousel) {
+      const carouselHotels = [...HOTELS].sort((a, b) => {
+        if (!!a.upcoming !== !!b.upcoming) return a.upcoming ? 1 : -1;
+        return (a.fromUSD || 0) - (b.fromUSD || 0);
+      });
+
+      function planWhereParam(hotel) {
+        if (hotel.region === "pacific") return "los-cabos";
+        if (hotel.region === "atlantic") return "cancun";
+        if (hotel.country === "Dominican Republic" || /punta cana/i.test(hotel.city || "")) return "punta-cana";
+        return "cancun";
+      }
+
+      /** Five-tier spectrum — single source of truth shared by the bar, tier buttons, and card chips.
+       *  Labels are written for couples, not finance — the `id` keeps the mechanic stable underneath. */
+      const SPECTRUM_TIERS = [
+        { id: "affordable",   label: "Easygoing",  icon: "🌿", max: 30000,    chip: "border-white/40 bg-[#8C2A2A]/65 text-white shadow-sm" },
+        { id: "mid-range",    label: "Balanced",   icon: "🌼", max: 38000,    chip: "border-white/40 bg-black/45 text-white shadow-sm backdrop-blur-sm" },
+        { id: "premium",      label: "Elevated",   icon: "🥂", max: 47000,    chip: "border-white/45 bg-[#c76f2a]/55 text-white shadow-sm backdrop-blur-sm" },
+        { id: "luxury",       label: "Designer",   icon: "💎", max: 55000,    chip: "border-white/50 bg-[#B4814D]/60 text-[#1b1c1c] shadow-sm" },
+        { id: "ultra-luxury", label: "Showstopper", icon: "👑", max: Infinity, chip: "border-amber-100/50 bg-[#1b1c1c]/70 text-[#f5efe6] shadow-sm backdrop-blur-sm" },
+      ];
+
+      /** Returns spectrum tier index (0-4) for a given hotel USD price. */
+      function tierIndexFor(fromUSD) {
+        const n = fromUSD || 0;
+        for (let i = 0; i < SPECTRUM_TIERS.length; i++) {
+          if (n < SPECTRUM_TIERS[i].max) return i;
+        }
+        return SPECTRUM_TIERS.length - 1;
+      }
+
+      function portfolioInvestmentTag(fromUSD) {
+        const t = SPECTRUM_TIERS[tierIndexFor(fromUSD)];
+        return { label: t.label, chip: t.chip };
+      }
+
+      portfolioCarousel.classList.add("aiw-stagger");
+      carouselHotels.forEach((h, idx) => {
+        const brand = BRANDS.find(b => b.id === h.brand);
+        const brandName = brand ? brand.name : h.brand;
+        const img = hotelCardImageUrl(h.id);
+        const upcoming = !!h.upcoming;
+        const href = `./plan.html?journey=dreaming&where=${encodeURIComponent(planWhereParam(h))}`;
+        const tier = portfolioInvestmentTag(h.fromUSD);
+        const tierLabel = escHtml(tier.label);
+        portfolioCarousel.appendChild($h(`
+          <article class="portfolio-slide aiw-stagger-item group relative aspect-[4/3] overflow-hidden border border-[color:var(--color-rcd-rule)] bg-ink shadow-md sm:aspect-[21/10] sm:max-h-[min(52vh,440px)]" style="--stagger-i:${idx}">
+            <img src="${img}" alt="" class="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]" width="640" height="360" loading="${idx < 2 ? "eager" : "lazy"}" decoding="async" referrerpolicy="no-referrer-when-downgrade"/>
+            <div class="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-black/88 via-black/35 to-transparent"></div>
+            <div class="pointer-events-none absolute left-4 top-4 z-[2] sm:left-5 sm:top-5">
+              <span class="inline-flex rounded-sm border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] sm:text-[11px] sm:tracking-[0.16em] ${tier.chip}">${tierLabel}</span>
+            </div>
+            <div class="pointer-events-none absolute inset-x-0 bottom-0 z-[2] p-5 sm:p-7">
+              <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/75">${escHtml(brandName)}</p>
+              <h3 class="font-title mt-1 max-w-[20ch] text-2xl leading-tight text-paper sm:text-3xl lg:text-4xl">${escHtml(h.name)}</h3>
+              <p class="mt-1 text-sm text-white/80">${escHtml(h.city)}, ${escHtml(h.country)}</p>
+              <div class="mt-3 flex flex-wrap items-center gap-2">
+                <span class="text-xs font-semibold text-white">From ${usd(h.fromUSD)}</span>
+                ${upcoming ? `<span class="rounded-sm border border-white/35 bg-white/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-white/90">Opening soon</span>` : ""}
+              </div>
+            </div>
+            <a href="${href}" class="absolute inset-0 z-10 block outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-copper" aria-label="Start planning at ${escHtml(h.name)}, ${tierLabel} tier">
+              <span class="sr-only">${escHtml(h.name)} — ${escHtml(h.city)}, ${escHtml(h.country)}. ${tierLabel}. Est. from ${usd(h.fromUSD)}.</span>
+            </a>
+          </article>`));
+      });
+
+      const slides = () => Array.from(portfolioCarousel.querySelectorAll(".portfolio-slide"));
+
+      function updatePortfolioNav() {
+        const el = portfolioCarousel;
+        const max = el.scrollWidth - el.clientWidth - 2;
+        if (portfolioPrev) portfolioPrev.disabled = el.scrollLeft <= 2;
+        if (portfolioNext) portfolioNext.disabled = el.scrollLeft >= max;
+      }
+
+      function scrollPortfolioBy(dir) {
+        const el = portfolioCarousel;
+        const w = slides()[0]?.getBoundingClientRect().width || el.clientWidth;
+        const gap = 16;
+        el.scrollBy({ left: dir * (w + gap), behavior: prefersReducedMotion() ? "auto" : "smooth" });
+      }
+
+      function prefersReducedMotion() {
+        return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      }
+
+      function goToPortfolioSlide(i) {
+        const list = slides();
+        const target = list[Math.max(0, Math.min(i, list.length - 1))];
+        if (target) target.scrollIntoView({ inline: "center", block: "nearest", behavior: prefersReducedMotion() ? "auto" : "smooth" });
+      }
+
+      /* === Investment spectrum: tier buttons + marker, kept in sync with the carousel === */
+      const spectrumTrack = document.getElementById("portfolio-spectrum-track");
+      const spectrumTiersEl = document.getElementById("portfolio-spectrum-tiers");
+      const spectrumMarker = document.getElementById("portfolio-spectrum-marker");
+      const spectrumPriceMin = Math.min(...carouselHotels.map(h => h.fromUSD || 0));
+      const spectrumPriceMax = Math.max(...carouselHotels.map(h => h.fromUSD || 0));
+      const spectrumPriceSpan = Math.max(1, spectrumPriceMax - spectrumPriceMin);
+      let spectrumTierBtns = [];
+
+      if (spectrumTiersEl) {
+        SPECTRUM_TIERS.forEach((tier, i) => {
+          const firstUpcomingFree = carouselHotels.findIndex(h => tierIndexFor(h.fromUSD) === i && !h.upcoming);
+          const firstAny = carouselHotels.findIndex(h => tierIndexFor(h.fromUSD) === i);
+          const targetIdx = firstUpcomingFree >= 0 ? firstUpcomingFree : firstAny;
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "portfolio-spectrum-tier";
+          btn.dataset.tier = String(i);
+          btn.setAttribute("role", "tab");
+          btn.setAttribute("aria-selected", "false");
+          btn.setAttribute("aria-controls", "portfolio-carousel");
+          btn.innerHTML = tier.icon
+            ? `<span class="portfolio-spectrum-tier-icon" aria-hidden="true">${escHtml(tier.icon)}</span><span class="portfolio-spectrum-tier-label">${escHtml(tier.label)}</span>`
+            : escHtml(tier.label);
+          if (targetIdx < 0) {
+            btn.disabled = true;
+            btn.style.opacity = "0.4";
+            btn.style.cursor = "not-allowed";
+          } else {
+            btn.addEventListener("click", () => goToPortfolioSlide(targetIdx));
+          }
+          spectrumTiersEl.appendChild(btn);
+        });
+        spectrumTierBtns = Array.from(spectrumTiersEl.querySelectorAll(".portfolio-spectrum-tier"));
+      }
+
+      function syncSpectrumToHotel(hotel) {
+        if (!hotel) return;
+        const tIdx = tierIndexFor(hotel.fromUSD);
+        if (spectrumTrack) spectrumTrack.dataset.activeTier = String(tIdx);
+        spectrumTierBtns.forEach((b, i) => {
+          const on = i === tIdx;
+          b.classList.toggle("is-active", on);
+          b.setAttribute("aria-selected", on ? "true" : "false");
+        });
+        if (spectrumMarker) {
+          const pct = Math.max(0, Math.min(100, ((hotel.fromUSD - spectrumPriceMin) / spectrumPriceSpan) * 100));
+          spectrumMarker.style.setProperty("--marker-pct", `${pct.toFixed(1)}%`);
+          spectrumMarker.classList.add("is-visible");
+        }
+      }
+
+      portfolioPrev?.addEventListener("click", () => scrollPortfolioBy(-1));
+      portfolioNext?.addEventListener("click", () => scrollPortfolioBy(1));
+      portfolioCarousel.addEventListener("scroll", () => {
+        updatePortfolioNav();
+        const list = slides();
+        if (!list.length) return;
+        const root = portfolioCarousel.getBoundingClientRect();
+        const mid = root.left + root.width / 2;
+        let best = 0;
+        let bestD = Infinity;
+        list.forEach((s, i) => {
+          const r = s.getBoundingClientRect();
+          const c = r.left + r.width / 2;
+          const d = Math.abs(c - mid);
+          if (d < bestD) {
+            bestD = d;
+            best = i;
+          }
+        });
+        if (portfolioDots) {
+          portfolioDots.querySelectorAll("button").forEach((btn, i) => {
+            const on = i === best;
+            btn.setAttribute("aria-current", on ? "true" : "false");
+            btn.classList.toggle("bg-ink", on);
+            btn.classList.toggle("bg-[color:var(--color-rcd-rule)]", !on);
+          });
+        }
+        syncSpectrumToHotel(carouselHotels[best]);
+      });
+
+        if (portfolioDots) {
+        slides().forEach((_, i) => {
+          const on = i === 0;
+          const b = $h(`<button type="button" class="h-2 w-2 rounded-full transition-colors sm:h-2.5 sm:w-2.5 ${on ? "bg-ink" : "bg-[color:var(--color-rcd-rule)]"}" aria-label="Show property ${i + 1}" aria-current="${on ? "true" : "false"}"></button>`);
+          b?.addEventListener("click", () => goToPortfolioSlide(i));
+          portfolioDots.appendChild(b);
+        });
+      }
+
+      portfolioCarousel.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft") { e.preventDefault(); scrollPortfolioBy(-1); }
+        if (e.key === "ArrowRight") { e.preventDefault(); scrollPortfolioBy(1); }
+      });
+
+      updatePortfolioNav();
+      portfolioCarousel.dispatchEvent(new Event("scroll"));
+      window.addEventListener("resize", () => updatePortfolioNav(), { passive: true });
+    }
+
+    const stories = document.getElementById("story-grid");
+    BRIDES.slice(0, 4).forEach((b, idx) => {
+      const hotel = byId(HOTELS, b.hotelId);
+      const dossierHref = `./plan.html?story=${encodeURIComponent(b.slug)}`;
+      const tileImg = storyCardImageUrl(b, hotel.id);
+      const photoCred =
+        b.photoCredit && b.photoCreditHref
+          ? `<p class="mt-2 text-[10px] leading-snug text-ink-muted"><a href="${escHtml(b.photoCreditHref)}" class="underline decoration-ink-muted/40 underline-offset-2 transition hover:text-ink" target="_blank" rel="noopener noreferrer">Photos · ${escHtml(b.photoCredit)}</a></p>`
+          : "";
+      stories.appendChild($h(`
+        <a href="${dossierHref}" class="aiw-stagger-item group block overflow-hidden border border-[color:var(--color-rcd-rule)] bg-paper shadow-sm outline-none ring-offset-2 transition-shadow hover:shadow-md focus-visible:ring-2 focus-visible:ring-copper" style="--stagger-i:${idx}" aria-label="View ${b.name} — ${hotel.name} space dossier in planner">
+          <article class="text-left">
+            <div class="relative h-48 sm:h-56">
+              <img src="${tileImg}" alt="" class="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade" />
+              <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-black/15 to-transparent"></div>
+              <div class="absolute inset-0 aiw-grain opacity-45 mix-blend-overlay"></div>
+              <div class="absolute inset-x-0 bottom-0 p-4 sm:p-5">
+                <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-paper/80 sm:text-xs">${escHtml(b.season)} · ${b.guests} guests</p>
+                <p class="font-title text-2xl text-paper sm:text-3xl">${escHtml(b.name)}</p>
+              </div>
+            </div>
+            <div class="p-5 sm:p-6">
+              <p class="text-sm leading-relaxed text-ink sm:text-base">"${escHtml(b.quote)}"</p>
+              <p class="mt-3 text-xs text-ink-muted sm:text-sm">${escHtml(hotel.name)}</p>
+              ${photoCred}
+              <p class="mt-4 text-sm font-medium text-copper">View space dossier →</p>
+            </div>
+          </article>
+        </a>`));
+    });
+
+    // Hero social-proof moment — populated when the user picks a season.
+    // We compute deterministic-but-plausible numbers per season (summer feels
+    // hottest, winter quieter, distant years thinner) and cascade in 4 elements.
+    const heroWhen = document.getElementById("hero-when");
+    const heroProof = document.getElementById("hero-proof");
+    const heroProofCount = document.getElementById("hero-proof-count");
+    const heroProofLabel = document.getElementById("hero-proof-label");
+    const heroProofLocks = document.getElementById("hero-proof-locks");
+    const heroProofLocksLabel = document.getElementById("hero-proof-locks-label");
+    const heroProofMatch = document.getElementById("hero-proof-match");
+    const heroProofSaved = document.getElementById("hero-proof-saved");
+
+    /** Returns a plausible social-proof snapshot tied to the chosen season. */
+    function heroProofSnapshot(value) {
+      const v = String(value || "").toLowerCase();
+      const isSummer = v.startsWith("summer");
+      const isFall   = v.startsWith("fall");
+      const isWinter = v.startsWith("winter");
+      const yr = parseInt((v.match(/(\d{4})/) || ["2027"])[1], 10);
+      const yearShift = Math.max(0, yr - 2027) * 32; // distant futures feel thinner
+      const baseBrides = isSummer ? 540 : isFall ? 470 : isWinter ? 380 : 460;
+      const brides = Math.max(140, baseBrides + Math.floor(Math.random() * 40) - yearShift);
+      const locks  = isSummer ? 14 : isFall ? 11 : isWinter ? 7 : 9;
+      const match  = isWinter ? 92 : isSummer ? 95 : 94;
+      const saved  = isSummer ? 12 : isFall ? 11 : isWinter ? 9 : 10;
+      return { brides, locks, match, saved };
+    }
+
+    if (heroWhen && heroProof && heroProofCount && heroProofLabel) {
+      let lastBrides = 0;
+      let lastLocks = 0;
+      let lastMatch = 0;
+      let lastSaved = 0;
+
+      const revealProof = () => {
+        const opt = heroWhen.options[heroWhen.selectedIndex];
+        const label = opt ? opt.textContent.trim() : "this date";
+        const snap = heroProofSnapshot(opt?.value);
+        heroProofLabel.textContent = label;
+        if (heroProofLocksLabel) heroProofLocksLabel.textContent = label;
+        heroProof.hidden = false;
+        // Re-trigger the cascade animation each time the user picks a new season.
+        heroProof.classList.remove("is-visible");
+        void heroProof.offsetWidth;
+        heroProof.classList.add("is-visible");
+        countUp(heroProofCount, lastBrides, snap.brides, 900);
+        countUp(heroProofLocks, lastLocks,  snap.locks,  720);
+        countUp(heroProofMatch, lastMatch,  snap.match,  640);
+        countUp(heroProofSaved, lastSaved,  snap.saved,  640);
+        lastBrides = snap.brides;
+        lastLocks  = snap.locks;
+        lastMatch  = snap.match;
+        lastSaved  = snap.saved;
+      };
+      heroWhen.addEventListener("change", revealProof);
+    }
+
+    /* ============ Home animations ============ */
+    function homePrefersReducedMotion() {
+      return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    }
+
+    /** Tween a number element from `from` to `to` over `dur` ms. */
+    function countUp(el, from, to, dur) {
+      if (!el) return;
+      if (homePrefersReducedMotion() || dur <= 0) {
+        el.textContent = String(to);
+        return;
+      }
+      const start = performance.now();
+      function step(now) {
+        const t = Math.min(1, (now - start) / dur);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const v = Math.round(from + (to - from) * eased);
+        el.textContent = String(v);
+        if (t < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    /** Split the hero h1 into per-letter spans so each letter can fade/blur in. */
+    function splitHomeHeadline() {
+      const h1 = document.querySelector(".aiw-headline");
+      if (!h1 || h1.dataset.split === "1") return;
+      const text = h1.textContent;
+      h1.textContent = "";
+      let i = 0;
+      for (const ch of text) {
+        if (ch === " ") {
+          h1.appendChild(document.createTextNode(" "));
+          continue;
+        }
+        const span = document.createElement("span");
+        span.className = "aiw-letter";
+        span.style.setProperty("--i", String(i++));
+        span.textContent = ch;
+        h1.appendChild(span);
+      }
+      h1.dataset.split = "1";
+    }
+
+    /** Drop ~10 drifting copper sparkles into the hero. */
+    function injectHomeSparkles() {
+      if (homePrefersReducedMotion()) return;
+      const layer = document.getElementById("hero-sparkles");
+      if (!layer || layer.dataset.populated === "1") return;
+      const SPARKLE = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1l2.4 8.4L22 12l-7.6 2.6L12 23l-2.4-8.4L2 12l7.6-2.6L12 1z"/></svg>`;
+      const total = 11;
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < total; i++) {
+        const s = document.createElement("span");
+        s.className = "hero-sparkle";
+        const left = (6 + Math.random() * 88).toFixed(1);
+        const top = (18 + Math.random() * 72).toFixed(1);
+        const size = (8 + Math.random() * 10).toFixed(0);
+        const dur = (7 + Math.random() * 6).toFixed(2);
+        const delay = (Math.random() * 7).toFixed(2);
+        const dx = (Math.random() * 24 - 12).toFixed(1);
+        const peak = (0.55 + Math.random() * 0.4).toFixed(2);
+        s.style.left = `${left}%`;
+        s.style.top = `${top}%`;
+        s.style.setProperty("--size", `${size}px`);
+        s.style.setProperty("--dur", `${dur}s`);
+        s.style.setProperty("--delay", `${delay}s`);
+        s.style.setProperty("--dx", `${dx}px`);
+        s.style.setProperty("--peak", peak);
+        s.innerHTML = SPARKLE;
+        frag.appendChild(s);
+      }
+      layer.appendChild(frag);
+      layer.dataset.populated = "1";
+    }
+
+    /** Subtle parallax — hero photo drifts up as the user scrolls past. */
+    function setupHomeParallax() {
+      if (homePrefersReducedMotion()) return;
+      const media = document.querySelector(".hero-fullbleed__media");
+      const hero = document.querySelector(".hero-fullbleed");
+      if (!media || !hero) return;
+      let ticking = false;
+      function update() {
+        ticking = false;
+        const rect = hero.getBoundingClientRect();
+        if (rect.bottom < -100 || rect.top > window.innerHeight) return;
+        const scrolled = Math.max(0, -rect.top);
+        const offset = Math.min(140, scrolled * 0.18);
+        media.style.setProperty("--hero-parallax", `${offset.toFixed(1)}px`);
+      }
+      window.addEventListener("scroll", () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      }, { passive: true });
+      update();
+    }
+
+    /** IntersectionObserver that flips `.aiw-reveal` / `.aiw-stagger` to `.is-visible` once. */
+    function setupHomeScrollReveals() {
+      const targets = document.querySelectorAll(
+        ".aiw-reveal:not([data-hero-reveal]), .aiw-stagger"
+      );
+      if (!targets.length) return;
+      if (!("IntersectionObserver" in window)) {
+        targets.forEach(t => t.classList.add("is-visible"));
+        return;
+      }
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.classList.add("is-visible");
+            io.unobserve(e.target);
+          }
+        }
+      }, { threshold: 0.18, rootMargin: "0px 0px -40px 0px" });
+      targets.forEach(t => io.observe(t));
+    }
+
+    /** Fire hero entrance on the next frame after we've gated reveals via body class. */
+    function triggerHeroEntrance() {
+      requestAnimationFrame(() => {
+        document
+          .querySelectorAll("[data-hero-reveal]")
+          .forEach(el => el.classList.add("is-visible"));
+      });
+    }
+
+    /**
+     * Hero background video. Fades the <video> in once enough has loaded so
+     * the still poster covers the brief flash. Reduced-motion users keep the
+     * still photo only (the video element is removed entirely).
+     */
+    function setupHeroVideo() {
+      const wrap = document.querySelector("[data-hero-video]");
+      if (!wrap) return;
+      if (homePrefersReducedMotion()) {
+        wrap.remove();
+        return;
+      }
+      const video = wrap.querySelector("video");
+      if (!video) return;
+      const reveal = () => wrap.classList.add("is-ready");
+      const tryPlay = () => {
+        const p = video.play();
+        if (p && typeof p.catch === "function") p.catch(() => {});
+      };
+      if (video.readyState >= 2) {
+        reveal();
+        tryPlay();
+      } else {
+        video.addEventListener("loadeddata", () => { reveal(); tryPlay(); }, { once: true });
+        video.addEventListener("canplay",    () => { reveal(); tryPlay(); }, { once: true });
+      }
+      setTimeout(() => { reveal(); tryPlay(); }, 2200);
+    }
+
+    splitHomeHeadline();
+    document.body.classList.add("aiw-anim-ready");
+    injectHomeSparkles();
+    setupHomeParallax();
+    setupHomeScrollReveals();
+    triggerHeroEntrance();
+    setupHeroVideo();
+  </script>
+</body>
+</html>
