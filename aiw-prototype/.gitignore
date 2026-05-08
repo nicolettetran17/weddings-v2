@@ -5,6 +5,8 @@
 .tools/
 .vercel/
 node_modules/
+.wmice.git/
+.wmice/
 
 # Local-only working files
 customer-insights.pptx

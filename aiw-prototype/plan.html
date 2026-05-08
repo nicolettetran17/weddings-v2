@@ -143,6 +143,1261 @@
       text-align: right;
       max-width: 58%;
     }
+
+    /* ===== Moodboard tiles — combined dream + aesthetic + palette picker ===== */
+    .moodboard-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.55rem;
+      width: 100%;
+    }
+    @media (min-width: 480px) {
+      .moodboard-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    .moodboard-tile {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-radius: 14px;
+      border: 1px solid rgba(28, 28, 28, 0.12);
+      background: #ffffff;
+      cursor: pointer;
+      text-align: left;
+      padding: 0;
+      font: inherit;
+      color: inherit;
+      transition: transform 220ms cubic-bezier(.4,.2,.2,1),
+                  border-color 200ms ease,
+                  box-shadow 200ms ease;
+    }
+    .moodboard-tile:hover {
+      transform: translateY(-2px);
+      border-color: rgba(28, 28, 28, 0.42);
+      box-shadow: 0 8px 22px rgba(28, 28, 28, 0.10);
+    }
+    .moodboard-tile:active { transform: translateY(0); }
+    .moodboard-tile:focus-visible {
+      outline: none;
+      border-color: #1b1c1c;
+      box-shadow: 0 0 0 3px rgba(27, 28, 28, 0.18);
+    }
+    .moodboard-tile[data-selected="true"] {
+      border-color: #1b1c1c;
+      box-shadow: 0 0 0 2px #1b1c1c inset, 0 6px 16px rgba(28, 28, 28, 0.10);
+    }
+    .moodboard-tile__media {
+      aspect-ratio: 4 / 3;
+      width: 100%;
+      background-color: #efeae3;
+      background-image: var(--moodboard-photo, none), var(--moodboard-grad, linear-gradient(135deg, #e8d5bd, #b4814d));
+      background-size: cover, cover;
+      background-position: center, center;
+      background-repeat: no-repeat, no-repeat;
+      position: relative;
+    }
+    .moodboard-tile__media::after {
+      /* subtle bottom darken so the swatch strip stays legible on light photos */
+      content: "";
+      position: absolute;
+      inset: auto 0 0 0;
+      height: 36%;
+      background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.18) 100%);
+      pointer-events: none;
+    }
+    .moodboard-tile__swatches {
+      position: absolute;
+      left: 8px;
+      right: 8px;
+      bottom: 8px;
+      display: flex;
+      gap: 3px;
+    }
+    .moodboard-tile__swatch {
+      flex: 1;
+      height: 6px;
+      border-radius: 999px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.18);
+    }
+    .moodboard-tile__body {
+      padding: 0.55rem 0.7rem 0.7rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .moodboard-tile__name {
+      font-family: "Isabella Grand", "Cormorant Garamond", serif;
+      font-size: 1.05rem;
+      line-height: 1.1;
+      color: #1b1c1c;
+      letter-spacing: -0.01em;
+    }
+    .moodboard-tile__feel {
+      font-size: 11px;
+      font-style: italic;
+      color: rgba(76, 70, 63, 0.78);
+      line-height: 1.3;
+    }
+    .moodboard-tile__palette-name {
+      margin-top: 2px;
+      font-size: 10.5px;
+      font-weight: 500;
+      color: rgba(27, 28, 28, 0.6);
+      letter-spacing: 0.01em;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .moodboard-tile,
+      .moodboard-tile:hover,
+      .moodboard-tile:active { transition: none; transform: none; }
+    }
+
+    /* ===== Venue Detail Canvas — adapted from Figma frame 233:115 / 233:128 ===== */
+    .vdetail { display: flex; flex-direction: column; gap: 0; }
+    .vdetail-hero {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border-radius: 14px 14px 0 0;
+      background: #1e3a4a;
+    }
+    .vdetail-hero__media {
+      position: absolute; inset: 0;
+      background-color: #1e3a4a;
+      background-image: var(--vdetail-photo, none), var(--vdetail-grad, linear-gradient(135deg,#1e3a4a,#3a6b78));
+      background-size: cover, cover;
+      background-position: center, center;
+      background-repeat: no-repeat, no-repeat;
+    }
+    .vdetail-hero__appbar {
+      position: absolute; top: 12px; left: 12px; right: 12px;
+      display: flex; align-items: center; justify-content: space-between;
+      z-index: 2;
+    }
+    .vdetail-glass-btn {
+      width: 36px; height: 36px; border-radius: 9999px;
+      background: rgba(255,255,255,0.22);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      display: grid; place-items: center;
+      cursor: pointer; border: none;
+      transition: background 200ms ease;
+    }
+    .vdetail-glass-btn:hover { background: rgba(255,255,255,0.32); }
+    .vdetail-glass-btn[data-saved="true"] { background: rgba(247, 116, 145, 0.55); }
+    .vdetail-glass-btn[data-saved="true"] svg path { fill: #fff; stroke: #fff; }
+
+    .vdetail-title-panel {
+      background: #2b2b27; color: #fff;
+      padding: 18px 20px 22px;
+      border-radius: 0 0 14px 14px;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .vdetail-eyebrow {
+      font-size: 9px; line-height: 14px;
+      letter-spacing: 1.2px; text-transform: uppercase;
+      color: rgba(255,255,255,0.92); font-weight: 400;
+      margin: 0;
+    }
+    .vdetail-title {
+      font-family: "Isabella Grand","Cormorant Garamond","Playfair Display",Georgia,serif;
+      font-weight: 400; font-size: 34px; line-height: 38px;
+      color: #fff; margin: 0; letter-spacing: -0.01em;
+    }
+    .vdetail-pills { display: flex; flex-wrap: wrap; gap: 6px; padding-top: 14px; }
+    .vdetail-pill {
+      background: #d6bfa4; color: #2b2b27;
+      padding: 5px 12px; border-radius: 9999px;
+      font-size: 11px; line-height: 16px; font-weight: 400;
+      white-space: nowrap;
+    }
+    .vdetail-pill--accent { color: #9a6e40; }
+    .vdetail-pill--muted  { color: #6e6a64; }
+
+    .vdetail-trust {
+      background: #edece8; padding: 18px 22px;
+      display: flex; align-items: center; gap: 14px;
+      border-radius: 0;
+    }
+    .vdetail-avatars { display: flex; align-items: center; flex-shrink: 0; padding-right: 6px; }
+    .vdetail-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      overflow: hidden; margin-right: -6px; flex-shrink: 0;
+      border: 1px solid #fff;
+      background-size: cover; background-position: center;
+      background-color: #c9bba2;
+    }
+    .vdetail-trust-text {
+      font-size: 12px; line-height: 18px;
+      color: #646f53; margin: 0;
+      font-weight: 400;
+    }
+    .vdetail-trust-text strong { font-weight: 500; color: #4a553a; }
+
+    .vdetail-section { padding: 20px 22px; }
+    .vdetail-section--inset { padding: 22px 22px 6px; }
+    .vdetail-allie-caption {
+      color: #646f53; font-size: 14px; line-height: 22px; margin: 0;
+    }
+    .vdetail-section-title {
+      font-size: 10px; line-height: 14px;
+      letter-spacing: 0.8px; text-transform: uppercase;
+      color: #6e6a64; font-weight: 500; margin: 0 0 10px;
+    }
+    .vdetail-divider { height: 1px; background: #dad6ce; }
+
+    .vdetail-stats {
+      display: flex; align-items: stretch; gap: 8px;
+      padding: 16px 0 4px;
+    }
+    .vdetail-stat { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    .vdetail-stat__num {
+      font-family: "Isabella Grand","Cormorant Garamond","Playfair Display",Georgia,serif;
+      font-size: 28px; line-height: 36px; color: #2b2b27; font-weight: 400;
+    }
+    .vdetail-stat__label {
+      font-size: 11px; line-height: 16px;
+      color: #6e6a64; font-weight: 300;
+      letter-spacing: 0.4px; text-transform: uppercase;
+    }
+    .vdetail-stat-divider { width: 1px; background: #dad6ce; align-self: stretch; }
+
+    .vdetail-dossier {
+      background: #ca9151; color: #fff;
+      border-radius: 14px;
+      margin: 14px 22px;
+      padding: 20px 22px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .vdetail-dossier__attr {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.8px; text-transform: uppercase;
+      color: #fff;
+    }
+    .vdetail-dossier__gem {
+      width: 22px; height: 22px; border-radius: 9999px;
+      background: rgba(255,255,255,0.18);
+      display: grid; place-items: center;
+    }
+    .vdetail-dossier__body {
+      font-size: 14px; line-height: 22px; color: #fff; margin: 0;
+    }
+
+    .vdetail-brides { padding: 24px 0; }
+    .vdetail-brides__head {
+      padding: 0 22px 14px;
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+    }
+    .vdetail-brides__title {
+      font-family: "Isabella Grand","Cormorant Garamond","Playfair Display",Georgia,serif;
+      font-size: 30px; line-height: 36px;
+      color: #2b2b27; text-align: center; margin: 0; font-weight: 400;
+    }
+    .vdetail-brides__row {
+      display: flex; gap: 12px;
+      padding: 4px 22px 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .vdetail-brides__row::-webkit-scrollbar { display: none; }
+    .vdetail-bride-card {
+      background: #fff; border-radius: 8px;
+      overflow: hidden; flex-shrink: 0; width: 180px;
+      cursor: pointer;
+      transition: transform 200ms ease;
+      border: 1px solid rgba(28,28,28,0.08);
+    }
+    .vdetail-bride-card:hover { transform: translateY(-2px); }
+    .vdetail-bride-card__media {
+      height: 180px; background-size: cover; background-position: center;
+      background-color: #efeae3;
+    }
+    .vdetail-bride-card__body {
+      padding: 10px 12px 12px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .vdetail-bride-card__name {
+      font-family: "Isabella Grand","Cormorant Garamond","Playfair Display",Georgia,serif;
+      font-size: 14px; line-height: 18px;
+      color: #2b2b27; margin: 0; font-weight: 400;
+    }
+    .vdetail-bride-card__meta {
+      font-size: 10px; line-height: 14px;
+      color: #757569; letter-spacing: 0.3px; margin: 0;
+    }
+    .vdetail-bride-card__quote {
+      font-size: 11px; line-height: 16px;
+      color: #757569; margin: 0; letter-spacing: 0.2px;
+    }
+
+    .vdetail-other {
+      background: #ebe5de;
+      padding: 22px 22px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .vdetail-other__title {
+      font-size: 16px; line-height: 22px; color: #2b2b27; margin: 0;
+    }
+    .vdetail-other__title em {
+      font-family: "Isabella Grand","Cormorant Garamond","Playfair Display",Georgia,serif;
+      font-style: italic; font-size: 18px;
+    }
+    .vdetail-other__row { display: flex; gap: 8px; }
+    .vdetail-other-card {
+      flex: 1; aspect-ratio: 4 / 3;
+      border-radius: 6px;
+      overflow: hidden; position: relative; cursor: pointer;
+      background: #c9bba2;
+    }
+    .vdetail-other-card__media {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      background-size: cover; background-position: center;
+    }
+    .vdetail-other-card__shade {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.55) 100%);
+    }
+    .vdetail-other-card__name {
+      position: absolute; bottom: 10px; left: 12px;
+      color: #fff; font-size: 13px; font-weight: 500; line-height: 16px;
+      margin: 0;
+    }
+
+    .vdetail-ask {
+      background: #fff; padding: 20px 22px 22px;
+      display: flex; flex-direction: column; gap: 4px;
+      color: #646f53;
+    }
+    .vdetail-ask__lede {
+      font-family: "Isabella Grand","Cormorant Garamond","Playfair Display",Georgia,serif;
+      font-style: italic; font-size: 18px; line-height: 26px;
+      color: #646f53; margin: 0;
+    }
+    .vdetail-ask__sub { font-size: 13px; line-height: 18px; color: #646f53; margin: 0; }
+    .vdetail-ask__field {
+      margin-top: 12px;
+      display: flex; align-items: center; gap: 8px;
+      background: #fff; border: 1px solid #dad6ce;
+      border-radius: 9999px;
+      padding: 4px 4px 4px 14px;
+      box-shadow: 0 1px 1px rgba(0,0,0,0.04);
+      cursor: text;
+    }
+    .vdetail-ask__field input {
+      flex: 1; border: 0; outline: none; background: transparent;
+      font: inherit; font-size: 13px; color: #2b2b27; padding: 6px 0;
+    }
+    .vdetail-ask__send {
+      width: 32px; height: 32px; border-radius: 9999px;
+      background: #ca9151; color: #fff;
+      display: grid; place-items: center; flex-shrink: 0;
+      border: 0; cursor: pointer;
+    }
+
+    /* ===== Bride Inspiration Canvas — Figma frame 254:135 (Sofia + James) ===== */
+    .bride { display: flex; flex-direction: column; }
+    .bride-ctxbar {
+      display: flex; align-items: center; gap: 6px;
+      padding: 16px 22px;
+    }
+    .bride-ctxbar__chev {
+      width: 14px; height: 14px;
+      display: grid; place-items: center; flex-shrink: 0;
+    }
+    .bride-ctxbar__back {
+      font-size: 11px; line-height: 14px; color: #ca9151;
+      background: none; border: 0; padding: 0; cursor: pointer;
+      font: inherit;
+    }
+    .bride-ctxbar__sep { font-size: 11px; line-height: 14px; color: #757569; }
+    .bride-ctxbar__cur { font-size: 11px; line-height: 14px; color: #2b2b27; font-weight: 500; }
+
+    .bride-hero { display: flex; flex-direction: column; gap: 10px; padding: 4px 0 8px; }
+    .bride-hero__title-block { padding: 0 22px; display: flex; flex-direction: column; gap: 8px; }
+    .bride-hero__name {
+      font-family: "Isabella Grand","Cormorant Garamond","Playfair Display",Georgia,serif;
+      font-weight: 400; font-size: 44px; line-height: 48px;
+      letter-spacing: -0.4px; color: #2b2b27; margin: 0;
+    }
+    .bride-hero__meta {
+      font-size: 13px; line-height: 18px; color: #757569; margin: 0;
+    }
+
+    .bride-carousel {
+      position: relative;
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      height: 240px;
+      width: 100%;
+      gap: 0;
+      overflow: hidden;
+    }
+    .bride-carousel__slide {
+      background-size: cover; background-position: center;
+      background-color: #c4b8a8;
+    }
+    .bride-carousel__slide--right { background-color: #a8a092; }
+
+    .bride-carousel-controls {
+      display: flex; align-items: center; justify-content: flex-end;
+      gap: 8px; padding: 8px 22px 0;
+    }
+    .bride-carousel-dots { display: flex; gap: 6px; margin-right: auto; padding-left: 22px; }
+    .bride-carousel-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: #dad6ce; transition: background 200ms ease;
+      border: 0; padding: 0; cursor: pointer;
+    }
+    .bride-carousel-dot[data-active="true"] { background: #34342f; }
+    .bride-carousel-btn {
+      width: 32px; height: 32px; border-radius: 9999px;
+      background: #34342f; color: #fff;
+      display: grid; place-items: center; cursor: pointer;
+      border: 0;
+    }
+    .bride-carousel-btn:hover { background: #4d4d47; }
+
+    .bride-quote {
+      padding: 20px 22px 0;
+      color: #646f53; font-size: 15px; line-height: 24px;
+      max-width: 560px;
+    }
+
+    .bride-edit {
+      position: relative;
+      padding: 22px 0 0;
+      margin-top: 20px;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .bride-edit__bg {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+      opacity: 0.32;
+      z-index: 0;
+    }
+    .bride-edit__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(248,248,246,0.85) 0%, rgba(248,248,246,0.95) 30%, #f8f8f6 100%);
+      z-index: 1;
+    }
+    .bride-edit__inner { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 12px; }
+
+    .bride-edit__head { padding: 0 22px; display: flex; flex-direction: column; gap: 4px; }
+    .bride-edit__title {
+      margin: 0;
+      font-family: "Isabella Grand","Cormorant Garamond","Playfair Display",Georgia,serif;
+      color: #2b2b27;
+    }
+    .bride-edit__title em { font-style: italic; font-size: 32px; line-height: 36px; font-weight: 400; }
+    .bride-edit__title span { font-style: normal; font-size: 30px; line-height: 36px; font-weight: 400; }
+    .bride-edit__sub {
+      font-size: 13px; line-height: 18px; color: #2b2b27; margin: 0;
+      max-width: 480px;
+    }
+
+    .bride-edit__tabs {
+      display: flex; gap: 2px; padding: 8px 22px 4px;
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .bride-edit__tabs::-webkit-scrollbar { display: none; }
+    .bride-edit__tabs-pill-bg {
+      background: #d5dbcc;
+      display: inline-flex; align-items: center; gap: 2px;
+      padding: 3px; border-radius: 9999px;
+      flex-shrink: 0;
+    }
+    .bride-edit__tab {
+      padding: 6px 14px; border-radius: 9999px;
+      font-size: 12px; line-height: 16px;
+      color: #757569; cursor: pointer;
+      background: transparent; border: 0;
+      white-space: nowrap; font: inherit;
+    }
+    .bride-edit__tab[data-active="true"] {
+      background: #fff; color: #2b2b27; font-weight: 500;
+      border: 0.5px solid #dad6ce;
+    }
+
+    .bride-edit__items {
+      display: flex; flex-direction: column; gap: 10px;
+      padding: 4px 22px 24px;
+    }
+    .bride-edit-item {
+      background: rgba(255,255,255,0.8);
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(218,214,206,0.6);
+    }
+    .bride-edit-item--hidden { display: none; }
+    .bride-edit-item__icon {
+      width: 32px; height: 32px;
+      display: grid; place-items: center; flex-shrink: 0;
+      color: #2b2b27;
+    }
+    .bride-edit-item__body {
+      flex: 1; display: flex; flex-direction: column; gap: 6px; min-width: 0;
+    }
+    .bride-edit-item__title {
+      font-size: 13px; line-height: 18px; font-weight: 500;
+      color: #2b2b27; margin: 0;
+    }
+    .bride-edit-item__title-row {
+      display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+    }
+    .bride-edit-item__badge {
+      background: #e0d3c5; color: #8e6434;
+      border-radius: 9999px;
+      padding: 2px 8px;
+      font-size: 9px; line-height: 12px; font-weight: 500;
+      letter-spacing: 0.4px; text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .bride-edit-item__price {
+      font-size: 11px; line-height: 16px; color: #757569; margin: 0;
+    }
+    .bride-edit-item__notes {
+      font-size: 11px; line-height: 16px; color: #ca9151;
+      text-decoration: underline; cursor: pointer;
+      background: none; border: 0; padding: 0; font: inherit;
+      align-self: flex-start;
+    }
+    .bride-edit-item__toggle {
+      width: 36px; height: 36px; border-radius: 9999px;
+      display: grid; place-items: center; flex-shrink: 0;
+      cursor: pointer; border: 0;
+      background: #fff;
+      transition: background 150ms ease;
+    }
+    .bride-edit-item[data-state="on"] .bride-edit-item__toggle { background: #7e8d68; }
+    .bride-edit-item[data-state="on"] .bride-edit-item__toggle .toggle-plus { display: none; }
+    .bride-edit-item[data-state="off"] .bride-edit-item__toggle .toggle-check { display: none; }
+
+    .bride-edit__cta-row {
+      padding: 8px 22px 24px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .bride-summary {
+      background: #ebe5de;
+      padding: 16px 22px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px;
+    }
+    .bride-summary__count {
+      font-size: 12px; line-height: 16px; color: #2b2b27;
+      letter-spacing: 0.4px; text-transform: uppercase; font-weight: 500;
+    }
+    .bride-summary__est { font-size: 13px; line-height: 18px; color: #646f53; }
+    .bride-summary__est strong {
+      font-family: "Isabella Grand","Cormorant Garamond","Playfair Display",Georgia,serif;
+      font-size: 18px; color: #2b2b27; font-weight: 400; letter-spacing: -0.2px;
+    }
+
+    /* ===== Exclusive All-In Discount badge (verified vendor marketplace) ===== */
+    .aiw-deal-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 4px 4px 10px;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, #f5e7d3 0%, #e8d3b0 100%);
+      border: 1px solid #d6bfa4;
+      color: #8e6434;
+      font-size: 10px; line-height: 14px;
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset;
+    }
+    .aiw-deal-tag svg { color: #b67d3d; flex-shrink: 0; }
+    .aiw-deal-tag__pct {
+      background: #8e6434; color: #fff;
+      padding: 3px 8px; border-radius: 9999px;
+      font-size: 10px; line-height: 12px;
+      font-weight: 700; letter-spacing: 0.4px;
+      margin-left: 2px;
+    }
+    .aiw-deal-strike {
+      text-decoration: line-through;
+      text-decoration-color: rgba(28,28,28,0.4);
+      color: #999;
+      font-weight: 400;
+      margin-right: 6px;
+    }
+
+    /* ===== Proposal generation canvas — Figma frame 310:2 (All In Estimate) ===== */
+    .proposal { display: flex; flex-direction: column; }
+
+    .proposal-loader {
+      min-height: 360px;
+      display: grid; place-items: center;
+      padding: 60px 24px;
+      background: linear-gradient(180deg, #f8f8f6 0%, #efeae3 100%);
+      border-radius: 14px;
+      text-align: center;
+    }
+    .proposal-loader__gem {
+      width: 56px; height: 56px; border-radius: 9999px;
+      background: linear-gradient(135deg, #ca9151 0%, #b67d3d 100%);
+      display: grid; place-items: center;
+      margin: 0 auto 18px;
+      box-shadow: 0 0 0 0 rgba(202,145,81,0.7);
+      animation: proposal-gem-pulse 1.6s ease-in-out infinite;
+    }
+    @keyframes proposal-gem-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(202,145,81,0.45); }
+      50%      { box-shadow: 0 0 0 14px rgba(202,145,81,0.0);  }
+    }
+    .proposal-loader__title {
+      font-family: "Isabella Grand","Cormorant Garamond","Playfair Display",Georgia,serif;
+      font-size: 32px; line-height: 38px; color: #2b2b27;
+      margin: 0 0 6px;
+    }
+    .proposal-loader__sub {
+      font-size: 13px; line-height: 20px; color: #757569;
+      margin: 0; max-width: 360px; padding: 0 16px;
+    }
+    .proposal-loader__steps {
+      margin-top: 22px;
+      display: flex; flex-direction: column; gap: 8px;
+      font-size: 12px; color: #646f53;
+      letter-spacing: 0.4px;
+      align-items: center;
+    }
+    .proposal-loader__step {
+      display: inline-flex; align-items: center; gap: 8px;
+      opacity: 0.35; transition: opacity 200ms ease;
+    }
+    .proposal-loader__step[data-active="true"]   { opacity: 1; color: #2b2b27; }
+    .proposal-loader__step[data-done="true"]     { opacity: 0.7; color: #646f53; }
+    .proposal-loader__step .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: currentColor;
+    }
+
+    .proposal-hero {
+      position: relative;
+      padding: 16px 0 22px;
+      overflow: hidden;
+      isolation: isolate;
+      color: #fff;
+    }
+    .proposal-hero__bg {
+      position: absolute; inset: 0; z-index: 0;
+      background-color: #2b2b27;
+      background-size: cover; background-position: center;
+      filter: blur(2px) brightness(0.7);
+      transform: scale(1.08);
+    }
+    .proposal-hero__shade {
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(180deg, rgba(20,20,18,0.4) 0%, rgba(20,20,18,0.55) 100%);
+    }
+    .proposal-hero__inner { position: relative; z-index: 2; padding: 8px 22px 4px; }
+    .proposal-hero__crumb {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; color: #fff; opacity: 0.9;
+      cursor: pointer; background: none; border: 0; padding: 4px 0;
+    }
+    .proposal-hero__crumb svg { color: #fff; }
+    .proposal-hero__title {
+      font-family: "Isabella Grand","Cormorant Garamond","Playfair Display",Georgia,serif;
+      font-weight: 400; font-size: 38px; line-height: 42px;
+      color: #fff; margin: 14px 0 6px;
+    }
+    .proposal-hero__eyebrow {
+      font-size: 11px; line-height: 16px; font-weight: 600;
+      letter-spacing: 0.8px; text-transform: uppercase; color: #fff;
+      margin: 0;
+    }
+    .proposal-hero__sub {
+      font-size: 13px; line-height: 20px; color: #fff;
+      opacity: 0.9; margin: 4px 0 0; font-weight: 300;
+    }
+
+    .proposal-breakdown {
+      position: relative; z-index: 2;
+      background: #fff;
+      border-radius: 8px;
+      margin: 14px 22px 0;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(20,20,18,0.18);
+    }
+    .proposal-row {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 14px 16px;
+      width: 100%; box-sizing: border-box;
+      border-top: 1px solid #f3efe8;
+    }
+    .proposal-row:first-child { border-top: 0; }
+    .proposal-row--highlight {
+      background: #ebeee7;
+      border-top: 0;
+    }
+    .proposal-row + .proposal-row--highlight,
+    .proposal-row--highlight + .proposal-row { border-top: 0; }
+    .proposal-row__body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+    .proposal-row__title { font-size: 13px; line-height: 18px; color: #2b2b27; margin: 0; font-weight: 500; }
+    .proposal-row--highlight .proposal-row__title { font-weight: 400; }
+    .proposal-row__sub { font-size: 12px; line-height: 16px; color: #646f53; margin: 0; }
+    .proposal-row__saves {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 12px; color: #646f53; padding-top: 4px;
+    }
+    .proposal-row__price {
+      flex-shrink: 0; text-align: right;
+      display: flex; flex-direction: column; align-items: flex-end; gap: 2px;
+    }
+    .proposal-row__num {
+      font-family: "Isabella Grand","Cormorant Garamond","Playfair Display",Georgia,serif;
+      font-weight: 400; font-size: 22px; line-height: 24px;
+      letter-spacing: -0.4px; color: #2b2b27;
+    }
+    .proposal-row__num--strike {
+      font-size: 11px; line-height: 14px;
+      text-decoration: line-through;
+      text-decoration-color: rgba(28,28,28,0.4);
+      color: #999; font-family: "Poppins", sans-serif; font-weight: 400;
+    }
+    .proposal-row__label { font-size: 12px; line-height: 16px; color: #757569; margin: 0; }
+    .proposal-row__estimate {
+      font-size: 12px; line-height: 18px; color: #646f53;
+      flex-shrink: 0; text-align: right;
+      align-self: center;
+    }
+
+    .proposal-totalbar {
+      background: #504b3f;
+      color: #fff;
+      width: 100%;
+      padding: 22px 22px 0;
+      margin-top: 14px;
+      box-sizing: border-box;
+    }
+    .proposal-totalbar__stats {
+      display: flex; align-items: flex-end; gap: 24px;
+      width: 100%;
+    }
+    .proposal-stat { display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; }
+    .proposal-stat--right { flex: 1; align-items: flex-end; text-align: right; min-width: 0; }
+    .proposal-stat__num {
+      font-family: "Isabella Grand","Cormorant Garamond","Playfair Display",Georgia,serif;
+      font-weight: 400; font-size: 28px; line-height: 36px; color: #fff;
+    }
+    .proposal-stat__label {
+      font-size: 11px; line-height: 16px; font-weight: 600;
+      letter-spacing: 0.8px; text-transform: uppercase; color: #fff;
+    }
+    .proposal-stat__label--accent { color: #ca9151; }
+
+    .proposal-totalbar__viewlink {
+      display: flex; align-items: center; justify-content: flex-end;
+      gap: 6px; padding: 8px 0;
+      cursor: pointer;
+      font-size: 13px; color: #fff;
+      background: none; border: 0; width: 100%;
+    }
+
+    .proposal-accordion-wrap {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      margin-top: 4px;
+    }
+    .proposal-accordion {
+      border-bottom: 1px solid rgba(138,130,106,0.5);
+    }
+    .proposal-accordion__header {
+      display: flex; align-items: center; gap: 16px;
+      width: 100%; padding: 12px 0;
+      cursor: pointer; background: none; border: 0;
+      color: #ca9151; font-size: 13px; font-weight: 500;
+      letter-spacing: 0.4px;
+    }
+    .proposal-accordion__header span { flex: 1; text-align: left; }
+    .proposal-accordion__chev {
+      width: 28px; height: 28px;
+      display: grid; place-items: center; flex-shrink: 0;
+      transition: transform 200ms ease;
+    }
+    .proposal-accordion[data-expanded="true"] .proposal-accordion__chev { transform: rotate(180deg); }
+    .proposal-accordion__body {
+      display: none;
+      padding: 0 0 12px;
+      flex-direction: column;
+    }
+    .proposal-accordion[data-expanded="true"] .proposal-accordion__body { display: flex; }
+    .proposal-bullet {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 7px 0;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      font-size: 12px; line-height: 18px; color: rgba(255,255,255,0.85);
+    }
+    .proposal-bullet:first-child { border-top: 0; }
+    .proposal-bullet__dot {
+      width: 4px; height: 4px; border-radius: 50%;
+      background: #ca9151; margin-top: 7px; flex-shrink: 0;
+    }
+    .proposal-bullet em {
+      font-family: "Isabella Grand","Cormorant Garamond","Playfair Display",Georgia,serif;
+      font-style: italic; color: #ca9151;
+    }
+
+    .proposal-cta-row {
+      padding: 20px 22px 18px;
+      display: flex; flex-direction: column; align-items: stretch; gap: 12px;
+    }
+    .proposal-cta-primary {
+      background: #ca9151; color: #fff;
+      padding: 14px 20px;
+      border-radius: 9999px;
+      border: 0;
+      font-size: 15px; font-weight: 500;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: background 200ms ease;
+    }
+    .proposal-cta-primary:hover { background: #b67d3d; }
+    .proposal-cta-row__reassure {
+      font-size: 12px; line-height: 16px; color: rgba(255,255,255,0.8);
+      text-align: center; margin: 0;
+    }
+    .proposal-cta-secondaries {
+      display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+      padding: 0 22px 22px;
+    }
+    .proposal-cta-secondary {
+      flex: 1; min-width: 140px;
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.18);
+      padding: 10px 14px;
+      border-radius: 9999px;
+      font-size: 13px; cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      transition: background 200ms ease;
+    }
+    .proposal-cta-secondary:hover { background: rgba(255,255,255,0.15); }
+
+    .proposal-toast {
+      position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%) translateY(8px);
+      background: #2b2b27; color: #fff;
+      padding: 10px 16px; border-radius: 9999px;
+      font-size: 13px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+      opacity: 0; pointer-events: none;
+      transition: opacity 200ms ease, transform 200ms ease;
+      z-index: 9999;
+    }
+    .proposal-toast[data-visible="true"] {
+      opacity: 1; transform: translateX(-50%) translateY(0);
+    }
+
+    .chat-chip--primary {
+      background: linear-gradient(180deg, #ca9151 0%, #b67d3d 100%) !important;
+      color: #fff !important;
+      border-color: #a06b30 !important;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.32),
+        0 4px 12px -6px rgba(180, 129, 77, 0.55),
+        0 2px 4px rgba(42,42,40,0.10) !important;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .chat-chip--primary:hover {
+      background: linear-gradient(180deg, #d49d5d 0%, #b67d3d 100%) !important;
+      border-color: #8e5d28 !important;
+    }
+
+    @media print {
+      .proposal-cta-secondary, .proposal-toast,
+      #chips, #input-form, #planner-toolbar, #aiw-nav, #aiw-footer,
+      .chat-thread, .proposal-hero__crumb { display: none !important; }
+      body, .canvas-pane, #canvas { background: #fff !important; }
+      .proposal { color: #2b2b27; }
+    }
+
+    /* ===== Pick-A-Date canvas (post-proposal) ===== */
+    .datepick { display: flex; flex-direction: column; }
+    .datepick-head {
+      padding: 24px 22px 8px;
+      display: flex; flex-direction: column; gap: 6px;
+      background: #f8f5ee;
+    }
+    .datepick-eyebrow {
+      font-size: 11px; line-height: 14px;
+      letter-spacing: 1px; text-transform: uppercase;
+      color: #8e6434; margin: 0; font-weight: 600;
+    }
+    .datepick-title {
+      font-family: "Isabella Grand","Cormorant Garamond","Playfair Display",Georgia,serif;
+      font-size: 36px; line-height: 40px;
+      color: #2b2b27; margin: 0; font-weight: 400;
+    }
+    .datepick-sub { font-size: 13px; line-height: 20px; color: #646f53; margin: 0; }
+
+    .datepick-grid {
+      padding: 16px 22px 24px;
+      background: #f8f5ee;
+      display: grid; grid-template-columns: 1fr; gap: 10px;
+    }
+    @media (min-width: 720px) {
+      .datepick-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .datepick-tile {
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid #e6dfd1;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .datepick-tile:hover {
+      border-color: #ca9151;
+      box-shadow: 0 6px 18px -10px rgba(202,145,81,0.45);
+      transform: translateY(-1px);
+    }
+    .datepick-tile__top {
+      display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+    }
+    .datepick-tile__date {
+      font-family: "Isabella Grand","Cormorant Garamond","Playfair Display",Georgia,serif;
+      font-size: 22px; line-height: 26px; color: #2b2b27;
+      letter-spacing: -0.2px;
+    }
+    .datepick-tile__weeks {
+      font-size: 11px; line-height: 14px; color: #757569;
+      letter-spacing: 0.4px;
+      flex-shrink: 0;
+    }
+    .datepick-tile__row {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      font-size: 12px; line-height: 16px; color: #646f53;
+    }
+    .datepick-tile__demand {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-weight: 500; font-size: 11px;
+      letter-spacing: 0.4px; text-transform: uppercase;
+    }
+    .datepick-tile__demand .dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      box-shadow: 0 0 0 3px rgba(126,141,104,0.18);
+    }
+    .datepick-tile[data-demand="open"] .datepick-tile__demand     { color: #5a7142; }
+    .datepick-tile[data-demand="open"] .datepick-tile__demand .dot { background: #7e8d68; }
+    .datepick-tile[data-demand="hot"]  .datepick-tile__demand      { color: #b67d3d; }
+    .datepick-tile[data-demand="hot"]  .datepick-tile__demand .dot { background: #ca9151; }
+    .datepick-tile[data-demand="last"] .datepick-tile__demand      { color: #b04545; }
+    .datepick-tile[data-demand="last"] .datepick-tile__demand .dot { background: #d05858; box-shadow: 0 0 0 3px rgba(208,88,88,0.22); }
+    .datepick-tile__watching {
+      display: inline-flex; align-items: center; gap: 5px;
+      color: #757569;
+    }
+    .datepick-tile__watching .pulse-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: #ca9151;
+      animation: datepick-pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes datepick-pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%     { opacity: 0.6; transform: scale(1.4); }
+    }
+
+    /* ===== Save My Date — gamified celebration (Figma 290:392) ===== */
+    .smd { display: flex; flex-direction: column; }
+
+    .smd-celebration {
+      position: relative;
+      padding: 38px 22px 30px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(202,145,81,0.18) 0%, rgba(202,145,81,0) 60%),
+        linear-gradient(180deg, #faf6ec 0%, #f1eadc 100%);
+      text-align: center;
+      overflow: hidden;
+    }
+    .smd-celebration::before,
+    .smd-celebration::after {
+      content: "";
+      position: absolute; top: -10px; width: 30px; height: 30px;
+      background: radial-gradient(circle, #ca9151 0%, transparent 70%);
+      filter: blur(8px); opacity: 0.7;
+    }
+    .smd-celebration::before { left: 16%; }
+    .smd-celebration::after  { right: 18%; top: 24px; }
+
+    .smd-gem {
+      width: 64px; height: 64px;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, #ca9151 0%, #b67d3d 100%);
+      display: grid; place-items: center;
+      margin: 0 auto 16px;
+      box-shadow:
+        0 0 0 6px rgba(202,145,81,0.18),
+        0 8px 24px -10px rgba(180, 129, 77, 0.6);
+      animation: smd-gem-shimmer 4s ease-in-out infinite;
+    }
+    @keyframes smd-gem-shimmer {
+      0%,100% { box-shadow: 0 0 0 6px rgba(202,145,81,0.18), 0 8px 24px -10px rgba(180,129,77,0.6); }
+      50%     { box-shadow: 0 0 0 12px rgba(202,145,81,0.05), 0 8px 32px -8px rgba(180,129,77,0.8); }
+    }
+    .smd-celebration__title {
+      font-family: "Isabella Grand","Cormorant Garamond","Playfair Display",Georgia,serif;
+      font-size: 44px; line-height: 48px; color: #2b2b27;
+      margin: 0; font-weight: 400; letter-spacing: -0.4px;
+    }
+    .smd-celebration__title em {
+      font-style: italic; color: #b67d3d;
+    }
+    .smd-celebration__sub {
+      font-size: 14px; line-height: 22px; color: #646f53;
+      margin: 8px auto 0; max-width: 420px;
+    }
+    .smd-celebration__date {
+      font-family: "Isabella Grand","Cormorant Garamond","Playfair Display",Georgia,serif;
+      display: inline-block;
+      margin: 16px auto 0;
+      font-size: 18px; line-height: 24px; color: #2b2b27;
+      padding: 8px 18px;
+      border: 1px solid rgba(202,145,81,0.4);
+      border-radius: 9999px;
+      background: rgba(255,255,255,0.5);
+    }
+
+    .smd-urgency {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px;
+      margin: 12px 22px 0;
+      background: linear-gradient(180deg, #fff 0%, #fff8ed 100%);
+      border: 1px solid #efc77a;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px -12px rgba(176,69,69,0.4);
+    }
+    .smd-urgency__icon {
+      width: 36px; height: 36px; border-radius: 9999px;
+      background: linear-gradient(135deg, #d05858 0%, #b04545 100%);
+      display: grid; place-items: center; flex-shrink: 0;
+      box-shadow: 0 0 0 0 rgba(208,88,88,0.5);
+      animation: smd-urgency-pulse 1.6s ease-in-out infinite;
+    }
+    @keyframes smd-urgency-pulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(208,88,88,0.45); }
+      50%     { box-shadow: 0 0 0 10px rgba(208,88,88,0); }
+    }
+    .smd-urgency__copy { flex: 1; min-width: 0; }
+    .smd-urgency__title {
+      font-size: 13px; font-weight: 600; color: #b04545;
+      letter-spacing: 0.3px; text-transform: uppercase;
+      margin: 0 0 2px;
+    }
+    .smd-urgency__sub {
+      font-size: 12px; line-height: 18px; color: #2b2b27;
+      margin: 0;
+    }
+    .smd-urgency__sub strong {
+      font-family: "Isabella Grand","Cormorant Garamond","Playfair Display",Georgia,serif;
+      font-weight: 400; color: #b04545; font-size: 14px;
+    }
+
+    .smd-tiers {
+      padding: 20px 22px 4px;
+      display: grid; grid-template-columns: 1fr; gap: 10px;
+    }
+    @media (min-width: 720px) {
+      .smd-tiers { grid-template-columns: 1fr 1fr 1fr; }
+    }
+    .smd-tier {
+      position: relative;
+      background: #fff;
+      border: 1px solid #e6dfd1;
+      border-radius: 14px;
+      padding: 16px 14px;
+      display: flex; flex-direction: column; gap: 10px;
+      overflow: hidden;
+      transition: border-color 200ms ease, transform 200ms ease, opacity 200ms ease;
+    }
+    .smd-tier[data-state="active"] {
+      border-color: #ca9151;
+      box-shadow: 0 0 0 3px rgba(202,145,81,0.12), 0 8px 22px -14px rgba(180,129,77,0.5);
+    }
+    .smd-tier[data-state="active"]::before {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(202,145,81,0.06) 0%, rgba(202,145,81,0) 60%);
+      pointer-events: none;
+    }
+    .smd-tier[data-state="expired"] {
+      opacity: 0.55;
+      filter: grayscale(0.4);
+    }
+    .smd-tier__head {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .smd-tier__icon {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: linear-gradient(135deg, #f5e3c8 0%, #e8d3b0 100%);
+      color: #8e6434;
+      display: grid; place-items: center; flex-shrink: 0;
+    }
+    .smd-tier[data-state="expired"] .smd-tier__icon { background: #ece8df; color: #b3aea4; }
+    .smd-tier__title {
+      font-size: 13px; font-weight: 600; color: #2b2b27;
+      letter-spacing: 0.2px; line-height: 16px; margin: 0;
+    }
+    .smd-tier__cd {
+      font-size: 11px; color: #757569; margin: 2px 0 0;
+      font-variant-numeric: tabular-nums;
+    }
+    .smd-tier[data-state="active"] .smd-tier__cd { color: #b67d3d; font-weight: 500; }
+    .smd-tier[data-state="expired"] .smd-tier__cd { color: #b3aea4; }
+    .smd-tier__perk {
+      font-size: 12px; line-height: 18px; color: #646f53;
+      margin: 0;
+    }
+    .smd-tier__status {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.6px; text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      align-self: flex-start;
+    }
+    .smd-tier[data-state="active"]  .smd-tier__status { background: #ebeee7; color: #5a7142; }
+    .smd-tier[data-state="expired"] .smd-tier__status { background: #ece8df; color: #999; }
+
+    .smd-master {
+      margin: 18px 22px 6px;
+      background: #2b2b27; color: #fff;
+      border-radius: 14px;
+      padding: 18px 20px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .smd-master__bar {
+      flex: 1; min-width: 0;
+    }
+    .smd-master__label {
+      font-size: 11px; line-height: 14px; letter-spacing: 0.8px;
+      text-transform: uppercase; color: rgba(255,255,255,0.7);
+      margin: 0 0 4px;
+    }
+    .smd-master__time {
+      font-family: "Isabella Grand","Cormorant Garamond","Playfair Display",Georgia,serif;
+      font-size: 36px; line-height: 40px; color: #fff;
+      letter-spacing: -0.4px; margin: 0;
+      font-variant-numeric: tabular-nums;
+    }
+    .smd-master__sub {
+      font-size: 12px; color: rgba(255,255,255,0.7);
+      margin: 4px 0 0;
+    }
+    .smd-master__progress {
+      flex-shrink: 0;
+      width: 78px; height: 78px;
+      border-radius: 9999px;
+      background: conic-gradient(#ca9151 var(--smd-progress, 0%), rgba(255,255,255,0.12) 0%);
+      display: grid; place-items: center;
+      transition: background 1s linear;
+    }
+    .smd-master__progress-inner {
+      width: 64px; height: 64px;
+      background: #2b2b27;
+      border-radius: 9999px;
+      display: grid; place-items: center;
+      color: #ca9151;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.6px; text-transform: uppercase;
+    }
+
+    .smd-social {
+      margin: 18px 22px 0;
+      background: #ebe5de;
+      border-radius: 14px;
+      padding: 18px;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    .smd-social__row {
+      display: flex; align-items: center; gap: 14px;
+    }
+    .smd-social__avatars {
+      display: flex; align-items: center; flex-shrink: 0; padding-right: 6px;
+    }
+    .smd-social__avatar {
+      width: 36px; height: 36px; border-radius: 9999px;
+      overflow: hidden; margin-right: -8px; flex-shrink: 0;
+      border: 2px solid #fff;
+      background-size: cover; background-position: center;
+      background-color: #c9bba2;
+    }
+    .smd-social__count {
+      font-size: 13px; line-height: 20px; color: #2b2b27;
+    }
+    .smd-social__count strong {
+      font-family: "Isabella Grand","Cormorant Garamond","Playfair Display",Georgia,serif;
+      font-weight: 400; font-size: 18px; color: #2b2b27;
+    }
+    .smd-social__divider { height: 1px; background: rgba(0,0,0,0.06); }
+    .smd-social__live {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .smd-social__live-num {
+      font-family: "Isabella Grand","Cormorant Garamond","Playfair Display",Georgia,serif;
+      font-size: 28px; line-height: 30px; color: #b04545;
+      font-weight: 400; font-variant-numeric: tabular-nums;
+      transition: transform 200ms ease;
+    }
+    .smd-social__live-num[data-bumped="true"] { transform: scale(1.08); }
+    .smd-social__live-text { font-size: 12px; line-height: 16px; color: #2b2b27; }
+    .smd-social__live-text strong { color: #b04545; font-weight: 600; }
+    .smd-social__live-pulse {
+      width: 8px; height: 8px; border-radius: 9999px; background: #b04545;
+      box-shadow: 0 0 0 0 rgba(176,69,69,0.7);
+      animation: smd-live-pulse 1.4s ease-out infinite;
+      flex-shrink: 0;
+    }
+    @keyframes smd-live-pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(176,69,69,0.55); }
+      80%,100% { box-shadow: 0 0 0 9px rgba(176,69,69,0); }
+    }
+
+    .smd-cta-row {
+      padding: 22px 22px 6px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .smd-cta-primary {
+      background: linear-gradient(180deg, #ca9151 0%, #b67d3d 100%);
+      color: #fff; border: 0;
+      padding: 16px 20px;
+      border-radius: 9999px;
+      font-size: 16px; font-weight: 600;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px;
+      box-shadow: 0 8px 22px -8px rgba(180,129,77,0.55);
+      transition: transform 150ms ease, box-shadow 150ms ease, background 200ms ease;
+    }
+    .smd-cta-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 28px -8px rgba(180,129,77,0.65);
+    }
+    .smd-cta-primary__price {
+      font-family: "Isabella Grand","Cormorant Garamond","Playfair Display",Georgia,serif;
+      font-size: 20px; font-weight: 400;
+    }
+    .smd-cta-secondary {
+      background: transparent; color: #2b2b27;
+      border: 1px solid #d6cfc0;
+      padding: 12px 18px;
+      border-radius: 9999px;
+      font-size: 13px; cursor: pointer;
+    }
+    .smd-cta-secondary:hover { background: rgba(0,0,0,0.03); }
+    .smd-cta-row__legal {
+      font-size: 11px; line-height: 16px; color: #757569;
+      text-align: center; margin: 6px 0 22px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .smd-gem, .smd-urgency__icon, .smd-social__live-pulse,
+      .datepick-tile__watching .pulse-dot { animation: none !important; }
+    }
   </style>
 </head>
 
@@ -170,11 +1425,11 @@
       <section class="chat-shell flex min-h-[min(62dvh,560px)] flex-col overflow-hidden rounded-2xl lg:col-span-5 lg:h-full lg:min-h-0">
         <header class="chat-shell-header flex shrink-0 items-center gap-3 px-5 py-4 sm:px-6">
           <div class="chat-assistant-avatar" aria-hidden="true">
-            <svg width="14" height="12" viewBox="0 0 14 12" fill="none"><path d="M7 10.2S1.8 6.5 1.8 3.4C1.8 2 3.1 1 4.6 1c1 0 1.9.5 2.4 1.2.5-.7 1.4-1.2 2.4-1.2 1.5 0 2.8 1 2.8 2.4 0 3.1-5.2 6.8-5.2 6.8Z" stroke="currentColor" stroke-width="1.15" stroke-linejoin="round"/></svg>
+            <svg width="16" height="13" viewBox="0 0 24 20" fill="none"><path d="M5.5 2h13l4 6-10.5 10L2 8l3.5-6Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M9 2l3 6 3-6M2 8h20" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" opacity="0.85"/></svg>
           </div>
           <div class="min-w-0">
-            <p class="chat-assistant-name">Atelier</p>
-            <p class="mt-1 text-xs font-normal leading-snug text-[rgba(76,70,63,0.72)]">Wedding Atelier · All In Weddings</p>
+            <p class="chat-assistant-name">Allie</p>
+            <p class="mt-1 text-xs font-normal leading-snug text-[rgba(76,70,63,0.72)]">AI wedding planner · All In Weddings</p>
           </div>
           <button id="reset-btn" type="button" class="ml-auto text-xs font-medium uppercase tracking-[0.12em] text-[#4c463f]/70 transition hover:text-[#1b1c1c]">Reset</button>
         </header>
@@ -182,11 +1437,11 @@
         <!-- Chapter progress — mirrors ai_wedding_planner_chat.html Q&A arc -->
         <div id="chapter-progress" class="chat-shell-progress shrink-0 border-b border-[rgba(228,226,225,0.45)] bg-[rgba(252,249,248,0.65)] px-5 py-3 sm:px-6" aria-hidden="false">
           <div class="mb-1.5 flex items-center justify-between gap-3">
-            <span id="chapter-label" class="min-w-0 truncate text-[11px] font-medium uppercase tracking-[0.14em] text-[#4c463f]/85">Chapter 1 of 7 — the dream</span>
-            <span id="chapter-pct" class="shrink-0 text-[11px] font-semibold tabular-nums text-[#72243E]">14%</span>
+            <span id="chapter-label" class="min-w-0 truncate text-[11px] font-medium uppercase tracking-[0.14em] text-[#4c463f]/85">Chapter 1 of 6 — your moodboard</span>
+            <span id="chapter-pct" class="shrink-0 text-[11px] font-semibold tabular-nums text-[#72243E]">16%</span>
           </div>
           <div class="h-[3px] overflow-hidden rounded-full bg-black/[0.08]">
-            <div id="chapter-fill" class="h-full rounded-full bg-[#D4537E] transition-[width] duration-500 ease-out" style="width:14%"></div>
+            <div id="chapter-fill" class="h-full rounded-full bg-[#D4537E] transition-[width] duration-500 ease-out" style="width:16%"></div>
           </div>
           <div id="chapter-dots" class="mt-2 flex gap-1"></div>
         </div>
@@ -259,7 +1514,8 @@
   <script type="module">
     import {
       HOTELS, BRANDS, SPACES, VIBES, BRIDES, VENDOR_CATEGORIES, VENDORS,
-      byId, spacesOf, bridesOf, vendorsOf
+      byId, spacesOf, bridesOf, vendorsOf,
+      hotelCardImageUrl, storyCardImageUrl
     } from "./_data.js";
     import {
       renderNav, paletteGradient, venueMockSVG, $h, usd, compact,
@@ -289,31 +1545,75 @@
       deposited: false,
     };
 
-    /** Same chapter arc as ai_wedding_planner_chat.html */
+    /** Six chapters — combined dream / aesthetic / palette into a single
+        visual "moodboard" picker so users start with a creative selection
+        instead of three separate questions. */
     const CHAPTERS = [
-      { label: "Chapter 1 of 7 — the dream", pct: 14 },
-      { label: "Chapter 2 of 7 — your guest list", pct: 28 },
-      { label: "Chapter 3 of 7 — the budget", pct: 42 },
-      { label: "Chapter 4 of 7 — the vibe", pct: 56 },
-      { label: "Chapter 5 of 7 — venue", pct: 70 },
-      { label: "Chapter 6 of 7 — the spaces", pct: 84 },
-      { label: "Chapter 7 of 7 — your vendors", pct: 100 },
+      { label: "Chapter 1 of 6 — your moodboard", pct: 16 },
+      { label: "Chapter 2 of 6 — your guest list", pct: 33 },
+      { label: "Chapter 3 of 6 — the budget", pct: 50 },
+      { label: "Chapter 4 of 6 — venue", pct: 66 },
+      { label: "Chapter 5 of 6 — the spaces", pct: 83 },
+      { label: "Chapter 6 of 6 — your vendors", pct: 100 },
     ];
 
-    const MAGAZINE_COVERS = [
-      { label: "Vogue: ultra-glam editorial", value: "cinematic-noir" },
-      { label: "Architectural Digest: refined luxury", value: "minimalist-stone" },
-      { label: "Rolling Stone: cool and effortless", value: "boho-jungle" },
-      { label: "Martha Stewart: romantic and garden-lush", value: "soft-romantic" },
-      { label: "Condé Nast Traveler: tropical-luxe escapist", value: "tropical-sunset" },
-    ];
-
-    const PALETTE_CHIPS = [
-      "Warm terracottas and rust",
-      "Blush, ivory, and gold",
-      "Deep jewel tones — emerald, plum",
-      "Tropical — birds of paradise, lush greens",
-      "Moody whites and cool neutrals",
+    /** Visual moodboards — each tile collapses what used to be 3 separate
+        questions (a magazine-cover aesthetic, a palette description, and a
+        free-text "feeling") into one creative selection. Picking a tile
+        sets pkg.feeling, pkg.coverLabel, pkg.paletteLabel, and pkg.vibeId
+        in one go. The photo + gradient backdrop + swatch strip are layered
+        so the tile still looks rich if a photo URL fails. */
+    const MOODBOARDS = [
+      {
+        id: "soft-romantic",
+        name: "Soft & romantic",
+        feel: "Magical, garden-lush, candlelit",
+        aesthetic: "Martha Stewart — romantic and garden-lush",
+        paletteName: "Blush, ivory & gold",
+        swatches: ["#F4D6CE", "#F4ECE0", "#D6B473", "#A05B45"],
+        gradient: "linear-gradient(135deg, #F4D6CE 0%, #F4ECE0 45%, #D6B473 100%)",
+        photo: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=720&q=70",
+      },
+      {
+        id: "tropical-sunset",
+        name: "Tropical & sun-drenched",
+        feel: "Wild, fun, escapist",
+        aesthetic: "Condé Nast Traveler — tropical-luxe",
+        paletteName: "Birds of paradise & lush greens",
+        swatches: ["#F49C5B", "#E5734A", "#3F7A5D", "#0E3140"],
+        gradient: "linear-gradient(135deg, #F49C5B 0%, #E5734A 45%, #3F7A5D 100%)",
+        photo: "https://images.unsplash.com/photo-1583524505974-6facd53f4597?auto=format&fit=crop&w=720&q=70",
+      },
+      {
+        id: "cinematic-noir",
+        name: "Cinematic noir",
+        feel: "Editorial, dramatic, ultra-glam",
+        aesthetic: "Vogue — ultra-glam editorial",
+        paletteName: "Deep jewel tones — emerald & plum",
+        swatches: ["#1A1614", "#3A1F2A", "#22463A", "#7B5F3F"],
+        gradient: "linear-gradient(135deg, #1A1614 0%, #3A1F2A 50%, #22463A 100%)",
+        photo: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=720&q=70",
+      },
+      {
+        id: "minimalist-stone",
+        name: "Refined minimalist",
+        feel: "Elegant, timeless, gallery-quiet",
+        aesthetic: "Architectural Digest — refined luxury",
+        paletteName: "Moody whites & cool neutrals",
+        swatches: ["#F4F1EC", "#D9D2C7", "#A0978A", "#5C5751"],
+        gradient: "linear-gradient(135deg, #F4F1EC 0%, #D9D2C7 50%, #5C5751 100%)",
+        photo: "https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&w=720&q=70",
+      },
+      {
+        id: "boho-jungle",
+        name: "Boho effortless",
+        feel: "Cool, dreamy, free-spirited",
+        aesthetic: "Rolling Stone — cool and effortless",
+        paletteName: "Warm terracottas & rust",
+        swatches: ["#C97A4F", "#8E4831", "#D5B98C", "#5C7253"],
+        gradient: "linear-gradient(135deg, #D5B98C 0%, #C97A4F 50%, #8E4831 100%)",
+        photo: "https://images.unsplash.com/photo-1525772764200-be829a350797?auto=format&fit=crop&w=720&q=70",
+      },
     ];
 
     let chapterIdx = 0;
@@ -326,7 +1626,7 @@
       const el = chapterDotsEl();
       if (!el) return;
       el.innerHTML = "";
-      for (let j = 0; j < 7; j++) {
+      for (let j = 0; j < CHAPTERS.length; j++) {
         const d = document.createElement("div");
         d.className = "h-[3px] flex-1 rounded-full bg-black/10 transition-colors duration-300";
         d.dataset.chapterDot = String(j);
@@ -335,7 +1635,7 @@
     }
 
     function enterChapter(k) {
-      chapterIdx = Math.min(Math.max(k, 0), 6);
+      chapterIdx = Math.min(Math.max(k, 0), CHAPTERS.length - 1);
       const ch = CHAPTERS[chapterIdx];
       const L = chapterLabelEl(), P = chapterPctEl(), F = chapterFillEl(), dots = chapterDotsEl();
       if (L) L.textContent = ch.label;
@@ -424,9 +1724,9 @@
     const assistantMetaHtml = `
       <div class="chat-assistant-meta">
         <div class="chat-assistant-avatar" aria-hidden="true">
-          <svg width="14" height="12" viewBox="0 0 14 12" fill="none"><path d="M7 10.2S1.8 6.5 1.8 3.4C1.8 2 3.1 1 4.6 1c1 0 1.9.5 2.4 1.2.5-.7 1.4-1.2 2.4-1.2 1.5 0 2.8 1 2.8 2.4 0 3.1-5.2 6.8-5.2 6.8Z" stroke="currentColor" stroke-width="1.15" stroke-linejoin="round"/></svg>
+          <svg width="16" height="13" viewBox="0 0 24 20" fill="none"><path d="M5.5 2h13l4 6-10.5 10L2 8l3.5-6Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M9 2l3 6 3-6M2 8h20" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" opacity="0.85"/></svg>
         </div>
-        <span class="chat-assistant-name">Atelier</span>
+        <span class="chat-assistant-name">Allie</span>
       </div>`;
 
     function bubble(side, content) {
@@ -471,7 +1771,8 @@
       if (!chipsEl) return;
       chipsEl.innerHTML = "";
       items.forEach(it => {
-        const c = $h(`<button class="chat-chip" type="button">${it.label}</button>`);
+        const cls = `chat-chip${it.primary ? " chat-chip--primary" : ""}`;
+        const c = $h(`<button class="${cls}" type="button">${it.label}</button>`);
         c.addEventListener("click", () => {
           setChips([], null);
           Promise.resolve(onPick?.(it)).catch(err => console.error("plan: chip handler", err));
@@ -507,6 +1808,48 @@
     }
 
     function clearChips() { if (chipsEl) chipsEl.innerHTML = ""; }
+
+    /** Visual moodboard tile picker — replaces the old feeling/aesthetic/
+        palette chip stack with a richer single-question selection. */
+    function setMoodboardTiles(items, onPick) {
+      if (!chipsEl) return;
+      chipsEl.innerHTML = "";
+      const grid = document.createElement("div");
+      grid.className = "moodboard-grid";
+      items.forEach(it => {
+        const safeName    = escapeHtml(it.name);
+        const safeFeel    = escapeHtml(it.feel);
+        const safePalette = escapeHtml(it.paletteName);
+        const safeAlt     = escapeHtml(`${it.name} — ${it.paletteName}`);
+        const safeGrad    = it.gradient.replace(/"/g, "&quot;");
+        const safePhoto   = it.photo ? `url("${it.photo.replace(/"/g, "&quot;")}")` : "none";
+        const swatches = (it.swatches || []).map(c => {
+          const safeC = String(c).replace(/"/g, "&quot;");
+          return `<span class="moodboard-tile__swatch" style="background:${safeC}"></span>`;
+        }).join("");
+        const tile = $h(`
+          <button type="button" class="moodboard-tile" aria-label="${safeAlt}"
+                  style="--moodboard-grad:${safeGrad}; --moodboard-photo:${safePhoto};">
+            <span class="moodboard-tile__media" aria-hidden="true">
+              <span class="moodboard-tile__swatches">${swatches}</span>
+            </span>
+            <span class="moodboard-tile__body">
+              <span class="moodboard-tile__name">${safeName}</span>
+              <span class="moodboard-tile__feel">${safeFeel}</span>
+              <span class="moodboard-tile__palette-name">${safePalette}</span>
+            </span>
+          </button>
+        `);
+        if (!tile) return;
+        tile.addEventListener("click", () => {
+          tile.dataset.selected = "true";
+          setChips([], null);
+          Promise.resolve(onPick?.(it)).catch(err => console.error("plan: moodboard handler", err));
+        });
+        grid.appendChild(tile);
+      });
+      chipsEl.appendChild(grid);
+    }
 
     function escapeHtml(s) {
       return String(s).replace(/[<>&"']/g, ch => ({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;","'":"&#39;"}[ch]));
@@ -686,35 +2029,41 @@
       buildChapterDots();
       enterChapter(0);
 
-      await bot(`Welcome — I'm your <strong>Wedding Atelier</strong>. Before we dive into the details, I want to hear about you first. <strong>Congratulations on your engagement!</strong> When you close your eyes and picture your wedding day, what's the <em>very first feeling</em> that comes to mind?`);
-      setChips(
-        [
-          { label: "Magical and dreamy" },
-          { label: "Elegant and timeless" },
-          { label: "Fun and festive" },
-          { label: "Intimate and emotional" },
-          { label: "Wild and unforgettable" },
-        ],
-        async pick => {
-          userSay(pick.label);
-          pkg.feeling = pick.label;
-          await afterFeeling();
-        }
-      );
+      await bot(`Welcome — I'm <strong>Allie</strong>, your AI wedding planner. <strong>Congratulations on your engagement!</strong> Let's begin with the <em>creative direction</em> — pick the moodboard that pulls at you. Each one is a feeling, an aesthetic, and a palette in one. Don't overthink it; trust the first tile your eyes land on.`);
+      setMoodboardTiles(MOODBOARDS, async pick => {
+        userSay(pick.name);
+        pkg.vibeId       = pick.id;
+        pkg.coverLabel   = pick.aesthetic;
+        pkg.paletteLabel = pick.paletteName;
+        pkg.feeling      = pick.feel;
+        await afterMoodboard();
+      });
       textHandler = async v => {
         const t = v.trim();
         if (!t) return;
         userSay(t);
-        pkg.feeling = t;
-        await afterFeeling();
+        const lower = t.toLowerCase();
+        const match = MOODBOARDS.find(m =>
+          lower.includes(m.id) ||
+          lower.includes(m.name.toLowerCase()) ||
+          m.feel.toLowerCase().split(",").some(w => lower.includes(w.trim()))
+        ) || MOODBOARDS[0];
+        pkg.vibeId       = match.id;
+        pkg.coverLabel   = match.aesthetic;
+        pkg.paletteLabel = match.paletteName;
+        pkg.feeling      = t;
+        await afterMoodboard();
       };
     }
 
-    async function afterFeeling() {
+    async function afterMoodboard() {
       clearChips();
       textHandler = null;
       await pause(380);
-      await bot(feelingFollowup(pkg.feeling));
+      const cover   = escapeHtml(pkg.coverLabel   || "that direction");
+      const palette = escapeHtml(pkg.paletteLabel || "your palette");
+      const feel    = escapeHtml(pkg.feeling      || "that feeling");
+      await bot(`<em>${cover}</em> with <strong>${palette}</strong> — <em>${feel}</em>. That's a beautifully clear north star, and every venue, vendor, and detail from here will pull from that exact mood.`);
       await pause(520);
       enterChapter(1);
       await bot(`Let's talk about your <strong>people</strong>. How many guests are you imagining? This shapes everything — the venue, the budget, the energy of the room.`);
@@ -797,58 +2146,6 @@
       await bot(`${band} — that's a solid foundation. ${allocationNarrativeHtml()} We'll map this out together as we go.`);
       await pause(550);
       enterChapter(3);
-      await bot(`Let's get to the heart of it — <strong>the aesthetic</strong>. If a magazine photographed your wedding, which cover would it appear on?`);
-      setChips(
-        MAGAZINE_COVERS,
-        async pick => {
-          userSay(pick.label);
-          pkg.vibeId = pick.value;
-          pkg.coverLabel = pick.label;
-          await afterMagazineCover();
-        }
-      );
-      textHandler = async tRaw => {
-        const t = tRaw.trim();
-        if (!t) return;
-        const lower = t.toLowerCase();
-        const match = VIBES.find(x => x.tags.some(tag => lower.includes(tag.toLowerCase())) || lower.includes(x.label.toLowerCase()));
-        pkg.vibeId = match?.id || "soft-romantic";
-        pkg.coverLabel = t;
-        userSay(t);
-        await afterMagazineCover();
-      };
-    }
-
-    async function afterMagazineCover() {
-      clearChips();
-      textHandler = null;
-      await pause(400);
-      const cover = escapeHtml(pkg.coverLabel || "That direction");
-      await bot(`${cover} — yes. That's such a clear vision. Now tell me about color — when you picture your tablescape and florals, what palette feels most like you?`);
-      setChips(
-        PALETTE_CHIPS.map(label => ({ label })),
-        async pick => {
-          userSay(pick.label);
-          pkg.paletteLabel = pick.label;
-          await afterPalette();
-        }
-      );
-      textHandler = async v => {
-        const t = v.trim();
-        if (!t) return;
-        userSay(t);
-        pkg.paletteLabel = t;
-        await afterPalette();
-      };
-    }
-
-    async function afterPalette() {
-      clearChips();
-      textHandler = null;
-      await pause(400);
-      await bot(`Perfect — <strong>${escapeHtml(pkg.paletteLabel)}</strong> will anchor florals, paper, and lighting. I'll carry it beside your <em>${escapeHtml(pkg.coverLabel || "magazine")}</em> direction.`);
-      await pause(500);
-      enterChapter(4);
       const regionHint = pkg.region === "pacific" ? "Los Cabos and the Pacific coast"
         : pkg.region === "caribbean" ? "the Caribbean stretch you're leaning toward"
         : pkg.region === "atlantic" ? "Miami and stateside options"
@@ -877,7 +2174,7 @@
       await pause(400);
       await bot(venueFollowup(pkg.venuePreference));
       await pause(550);
-      enterChapter(5);
+      enterChapter(4);
       await bot(`Let's walk through your day. For the ceremony, picture the moment you're walking down the aisle — <strong>where are you?</strong>`);
       setChips(
         CEREMONY_CHIPS,
@@ -925,7 +2222,7 @@
       await pause(400);
       await bot(`Beautiful — ceremony and reception flow are now sketched.`);
       await pause(450);
-      enterChapter(6);
+      enterChapter(5);
       await bot(`Last chapter — your vendor team. Some couples want the resort to handle everything. Others have non-negotiables they bring in themselves. Which vendors feel most personal to you — the ones you absolutely want to choose yourself? <em>(Tap all that apply, then Continue.)</em>`);
       setChipsMulti(VENDOR_PRIORITY_LABELS, async selected => {
         const list = selected.length ? selected : ["I'll decide later with you"];
@@ -952,7 +2249,7 @@
         ["Guest count", pkg.guestsLabel || String(pkg.guests)],
         ["Region", REGION_CHIPS.find(r => r.value === pkg.region)?.label || "Open / mixed"],
         ["Budget", pkg.budgetBand],
-        ["Magazine direction", pkg.coverLabel],
+        ["Moodboard", pkg.coverLabel],
         ["Palette", pkg.paletteLabel],
         ["Venue style", pkg.venuePreference],
         ["Ceremony", pkg.ceremonyChoice],
@@ -1120,7 +2417,7 @@
       userSay(`Let's go with ${s.name}.`);
       await bot(`Yes — <strong>${s.name}</strong>. Up to ${s.capacity} guests, from ${usd(s.fromUSD)} as a starting anchor for this room.`);
       await bot(`This is the space I'd present to the hotel when we ask them to <strong>commit your weekend</strong> — ceremony flow, reception energy, and where light falls at golden hour.`);
-      await bot(`Next I'll <strong>re-imagine</strong> it in the aesthetic you chose — so you can see your magazine cover, translated into this room.`);
+      await bot(`Next I'll <strong>re-imagine</strong> it in the moodboard you chose — so you can see <em>${escapeHtml(pkg.coverLabel || "your direction")}</em> translated into this room.`);
       renderSpaceDetailCanvas(s);
       clearChips();
       textHandler = null;
@@ -1128,24 +2425,590 @@
       await renderVibeImagined();
     }
 
+    /* Compute "best match" eyebrow text from a space's character. */
+    function spaceEyebrow(space) {
+      const vibe = (space.vibe || [])[0];
+      if (vibe) return `Best match · ${vibe}`;
+      const t = (space.type || "").toLowerCase();
+      if (t.includes("beach")) return "Best match · Beachfront";
+      if (t.includes("ball"))  return "Best match · Grand reception";
+      if (t.includes("garden")) return "Best match · Garden ceremony";
+      return "Best match · Hand-selected for your moodboard";
+    }
+
+    /* Allie's dossier — a personal insider tip composed from hotel + vibe. */
+    function dossierFor(space, hotel, vibe) {
+      const city = (hotel.city || "the destination").split(",")[0];
+      const region = (hotel.region || "").toLowerCase();
+      const tag = (vibe?.tags || ["sunset"])[0].toLowerCase();
+      const t = (space.type || "").toLowerCase();
+      if (t.includes("beach") || t.includes("terrace") || t.includes("ocean")) {
+        return `Book your ceremony for 5:30pm. The ${city} winds settle after 4:30 — and by 6pm the ${region.includes("pacific") ? "Pacific" : "ocean"} light hits ${space.name} in a way no filter can replicate. Tell your photographer to stand at the north edge at 6:15. That's the shot every couple has on their wall. Most don't plan for it.`;
+      }
+      if (t.includes("garden") || t.includes("courtyard") || t.includes("lawn")) {
+        return `Hold your ceremony at 5:45pm and have the string quartet pre-set under the canopy at 5:30 — the light softens fifteen minutes earlier than guests expect, and ${tag} feels twice as ${tag} when it's filtered through leaves.`;
+      }
+      if (t.includes("ball") || t.includes("hall") || t.includes("indoor")) {
+        return `Ask the property to do a single uplighting test with you at 6:00pm. The chandeliers in ${space.name} read warm, but pair them with a 3000K wash on the columns and the ${tag} palette you picked finally translates the way it does in the moodboard.`;
+      }
+      if (t.includes("pool") || t.includes("rooftop")) {
+        return `Plate the welcome drink at 6:10pm — sun crests below the parapet a few minutes after, and the pool surface flips into mirror mode. Have your photographer shoot from the south corner. Two minutes of magic, gone by 6:18.`;
+      }
+      return `Lock your ceremony for 5:45pm. The ${city} light gets ${tag} after 5:30, and ${space.name} only photographs the way it lives for those ninety minutes. Most planners book the safer 4pm slot. We're not most planners.`;
+    }
+
     function renderSpaceDetailCanvas(s) {
       const hotel = byId(HOTELS, s.hotelId);
+      const vibe  = byId(VIBES, pkg.vibeId) || VIBES.find(v => v.id === "soft-romantic") || VIBES[0];
+      pkg.savedSpaces = pkg.savedSpaces || new Set();
+      const isSaved = pkg.savedSpaces.has(s.id);
+
+      /* Capacity stats — derive sensible figures from the canonical capacity. */
+      const ceremony  = s.capacity;
+      const cocktail  = s.capacity;
+      const reception = Math.round(s.capacity * 0.65);
+
+      /* Trust signal — deterministic-feeling number. */
+      const seed = (s.id || "").length + (s.capacity || 0);
+      const savedCount = 24 + (seed * 3) % 30; // 24–53
+
+      /* Avatar pile — prefer real brides at this hotel; fall back to broader BRIDES. */
+      const localBrides = bridesOf(hotel.id);
+      const avatarPool  = (localBrides.length ? localBrides : BRIDES).slice();
+      const avatars = [];
+      for (let i = 0; i < 4; i++) {
+        avatars.push(avatarPool[(i + seed) % avatarPool.length] || BRIDES[i % BRIDES.length]);
+      }
+
+      /* Personalized Allie caption tied to the user's guest count. */
+      const guestCount = pkg.guests || 100;
+      const fitLine = ceremony >= guestCount * 1.5
+        ? "with room to spare"
+        : ceremony >= guestCount
+          ? "comfortably"
+          : "with creative reconfiguration";
+      const cityLine = hotel.city ? `the ${hotel.city} setting` : "the property";
+      const captionText = `${s.name} is great for ${guestCount} guests. With ${ceremony} ceremony seats, your full guest list fits ${fitLine} — and ${cityLine} does the rest.`;
+
+      /* Allie's dossier insight. */
+      const dossierText = dossierFor(s, hotel, vibe);
+
+      /* Other spaces at this hotel — exclude current, take 3. */
+      const otherSpaces = spacesOf(hotel.id).filter(x => x.id !== s.id).slice(0, 3);
+
+      /* Real brides — first 3 verified at this hotel; otherwise a cross-section. */
+      const realBrides = (localBrides.length ? localBrides : BRIDES).slice(0, 3);
+
+      /* Hero photo — vibe.image works hardest for "picture your moodboard here". */
+      const heroPhoto = vibe.image || hotelCardImageUrl(hotel.id);
+      const heroGrad  = `linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.45) 100%)`;
+      const otherPhoto = hotelCardImageUrl(hotel.id);
+
+      /* Pills — capacity, type, and the user's first chosen vibe tag if any. */
+      const accentPill = `Up to ${s.capacity} guests`;
+      const featurePills = [
+        { text: `${s.type} · ${(hotel.city || "").split(",")[0]}`, mod: "" },
+        { text: accentPill,                                          mod: "vdetail-pill--accent" },
+        ...(s.vibe || []).slice(0, 1).map(v => ({ text: v, mod: "vdetail-pill--muted" })),
+      ];
+
+      const featurePillsHtml = featurePills
+        .map(p => `<div class="vdetail-pill ${p.mod}">${escapeHtml(p.text)}</div>`)
+        .join("");
+
+      const avatarsHtml = avatars.map(b => {
+        const img = (b && (b.storyCardPhoto || storyCardImageUrl(b, b.hotelId))) || hotelCardImageUrl(hotel.id);
+        return `<div class="vdetail-avatar" style="background-image:url('${img}')"></div>`;
+      }).join("");
+
+      const otherSpacesHtml = otherSpaces.length
+        ? `<div class="vdetail-other__row">
+            ${otherSpaces.map(o => `
+              <div class="vdetail-other-card" data-other-space="${o.id}" role="button" tabindex="0" aria-label="View ${escapeHtml(o.name)}">
+                <div class="vdetail-other-card__media" style="background-image:url('${otherPhoto}')"></div>
+                <div class="vdetail-other-card__shade"></div>
+                <p class="vdetail-other-card__name">${escapeHtml(o.name)}</p>
+              </div>
+            `).join("")}
+           </div>`
+        : "";
+
+      const realBridesHtml = realBrides.map(b => {
+        const photo = b.storyCardPhoto || storyCardImageUrl(b, b.hotelId);
+        return `
+          <article class="vdetail-bride-card" data-bride-slug="${escapeHtml(b.slug)}" role="button" tabindex="0" aria-label="View ${escapeHtml(b.name)}'s wedding edit">
+            <div class="vdetail-bride-card__media" style="background-image:url('${photo}')"></div>
+            <div class="vdetail-bride-card__body">
+              <p class="vdetail-bride-card__name">${escapeHtml(b.name)}</p>
+              <p class="vdetail-bride-card__meta">${escapeHtml(b.season || "")} · ${b.guests || ""} guests</p>
+              <p class="vdetail-bride-card__quote">${escapeHtml('"' + (b.quote || "") + '"')}</p>
+            </div>
+          </article>`;
+      }).join("");
+
       setCanvas(`
-        <div>
-          <button id="back-spaces" class="text-xs text-ink-muted hover:text-copper mb-3">← Back to spaces</button>
-          <div class="rounded-2xl overflow-hidden mb-6">
-            ${venueMockSVG({ palette: hotel.palette, label: s.name, aspect: "16/9" })}
+        <div class="vdetail" style="margin:-24px;">
+          <!-- Hero with glass appbar (back + heart) -->
+          <div class="vdetail-hero" style="--vdetail-photo:${heroPhoto ? `url('${heroPhoto}')` : 'none'}; --vdetail-grad:${heroGrad};">
+            <div class="vdetail-hero__media"></div>
+            <div class="vdetail-hero__appbar">
+              <button id="vdetail-back" class="vdetail-glass-btn" aria-label="Back to spaces" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 256 256" fill="none">
+                  <path d="M160,208L80,128l80-80" stroke="white" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button id="vdetail-heart" class="vdetail-glass-btn" data-saved="${isSaved ? "true" : "false"}" aria-label="Save this venue" aria-pressed="${isSaved}" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 256 256" fill="none">
+                  <path d="M128,216S28,160,28,92a52,52,0,0,1,100-20h0a52,52,0,0,1,100,20C228,160,128,216,128,216Z"
+                        stroke="white" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+              </button>
+            </div>
           </div>
-          <p class="text-xs uppercase tracking-[0.18em] text-ink-muted mb-1">${hotel.name}</p>
-          <h2 class="font-title text-5xl tracking-tight">${s.name}</h2>
-          <p class="text-ink-soft mt-2">${s.type} · up to ${s.capacity} guests · From ${usd(s.fromUSD)}</p>
-          <div class="flex flex-wrap gap-2 mt-4">
-            ${s.vibe.map(v=>`<span class="text-xs uppercase tracking-wider text-ink-soft px-3 py-1 bg-cream rounded-pill">${v}</span>`).join("")}
+
+          <!-- Dark inverse title panel -->
+          <div class="vdetail-title-panel">
+            <p class="vdetail-eyebrow">${escapeHtml(spaceEyebrow(s))}</p>
+            <h2 class="vdetail-title">${escapeHtml(s.name)}</h2>
+            <div class="vdetail-pills">${featurePillsHtml}</div>
           </div>
-          <p class="mt-6 text-ink-soft">Your magazine-cover direction is already locked in — use <strong>Try another vibe</strong> below if you want to audition a different mood before we move on.</p>
+
+          <!-- Trust signal -->
+          <div class="vdetail-trust">
+            <div class="vdetail-avatars">${avatarsHtml}</div>
+            <p class="vdetail-trust-text"><strong>${savedCount}</strong> brides saved this venue in the last 30 days</p>
+          </div>
+
+          <!-- Allie's caption -->
+          <div class="vdetail-section">
+            <p class="vdetail-allie-caption">${escapeHtml(captionText)}</p>
+          </div>
+
+          <!-- Capacity -->
+          <div class="vdetail-section vdetail-section--inset" style="padding-top:6px;">
+            <p class="vdetail-section-title">Capacity</p>
+            <div class="vdetail-divider"></div>
+            <div class="vdetail-stats">
+              <div class="vdetail-stat">
+                <span class="vdetail-stat__num">${ceremony}</span>
+                <span class="vdetail-stat__label">Ceremony</span>
+              </div>
+              <div class="vdetail-stat-divider"></div>
+              <div class="vdetail-stat">
+                <span class="vdetail-stat__num">${cocktail}</span>
+                <span class="vdetail-stat__label">Cocktail</span>
+              </div>
+              <div class="vdetail-stat-divider"></div>
+              <div class="vdetail-stat">
+                <span class="vdetail-stat__num">${reception}</span>
+                <span class="vdetail-stat__label">Reception</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Allie's Venue Dossier -->
+          <div class="vdetail-dossier">
+            <div class="vdetail-dossier__attr">
+              <span class="vdetail-dossier__gem" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.6" stroke-linejoin="round">
+                  <path d="M5.5 2h13l4 6-10.5 14L1.5 8z"/>
+                  <path d="M2 8h20"/>
+                  <path d="M9 2 6 8l6 14 6-14-3-6"/>
+                </svg>
+              </span>
+              <span>Allie's Venue Dossier</span>
+            </div>
+            <p class="vdetail-dossier__body">${escapeHtml(dossierText)}</p>
+          </div>
+
+          <!-- Real brides, real bookings -->
+          ${realBrides.length ? `
+            <div class="vdetail-brides">
+              <div class="vdetail-brides__head">
+                <h3 class="vdetail-brides__title">Real brides,<br>real bookings</h3>
+              </div>
+              <div class="vdetail-brides__row">${realBridesHtml}</div>
+            </div>
+          ` : ""}
+
+          <!-- Other spaces at this hotel -->
+          ${otherSpaces.length ? `
+            <div class="vdetail-other">
+              <p class="vdetail-other__title">Other spaces at <em>${escapeHtml(hotel.name.split(" ")[0])}</em></p>
+              ${otherSpacesHtml}
+            </div>
+          ` : ""}
+
+          <!-- Questions / quick prompt -->
+          <div class="vdetail-ask">
+            <p class="vdetail-ask__lede">Questions about ${escapeHtml(s.name.split(" ")[0])}?</p>
+            <p class="vdetail-ask__sub">Ask Allie — she has your dates.</p>
+            <div class="vdetail-ask__field" id="vdetail-ask-field">
+              <input id="vdetail-ask-input" type="text" placeholder="Type a message…" aria-label="Ask Allie about this venue">
+              <button id="vdetail-ask-send" class="vdetail-ask__send" type="button" aria-label="Send">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13"/>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
       `);
-      document.getElementById("back-spaces").addEventListener("click", () => renderSpacesCanvas(hotel));
+
+      // ── Wire interactions ───────────────────────────────────────────────
+      document.getElementById("vdetail-back")?.addEventListener("click", () => renderSpacesCanvas(hotel));
+
+      const heartBtn = document.getElementById("vdetail-heart");
+      heartBtn?.addEventListener("click", () => {
+        const wasSaved = pkg.savedSpaces.has(s.id);
+        if (wasSaved) {
+          pkg.savedSpaces.delete(s.id);
+          heartBtn.dataset.saved = "false";
+          heartBtn.setAttribute("aria-pressed", "false");
+        } else {
+          pkg.savedSpaces.add(s.id);
+          heartBtn.dataset.saved = "true";
+          heartBtn.setAttribute("aria-pressed", "true");
+        }
+      });
+
+      document.querySelectorAll("[data-other-space]").forEach(card => {
+        const id = card.getAttribute("data-other-space");
+        card.addEventListener("click", () => pickSpace(id));
+        card.addEventListener("keydown", e => {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pickSpace(id); }
+        });
+      });
+
+      // Forward inline questions into the main chat input so the conversation stays unified.
+      const askInput = document.getElementById("vdetail-ask-input");
+      const askSend  = document.getElementById("vdetail-ask-send");
+      const sendInline = () => {
+        const q = (askInput?.value || "").trim();
+        const chatInput = document.getElementById("text-input");
+        const chatForm  = document.getElementById("input-form");
+        if (!q) { chatInput?.focus(); return; }
+        if (chatInput && chatForm) {
+          chatInput.value = q;
+          chatInput.focus();
+          chatForm.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }));
+          askInput.value = "";
+        }
+      };
+      askSend?.addEventListener("click", sendInline);
+      askInput?.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); sendInline(); } });
+
+      // Real-brides cards → bride inspiration detail (Figma 254:135).
+      document.querySelectorAll(".vdetail-bride-card[data-bride-slug]").forEach(card => {
+        const slug = card.getAttribute("data-bride-slug");
+        const open = () => {
+          const b = BRIDES.find(x => x.slug === slug);
+          if (b) renderBrideInspirationCanvas(b, s);
+        };
+        card.addEventListener("click", open);
+        card.addEventListener("keydown", e => {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); }
+        });
+      });
+    }
+
+    /* ===== Bride Inspiration Canvas (Figma 254:135) ===== */
+
+    /* Static "Wedding Edit" catalog used to render social-proof picklists per bride.
+       Each item carries an inline Phosphor-style SVG so the page is self-contained. */
+    const WEDDING_EDIT_ITEMS = [
+      { id: "hairmakeup", name: "Hair & Makeup",            cat: "beauty",        price: "$280–$450 / person · outside vendor", badge: "Most added",
+        icon: `<path d="M152 108v92a16 16 0 0 1-16 16H80a16 16 0 0 1-16-16v-92M152 108L208 40H192L152 108M64 108L40 76V40H88L64 108" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>` },
+      { id: "ceremony-arch", name: "Ceremony arch & florals", cat: "florals",     price: "$3,500–$7,000 · outside florist",      badge: "Popular",
+        icon: `<path d="M128 216c-72 0-104-32-104-32s24-72 104-72 104 72 104 72-32 32-104 32ZM128 112V40M128 112c-32-16-48-40-48-72M128 112c32-16 48-40 48-72" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>` },
+      { id: "centerpieces", name: "Reception centerpieces",  cat: "florals",      price: "$150–$350 / table · ~15 tables",
+        icon: `<path d="M128 216c-72 0-104-32-104-32s24-72 104-72 104 72 104 72-32 32-104 32ZM128 112V40" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>` },
+      { id: "signature-cocktail", name: "Signature cocktail", cat: "fnb",         price: "$800–$1,500 · property bar team",
+        icon: `<path d="M40 40H216L128 144L40 40ZM128 144V216M88 216h80" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>` },
+      { id: "shuttle", name: "Guest shuttle from airport",   cat: "transport",    price: "$2,500–$4,000 · both arrival days",
+        icon: `<path d="M16 184V72a16 16 0 0 1 16-16H192l32 40v88M16 184H64M224 184h-32M16 184V200a8 8 0 0 0 8 8H40a8 8 0 0 0 8-8V184M192 184v16a8 8 0 0 0 8 8h16a8 8 0 0 0 8-8V184" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="80" cy="184" r="20" stroke="currentColor" stroke-width="10" fill="none"/><circle cx="176" cy="184" r="20" stroke="currentColor" stroke-width="10" fill="none"/>` },
+      { id: "live-band", name: "Live band",                  cat: "entertainment",price: "$8,000–$18,000 · 4–6 hrs",
+        icon: `<path d="M212 32L92 64V184M212 32V152M92 184c0 17.673-17.909 32-40 32s-40-14.327-40-32 17.909-32 40-32 40 14.327 40 32ZM212 152c0 17.673-17.909 32-40 32s-40-14.327-40-32 17.909-32 40-32 40 14.327 40 32Z" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>` },
+      { id: "videographer", name: "Wedding videographer",    cat: "photography",  price: "$2,500–$4,000 · full weekend",
+        icon: `<path d="M24 80V176a8 8 0 0 0 8 8H160a8 8 0 0 0 8-8V80a8 8 0 0 0-8-8H32A8 8 0 0 0 24 80ZM168 112l64-32V176l-64-32Z" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>` },
+      { id: "yacht", name: "Sunset yacht welcome",           cat: "transport",    price: "$10,000–$14,000 · up to 100 guests", badge: "Wow factor",
+        icon: `<path d="M40 144L24 200H232L216 144M40 144V64a8 8 0 0 1 8-8H208a8 8 0 0 1 8 8v80M40 144H216" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>` },
+      { id: "late-night", name: "Late-night taco bar",       cat: "fnb",          price: "$35 / person · in-house catering",   badge: "Wow factor",
+        icon: `<path d="M40 96l216 0 -28 80a16 16 0 0 1 -16 12H80a16 16 0 0 1 -16-12L40 96Z" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>` },
+      { id: "photo-booth", name: "Photo booth & 35mm prints",cat: "photography",  price: "$1,200–$2,200 · 4 hrs",
+        icon: `<rect x="32" y="64" width="192" height="144" rx="12" stroke="currentColor" stroke-width="10" fill="none"/><circle cx="128" cy="136" r="36" stroke="currentColor" stroke-width="10" fill="none"/><path d="M88 64l16-24h48l16 24" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>` },
+    ];
+
+    /* Per-bride deterministic curation: pick 8 items + on/off seeded by slug. */
+    function buildBrideEdit(bride) {
+      const seed = (bride.slug || bride.name || "x")
+        .split("").reduce((a, c) => a + c.charCodeAt(0), 0);
+      const items = WEDDING_EDIT_ITEMS.slice();
+      const picked = [];
+      const usedIdx = new Set();
+      for (let i = 0; i < 8 && i < items.length; i++) {
+        const idx = (seed + i * 7) % items.length;
+        const j = usedIdx.has(idx) ? (idx + 1) % items.length : idx;
+        usedIdx.add(j);
+        const it = items[j];
+        const on = ((seed + i * 3) % 5) !== 0; // ~80% on
+        picked.push({ ...it, state: on ? "on" : "off" });
+      }
+      return picked;
+    }
+
+    /* Assemble carousel photos for a bride. Combines same-name BRIDES entries first,
+       then falls back to vibe + hotel imagery so single-entry brides still have variety. */
+    function bridePhotos(bride) {
+      const photos = [];
+      const seen = new Set();
+      const push = (url) => { if (url && !seen.has(url)) { photos.push(url); seen.add(url); } };
+      BRIDES.filter(x => x.name === bride.name).forEach(x => push(x.storyCardPhoto));
+      const vibe = byId(VIBES, pkg.vibeId);
+      if (vibe?.image) push(vibe.image);
+      push(hotelCardImageUrl(bride.hotelId));
+      return photos.slice(0, 3);
+    }
+
+    /* Roll up an estimated total from the "on" items. Picks the midpoint of each price range. */
+    function estimateBrideEditTotal(items) {
+      const guess = (txt) => {
+        const m = (txt || "").match(/\$([\d,]+)(?:[–-]\$?([\d,]+))?/);
+        if (!m) return 0;
+        const lo = parseInt(m[1].replace(/,/g, ""), 10) || 0;
+        const hi = m[2] ? parseInt(m[2].replace(/,/g, ""), 10) || lo : lo;
+        return Math.round((lo + hi) / 2);
+      };
+      const perPersonGuests = pkg.guests || 100;
+      const perTable = 15;
+      let total = 0;
+      items.filter(i => i.state === "on").forEach(i => {
+        let v = guess(i.price);
+        if (/per\s*person|\/\s*person/i.test(i.price)) v *= perPersonGuests;
+        else if (/\/\s*table/i.test(i.price))         v *= perTable;
+        total += v;
+      });
+      return total;
+    }
+
+    function renderBrideInspirationCanvas(bride, returnSpace) {
+      const hotel = byId(HOTELS, bride.hotelId) || (returnSpace ? byId(HOTELS, returnSpace.hotelId) : null);
+      const photos = bridePhotos(bride);
+      const heroImg = photos[0] || hotelCardImageUrl(bride.hotelId);
+      const editItems = buildBrideEdit(bride);
+
+      const tabs = [
+        { id: "all",           label: "All" },
+        { id: "beauty",        label: "Beauty" },
+        { id: "photography",   label: "Photography" },
+        { id: "entertainment", label: "Entertainment" },
+        { id: "florals",       label: "Florals" },
+        { id: "transport",     label: "Transport" },
+        { id: "fnb",           label: "F&B" },
+      ];
+
+      const tabsHtml = tabs.map((t, i) => `
+        <button class="bride-edit__tab" data-tab="${t.id}" data-active="${i === 0 ? "true" : "false"}" type="button">${escapeHtml(t.label)}</button>
+      `).join("");
+
+      const itemsHtml = editItems.map(it => `
+        <div class="bride-edit-item" data-state="${it.state}" data-cat="${it.cat}" data-id="${it.id}">
+          <div class="bride-edit-item__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 256 256" aria-hidden="true">${it.icon}</svg>
+          </div>
+          <div class="bride-edit-item__body">
+            <div>
+              <div class="bride-edit-item__title-row">
+                <p class="bride-edit-item__title">${escapeHtml(it.name)}</p>
+                ${it.badge ? `<span class="bride-edit-item__badge">${escapeHtml(it.badge)}</span>` : ""}
+              </div>
+              <p class="bride-edit-item__price">${escapeHtml(it.price)}</p>
+            </div>
+            <button class="bride-edit-item__notes" type="button">Tastemakers notes (4)</button>
+          </div>
+          <button class="bride-edit-item__toggle" type="button" aria-label="Toggle ${escapeHtml(it.name)}">
+            <svg class="toggle-check" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" aria-hidden="true">
+              <path d="M229.66 77.66l-128 128a8 8 0 0 1-11.32 0l-56-56a8 8 0 0 1 11.32-11.32L96 188.69 218.34 66.34a8 8 0 0 1 11.32 11.32Z" fill="white"/>
+            </svg>
+            <svg class="toggle-plus" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" aria-hidden="true">
+              <path d="M224 128a8 8 0 0 1-8 8H136v80a8 8 0 0 1-16 0V136H40a8 8 0 0 1 0-16h80V40a8 8 0 0 1 16 0v80h80A8 8 0 0 1 224 128Z" fill="#7e8d68"/>
+            </svg>
+          </button>
+        </div>
+      `).join("");
+
+      const slidesHtml = (() => {
+        // Build pairs of (left, right) photos for the side-by-side slide layout.
+        if (!photos.length) {
+          return `<div class="bride-carousel__slide" style="grid-column:1/-1;background-color:#c4b8a8"></div>`;
+        }
+        const left  = photos[0];
+        const right = photos[1] || photos[0];
+        return `
+          <div class="bride-carousel__slide" style="background-image:url('${left}')"></div>
+          <div class="bride-carousel__slide bride-carousel__slide--right" style="background-image:url('${right}')"></div>
+        `;
+      })();
+
+      const dots = photos.length > 1 ? photos.map((_, i) => `
+        <button class="bride-carousel-dot" data-active="${i === 0 ? "true" : "false"}" data-idx="${i}" aria-label="Photo ${i + 1}" type="button"></button>
+      `).join("") : "";
+
+      const ctxBackLabel = returnSpace ? returnSpace.name : (hotel ? hotel.name : "Back");
+
+      setCanvas(`
+        <div class="bride" style="margin:-24px;">
+          <div class="bride-ctxbar">
+            <span class="bride-ctxbar__chev" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 256 256" fill="none">
+                <path d="M160 208L80 128l80-80" stroke="#ca9151" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <button id="bride-back" class="bride-ctxbar__back" type="button">${escapeHtml(ctxBackLabel)}</button>
+            <span class="bride-ctxbar__sep">·</span>
+            <span class="bride-ctxbar__cur">Their wedding edit</span>
+          </div>
+
+          <section class="bride-hero">
+            <div class="bride-hero__title-block">
+              <h2 class="bride-hero__name">${escapeHtml(bride.name)}</h2>
+              <p class="bride-hero__meta">${escapeHtml(bride.season || "")} · ${bride.guests || ""} guests${hotel ? ` · ${escapeHtml(hotel.name)}` : ""}</p>
+            </div>
+
+            <div class="bride-carousel" id="bride-carousel" data-idx="0" data-photos='${JSON.stringify(photos).replace(/'/g, "&apos;")}'>
+              ${slidesHtml}
+            </div>
+
+            <div class="bride-carousel-controls">
+              <div class="bride-carousel-dots" id="bride-dots">${dots}</div>
+              ${photos.length > 1 ? `
+                <button id="bride-prev" class="bride-carousel-btn" type="button" aria-label="Previous photo">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 256 256" fill="none">
+                    <path d="M160 208L80 128l80-80" stroke="white" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <button id="bride-next" class="bride-carousel-btn" type="button" aria-label="Next photo">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 256 256" fill="none">
+                    <path d="M96 48l80 80-80 80" stroke="white" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              ` : ""}
+            </div>
+
+            <p class="bride-quote">${escapeHtml('"' + (bride.quote || "") + '"')}</p>
+          </section>
+
+          <section class="bride-edit">
+            <div class="bride-edit__bg" style="background-image:url('${heroImg}')"></div>
+            <div class="bride-edit__overlay"></div>
+            <div class="bride-edit__inner">
+              <div class="bride-edit__head">
+                <h3 class="bride-edit__title"><em>Our</em> <span>Wedding Edit</span></h3>
+                <p class="bride-edit__sub">Curate your vision and tap a detail to add it to your package.</p>
+              </div>
+              <div class="bride-edit__tabs">
+                <div class="bride-edit__tabs-pill-bg">${tabsHtml}</div>
+              </div>
+              <div class="bride-edit__items" id="bride-edit-items">${itemsHtml}</div>
+              <div class="bride-summary">
+                <span class="bride-summary__count" id="bride-summary-count">0 details added</span>
+                <span class="bride-summary__est">Est. add-ons · <strong id="bride-summary-total">$0</strong></span>
+              </div>
+              <div class="bride-edit__cta-row">
+                <button id="bride-continue" class="btn btn--primary btn--default" type="button">Add their edit to my package →</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      `);
+
+      // ── Wire interactions ───────────────────────────────────────────────
+      document.getElementById("bride-back")?.addEventListener("click", () => {
+        if (returnSpace) renderSpaceDetailCanvas(returnSpace);
+        else if (hotel)  renderSpacesCanvas(hotel);
+      });
+
+      // Carousel
+      let idx = 0;
+      const carousel = document.getElementById("bride-carousel");
+      const renderCarousel = () => {
+        if (!carousel || !photos.length) return;
+        const left  = photos[idx % photos.length];
+        const right = photos[(idx + 1) % photos.length] || left;
+        const slides = carousel.querySelectorAll(".bride-carousel__slide");
+        if (slides[0]) slides[0].style.backgroundImage = `url('${left}')`;
+        if (slides[1]) slides[1].style.backgroundImage = `url('${right}')`;
+        document.querySelectorAll("#bride-dots .bride-carousel-dot").forEach((d, i) => {
+          d.dataset.active = (i === idx) ? "true" : "false";
+        });
+      };
+      document.getElementById("bride-prev")?.addEventListener("click", () => {
+        idx = (idx - 1 + photos.length) % photos.length; renderCarousel();
+      });
+      document.getElementById("bride-next")?.addEventListener("click", () => {
+        idx = (idx + 1) % photos.length; renderCarousel();
+      });
+      document.querySelectorAll("#bride-dots .bride-carousel-dot").forEach(d => {
+        d.addEventListener("click", () => { idx = parseInt(d.dataset.idx, 10) || 0; renderCarousel(); });
+      });
+
+      // Tabs filter
+      let activeTab = "all";
+      const filterItems = () => {
+        document.querySelectorAll(".bride-edit-item").forEach(el => {
+          const cat = el.dataset.cat;
+          const show = activeTab === "all" || cat === activeTab;
+          el.classList.toggle("bride-edit-item--hidden", !show);
+        });
+      };
+      document.querySelectorAll(".bride-edit__tab").forEach(t => {
+        t.addEventListener("click", () => {
+          document.querySelectorAll(".bride-edit__tab").forEach(x => x.dataset.active = "false");
+          t.dataset.active = "true";
+          activeTab = t.dataset.tab || "all";
+          filterItems();
+        });
+      });
+
+      // Toggles + summary
+      const updateSummary = () => {
+        const live = Array.from(document.querySelectorAll(".bride-edit-item")).map(el => ({
+          id:    el.dataset.id,
+          cat:   el.dataset.cat,
+          state: el.dataset.state,
+          price: el.querySelector(".bride-edit-item__price")?.textContent || "",
+        }));
+        const onCount = live.filter(x => x.state === "on").length;
+        const total   = estimateBrideEditTotal(live);
+        const cEl = document.getElementById("bride-summary-count");
+        const tEl = document.getElementById("bride-summary-total");
+        if (cEl) cEl.textContent = `${onCount} ${onCount === 1 ? "detail" : "details"} added`;
+        if (tEl) tEl.textContent = usd(total);
+      };
+      document.querySelectorAll(".bride-edit-item").forEach(el => {
+        const toggle = el.querySelector(".bride-edit-item__toggle");
+        toggle?.addEventListener("click", () => {
+          el.dataset.state = el.dataset.state === "on" ? "off" : "on";
+          updateSummary();
+        });
+      });
+      updateSummary();
+
+      // Continue → adopt picks into pkg.brideEditPicks and bounce back to the chat.
+      document.getElementById("bride-continue")?.addEventListener("click", async () => {
+        const picks = Array.from(document.querySelectorAll(".bride-edit-item"))
+          .filter(el => el.dataset.state === "on")
+          .map(el => ({
+            id:    el.dataset.id,
+            name:  el.querySelector(".bride-edit-item__title")?.textContent || "",
+            price: el.querySelector(".bride-edit-item__price")?.textContent || "",
+          }));
+        pkg.brideEditPicks = { fromBride: bride.slug, items: picks };
+        userSay(`I love what ${bride.name} did. Add their edit to mine.`);
+        await bot(`Heard. Pulling <strong>${picks.length}</strong> ${picks.length === 1 ? "detail" : "details"} from ${escapeHtml(bride.name)}'s edit into your package — you can fine-tune anything later.`);
+        if (returnSpace) renderSpaceDetailCanvas(returnSpace);
+      });
     }
 
     async function renderVibeImagined(freeText) {
@@ -1253,8 +3116,34 @@
     }
 
     /* ============ VENDORS ============ */
+
+    /* Exclusive All-In Discount — deterministic 8–18% per vendor.id, applied to fromUSD. */
+    function vendorDiscountPct(v) {
+      const seed = (v.id || v.name || "x").split("").reduce((a, c) => a + c.charCodeAt(0), 0);
+      return 8 + (seed % 11); // 8..18
+    }
+    function vendorDiscountedPrice(v) {
+      return Math.round(v.fromUSD * (1 - vendorDiscountPct(v) / 100));
+    }
+    function vendorDiscountSave(v) {
+      return v.fromUSD - vendorDiscountedPrice(v);
+    }
+    function aiwDealBadgeHtml(v) {
+      return `
+        <span class="aiw-deal-tag" title="Exclusive All-In Discount available only to All In Weddings couples">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5.5 2h13l4 6-10.5 14L1.5 8z"/>
+            <path d="M2 8h20"/>
+            <path d="M9 2 6 8l6 14 6-14-3-6"/>
+          </svg>
+          Exclusive All-In Discount
+          <span class="aiw-deal-tag__pct">−${vendorDiscountPct(v)}%</span>
+        </span>`;
+    }
+
     async function showVendors() {
-      await bot(`Verified vendor marketplace — every one of these has worked at your venue's brand and is approved by All In Weddings concierge.`);
+      await bot(`Verified vendor marketplace — every one has worked at your venue's brand and is approved by All In Weddings concierge.`);
+      await bot(`Each one comes with an <strong>Exclusive All-In Discount</strong>, locked in only for our couples — typically <strong>8–18% off</strong> their published rate.`);
       renderVendorsCanvas("hairmakeup");
       clearChips();
       setChips([
@@ -1271,7 +3160,8 @@
       setCanvas(`
         <div>
           <p class="text-xs uppercase tracking-[0.18em] text-ink-muted mb-1">Step 5 · Verified vendors</p>
-          <h2 class="font-title text-4xl mb-4">Build your team.</h2>
+          <h2 class="font-title text-4xl mb-2">Build your team.</h2>
+          <p class="text-ink-soft text-sm mb-5">Every listing here unlocks the <strong>Exclusive All-In Discount</strong> — concierge-negotiated rates you won't find on the open market.</p>
 
           <div class="flex gap-2 mb-6 flex-wrap" id="vendor-tabs">
             ${VENDOR_CATEGORIES.map(c => `
@@ -1304,10 +3194,15 @@
                 <span class="text-ink-muted text-xs font-normal">(${v.reviews})</span>
               </p>
             </div>
+            <div class="mb-3">${aiwDealBadgeHtml(v)}</div>
             <div class="flex flex-wrap gap-1 mb-3">
               ${v.tags.map(t => `<span class="text-[11px] uppercase tracking-wider text-ink-soft px-2 py-1 bg-cream rounded-pill">${t}</span>`).join("")}
             </div>
-            <p class="text-sm text-copper font-semibold mt-auto">From ${usd(v.fromUSD)}</p>
+            <p class="text-sm text-copper font-semibold mt-auto">
+              <span class="aiw-deal-strike">${usd(v.fromUSD)}</span>
+              From ${usd(vendorDiscountedPrice(v))}
+              <span class="ml-1 text-[11px] text-ink-muted font-normal">· save ${usd(vendorDiscountSave(v))}</span>
+            </p>
             <button data-id="${v.id}" data-cat="${v.cat}"
                     class="btn ${selected?"btn--ghost":"btn--primary"} btn--small mt-3 w-full">
               ${selected?"Selected":"Add to package"}
@@ -1317,7 +3212,7 @@
           pkg.vendors[v.cat] = v.id;
           refreshPackage();
           userSay(`Adding ${v.name}.`);
-          bot(`${v.name} added — ${v.based}, ${v.rating}★. ${remainingVendorsHint()}`);
+          bot(`${v.name} added — ${v.based}, ${v.rating}★. Your <strong>Exclusive All-In Discount</strong> takes ${vendorDiscountPct(v)}% off — that's <strong>${usd(vendorDiscountSave(v))}</strong> back to you on this booking. ${remainingVendorsHint()}`);
           renderVendorsCanvas(v.cat);
         });
         grid.appendChild(card);
@@ -1390,13 +3285,831 @@
       document.getElementById("edit-btn").addEventListener("click", showVendors);
       clearChips();
       setChips([
-        { label: "Hold for 24h", action: "hold" },
-        { label: "$500 — save the date now", action: "deposit" },
+        { label: "Generate proposal →",            action: "proposal", primary: true },
+        { label: "Hold for 24h",                   action: "hold" },
+        { label: "$500 — save the date now",       action: "deposit" },
       ], async pick => {
         userSay(pick.label);
-        if (pick.action === "hold") holdState();
-        else openDepositModal();
+        if (pick.action === "proposal")     generateProposal();
+        else if (pick.action === "hold")    holdState();
+        else                                 openDepositModal();
       });
+    }
+
+    /* ============ ONE-CLICK PROPOSAL GENERATION (Figma frame 310:2) ============ */
+
+    /* Compose the ordered line-item array from the user's selections. */
+    function buildProposalLineItems() {
+      const s = pkg.spaceId ? byId(SPACES, pkg.spaceId) : null;
+      const hotel = s ? byId(HOTELS, s.hotelId) : null;
+      if (!s || !hotel) return [];
+
+      const items = [];
+      const guests = pkg.guests || 100;
+      const rooms  = pkg.roomBlock?.rooms  ?? 25;
+      const nights = pkg.roomBlock?.nights ?? 3;
+      const roomTotal = rooms * nights * ROOM_PER_NIGHT;
+
+      // 1. Room block — base cost
+      items.push({
+        title: "Room block",
+        sub:   `${rooms} rooms · ${nights} nights · avg ${usd(ROOM_PER_NIGHT)}/night`,
+        price: roomTotal,
+        label: "Base cost",
+      });
+
+      // 2. Venue fee — waived when room block proves enough density.
+      const guestsCovered = (rooms * 2) >= Math.round(guests * 0.8);
+      const venueWaived   = guestsCovered && nights >= 3;
+      if (venueWaived) {
+        items.push({
+          title:     `${s.name} venue fee`,
+          sub:       `80%+ guests staying · ${nights} nights ✓`,
+          saves:     `Saves ~${usd(Math.round(s.fromUSD * 0.18))}`,
+          label:     "Waived",
+          price:     0,
+          highlight: true,
+        });
+        items.push({
+          title:     "Ceremony package",
+          sub:       "Officiant, setup, sparkling wine",
+          label:     "Included",
+          price:     0,
+          highlight: true,
+        });
+      } else {
+        items.push({
+          title: `${s.name} venue fee`,
+          sub:   `${s.type} · up to ${s.capacity} guests`,
+          price: s.fromUSD,
+          label: "Venue fee",
+        });
+      }
+
+      // 3. Reception dinner — per-person, brand-tiered.
+      const dinnerPp = hotel.brand === "nobu"  ? 280
+                     : hotel.brand === "unico" ? 240
+                     : hotel.brand === "ava"   ? 220
+                     :                            200;
+      items.push({
+        title: "Reception dinner",
+        sub:   `${(hotel.name || "").split(" ")[0]} à la carte · ${usd(dinnerPp)}/person`,
+        price: dinnerPp * guests,
+        label: `${guests} guests`,
+      });
+
+      // 4. Picked verified vendors (with All-In Discount applied).
+      Object.entries(pkg.vendors).forEach(([cat, id]) => {
+        const v = byId(VENDORS, id);
+        const c = VENDOR_CATEGORIES.find(x => x.id === cat);
+        if (!v || !c) return;
+        const disc = vendorDiscountedPrice(v);
+        items.push({
+          title:  `${c.label.replace(/s$/,'')} — ${v.name}`,
+          sub:    `${v.based} · ${v.rating}★ · All-In Discount −${vendorDiscountPct(v)}%`,
+          price:  disc,
+          strike: v.fromUSD,
+          label:  `Vendor`,
+        });
+      });
+
+      // 5. Outside-vendor estimates for categories not picked.
+      if (!pkg.vendors.dj && !pkg.vendors.band) {
+        items.push({
+          title:    "Photography + video",
+          sub:      "Outside vendor · captures full weekend",
+          estimate: "+$6–12k est.",
+        });
+      }
+      if (!pkg.vendors.florist) {
+        items.push({
+          title:    "Florals & décor",
+          sub:      "Arch, aisle, centerpieces",
+          estimate: "+$8–15k est.",
+        });
+      }
+
+      // 6. Adopted bride-edit picks (if any).
+      if (pkg.brideEditPicks?.items?.length) {
+        const guess = (txt) => {
+          const m = (txt || "").match(/\$([\d,]+)(?:[–-]\$?([\d,]+))?/);
+          if (!m) return 0;
+          const lo = parseInt(m[1].replace(/,/g,""),10) || 0;
+          const hi = m[2] ? parseInt(m[2].replace(/,/g,""),10) || lo : lo;
+          let v = Math.round((lo + hi) / 2);
+          if (/per\s*person|\/\s*person/i.test(txt)) v *= guests;
+          else if (/\/\s*table/i.test(txt))         v *= 15;
+          return v;
+        };
+        pkg.brideEditPicks.items.forEach(it => {
+          const price = guess(it.price);
+          if (!price) return;
+          items.push({
+            title: it.name,
+            sub:   `Inspired by ${pkg.brideEditPicks.fromBride}'s edit`,
+            price,
+            label: "Add-on",
+          });
+        });
+      }
+
+      return items;
+    }
+
+    /* Sum firm prices + estimate ranges into a running total + range. */
+    function proposalTotals(items) {
+      let firm = 0, lo = 0, hi = 0;
+      items.forEach(it => {
+        if (typeof it.price === "number") firm += it.price;
+        if (typeof it.estimate === "string") {
+          const m = it.estimate.match(/\$(\d+(?:\.\d+)?)\s*[–-]\s*\$?(\d+(?:\.\d+)?)\s*([kK])?/);
+          if (m) {
+            const mult = m[3] ? 1000 : 1;
+            lo += parseFloat(m[1]) * mult;
+            hi += parseFloat(m[2]) * mult;
+          }
+        }
+      });
+      return {
+        firm,
+        midpoint: firm + Math.round((lo + hi) / 2),
+        lo: firm + lo,
+        hi: firm + hi,
+      };
+    }
+
+    /* Plain-English bullet list of what's included with the chosen space. */
+    function proposalIncludesFor(space, hotel) {
+      const t = (space.type || "").toLowerCase();
+      const bullets = ["Ceremony setup", "Non-denominational officiant"];
+      if (t.includes("beach") || t.includes("terrace")) bullets.push("Pacific or oceanfront sound check, day-of");
+      if (t.includes("ball") || t.includes("indoor"))   bullets.push("Tableware, glassware, and linens");
+      bullets.push(`Venue fee, <em>waived</em> with qualifying room block`);
+      bullets.push("Complimentary room night, per ten rooms booked");
+      bullets.push(`Anniversary return night for the couple at ${hotel.name.split(" ").slice(0, 2).join(" ")}`);
+      return bullets;
+    }
+
+    function proposalToast(msg) {
+      let t = document.getElementById("proposal-toast");
+      if (!t) {
+        t = document.createElement("div");
+        t.id = "proposal-toast";
+        t.className = "proposal-toast";
+        document.body.appendChild(t);
+      }
+      t.textContent = msg;
+      t.dataset.visible = "true";
+      clearTimeout(proposalToast._t);
+      proposalToast._t = setTimeout(() => { t.dataset.visible = "false"; }, 2400);
+    }
+
+    /* The one-click entrypoint. Brief composing animation, then the proposal. */
+    async function generateProposal() {
+      const s = pkg.spaceId ? byId(SPACES, pkg.spaceId) : null;
+      const hotel = s ? byId(HOTELS, s.hotelId) : null;
+      if (!s || !hotel) {
+        await bot(`I need a venue and space picked before I can compose this. Let's go back a step.`);
+        return;
+      }
+
+      await bot(`Composing your <strong>All In Estimate</strong> — pulling rates, vendor discounts, and what your venue includes…`);
+
+      // Composing animation
+      setCanvas(`
+        <div class="proposal-loader">
+          <div>
+            <div class="proposal-loader__gem">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5.5 2h13l4 6-10.5 14L1.5 8z"/>
+                <path d="M2 8h20"/>
+                <path d="M9 2 6 8l6 14 6-14-3-6"/>
+              </svg>
+            </div>
+            <h2 class="proposal-loader__title">Composing your proposal</h2>
+            <p class="proposal-loader__sub">Pulling firm rates, applying your All-In Discounts, and checking what's included with ${escapeHtml(s.name)}.</p>
+            <div class="proposal-loader__steps">
+              <div class="proposal-loader__step" data-step="0"><span class="dot"></span> Reading your selections</div>
+              <div class="proposal-loader__step" data-step="1"><span class="dot"></span> Negotiating concierge rates</div>
+              <div class="proposal-loader__step" data-step="2"><span class="dot"></span> Drafting the All In Estimate</div>
+            </div>
+          </div>
+        </div>
+      `);
+      const stepEls = document.querySelectorAll(".proposal-loader__step");
+      const advance = (i) => {
+        stepEls.forEach((e, k) => {
+          e.dataset.active = (k === i) ? "true" : "false";
+          if (k < i) e.dataset.done = "true";
+        });
+      };
+      advance(0);
+      await new Promise(r => setTimeout(r, 480));
+      advance(1);
+      await new Promise(r => setTimeout(r, 540));
+      advance(2);
+      await new Promise(r => setTimeout(r, 540));
+
+      // Compose the data
+      const items   = buildProposalLineItems();
+      const totals  = proposalTotals(items);
+      const vibe    = byId(VIBES, pkg.vibeId);
+      const heroPhoto = vibe?.image || hotelCardImageUrl(hotel.id);
+      const includes  = proposalIncludesFor(s, hotel);
+
+      const profileBullets = [
+        pkg.guestsLabel ? `${pkg.guestsLabel}` : `${pkg.guests || "Guest count TBD"} guests`,
+        pkg.budgetBand   || "Investment range TBD",
+        pkg.coverLabel   || "Moodboard TBD",
+        pkg.paletteLabel ? `Palette · ${pkg.paletteLabel}` : null,
+        pkg.feeling      ? `Feeling · ${pkg.feeling}` : null,
+        pkg.date         || "Date soon",
+      ].filter(Boolean);
+
+      const rowsHtml = items.map(it => {
+        if (it.estimate) {
+          return `
+            <div class="proposal-row">
+              <div class="proposal-row__body">
+                <p class="proposal-row__title">${escapeHtml(it.title)}</p>
+                <p class="proposal-row__sub">${escapeHtml(it.sub || "")}</p>
+              </div>
+              <p class="proposal-row__estimate">${escapeHtml(it.estimate)}</p>
+            </div>`;
+        }
+        const isHighlight = !!it.highlight;
+        const priceCell = (() => {
+          if (it.label === "Waived" || it.label === "Included") {
+            return `<p class="proposal-row__label">${escapeHtml(it.label)}</p>`;
+          }
+          return `
+            <div class="proposal-row__price">
+              ${it.strike ? `<span class="proposal-row__num--strike">${escapeHtml(usd(it.strike))}</span>` : ""}
+              <span class="proposal-row__num">${escapeHtml(usd(it.price))}</span>
+              ${it.label ? `<p class="proposal-row__label">${escapeHtml(it.label)}</p>` : ""}
+            </div>`;
+        })();
+        return `
+          <div class="proposal-row ${isHighlight ? "proposal-row--highlight" : ""}">
+            <div class="proposal-row__body">
+              <p class="proposal-row__title">${escapeHtml(it.title)}</p>
+              ${it.sub ? `<p class="proposal-row__sub">${escapeHtml(it.sub)}</p>` : ""}
+              ${it.saves ? `
+                <span class="proposal-row__saves">
+                  <svg width="11" height="11" viewBox="0 0 256 256" fill="#646f53" aria-hidden="true">
+                    <path d="M229.66 77.66l-128 128a8 8 0 0 1-11.32 0l-56-56a8 8 0 0 1 11.32-11.32L96 188.69 218.34 66.34a8 8 0 0 1 11.32 11.32Z"/>
+                  </svg>
+                  ${escapeHtml(it.saves)}
+                </span>` : ""}
+            </div>
+            ${priceCell}
+          </div>`;
+      }).join("");
+
+      // Format budget chip if available
+      const budgetShort = (() => {
+        if (!pkg.budgetBand) return "—";
+        const m = pkg.budgetBand.match(/\$(\d+)/);
+        if (m) return `$${m[1]}K`;
+        return pkg.budgetBand;
+      })();
+
+      setCanvas(`
+        <div class="proposal" style="margin:-24px;">
+          <section class="proposal-hero">
+            <div class="proposal-hero__bg" style="background-image:url('${heroPhoto}')"></div>
+            <div class="proposal-hero__shade"></div>
+            <div class="proposal-hero__inner">
+              <button id="proposal-back" class="proposal-hero__crumb" type="button">
+                <svg width="11" height="11" viewBox="0 0 256 256" fill="none" aria-hidden="true">
+                  <path d="M160 208L80 128l80-80" stroke="white" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Back to package
+              </button>
+              <h2 class="proposal-hero__title">All In Estimate</h2>
+              <p class="proposal-hero__eyebrow">${escapeHtml(`${pkg.guests || ""} guests · ${pkg.date || "Date soon"}`)}</p>
+              <p class="proposal-hero__sub">Allie's estimate based on your selections — pre-tax, weekend-inclusive.</p>
+            </div>
+
+            <div class="proposal-breakdown">${rowsHtml}</div>
+          </section>
+
+          <section class="proposal-totalbar">
+            <div class="proposal-totalbar__stats">
+              <div class="proposal-stat">
+                <p class="proposal-stat__num">${pkg.guests || ""}</p>
+                <p class="proposal-stat__label">Guests</p>
+              </div>
+              <div class="proposal-stat">
+                <p class="proposal-stat__num">${escapeHtml(budgetShort)}</p>
+                <p class="proposal-stat__label">Budget</p>
+              </div>
+              <div class="proposal-stat proposal-stat--right">
+                <p class="proposal-stat__num">~${usd(totals.midpoint)}</p>
+                <p class="proposal-stat__label proposal-stat__label--accent">Running estimate</p>
+              </div>
+            </div>
+
+            <button id="proposal-viewlink" class="proposal-totalbar__viewlink" type="button">
+              View full breakdown
+              <svg width="14" height="14" viewBox="0 0 256 256" fill="none" aria-hidden="true">
+                <path d="M40 128h176M152 64l64 64-64 64" stroke="white" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+
+            <div class="proposal-accordion-wrap">
+              <div class="proposal-accordion" data-expanded="false" data-id="profile">
+                <button class="proposal-accordion__header" type="button">
+                  <span>YOUR WEDDING PROFILE</span>
+                  <span class="proposal-accordion__chev">
+                    <svg width="14" height="14" viewBox="0 0 256 256" fill="none" aria-hidden="true">
+                      <path d="M48 96l80 80 80-80" stroke="#ca9151" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                </button>
+                <div class="proposal-accordion__body">
+                  ${profileBullets.map(b => `
+                    <div class="proposal-bullet"><span class="proposal-bullet__dot"></span><span>${escapeHtml(b)}</span></div>
+                  `).join("")}
+                </div>
+              </div>
+
+              <div class="proposal-accordion" data-expanded="true" data-id="includes">
+                <button class="proposal-accordion__header" type="button">
+                  <span>INCLUDED WITH ${escapeHtml(s.name.toUpperCase())}</span>
+                  <span class="proposal-accordion__chev">
+                    <svg width="14" height="14" viewBox="0 0 256 256" fill="none" aria-hidden="true">
+                      <path d="M48 96l80 80 80-80" stroke="#ca9151" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                </button>
+                <div class="proposal-accordion__body">
+                  ${includes.map(b => `
+                    <div class="proposal-bullet"><span class="proposal-bullet__dot"></span><span>${b}</span></div>
+                  `).join("")}
+                </div>
+              </div>
+            </div>
+
+            <div class="proposal-cta-row">
+              <button id="proposal-hold" class="proposal-cta-primary" type="button">
+                Save your plan and hold my date
+              </button>
+              <p class="proposal-cta-row__reassure">Take 24 hours to settle into your choice with our full reservation guarantee.</p>
+            </div>
+
+            <div class="proposal-cta-secondaries">
+              <button id="proposal-share" class="proposal-cta-secondary" type="button">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                </svg>
+                Share with partner
+              </button>
+              <button id="proposal-download" class="proposal-cta-secondary" type="button">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Download PDF
+              </button>
+              <button id="proposal-deposit" class="proposal-cta-secondary" type="button">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M5.5 2h13l4 6-10.5 14L1.5 8z"/><path d="M2 8h20"/><path d="M9 2 6 8l6 14 6-14-3-6"/>
+                </svg>
+                $500 lock-in deposit
+              </button>
+            </div>
+          </section>
+        </div>
+      `);
+
+      // ── Wire interactions ───────────────────────────────────────────────
+      document.getElementById("proposal-back")?.addEventListener("click", () => showPackage());
+      document.getElementById("proposal-hold")?.addEventListener("click", () => pickWeddingDate());
+      document.getElementById("proposal-deposit")?.addEventListener("click", () => openDepositModal());
+      document.getElementById("proposal-viewlink")?.addEventListener("click", () => {
+        const inc = document.querySelector(".proposal-accordion[data-id='includes']");
+        const prof = document.querySelector(".proposal-accordion[data-id='profile']");
+        if (inc) inc.dataset.expanded = "true";
+        if (prof) prof.dataset.expanded = "true";
+        document.querySelector(".proposal-totalbar")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+      document.getElementById("proposal-share")?.addEventListener("click", async () => {
+        const url = window.location.href;
+        try {
+          if (navigator.share) {
+            await navigator.share({ title: "Our All In Estimate", text: `${hotel.name} · ${s.name} · ${pkg.guests} guests`, url });
+            return;
+          }
+        } catch (_) { /* fall through to clipboard */ }
+        try {
+          await navigator.clipboard?.writeText(url);
+          proposalToast("Link copied — send it to your partner.");
+        } catch (_) {
+          proposalToast("Press ⌘C to copy this page's link.");
+        }
+      });
+      document.getElementById("proposal-download")?.addEventListener("click", () => {
+        proposalToast("Opening print dialog — choose 'Save as PDF'.");
+        setTimeout(() => window.print(), 400);
+      });
+      document.querySelectorAll(".proposal-accordion__header").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const acc = btn.closest(".proposal-accordion");
+          if (!acc) return;
+          acc.dataset.expanded = acc.dataset.expanded === "true" ? "false" : "true";
+        });
+      });
+
+      // Final chat moment so the user knows what changed.
+      await bot(`Your proposal is composed. <strong>${escapeHtml(s.name)} · ${pkg.guests} guests</strong> — running estimate <strong>~${usd(totals.midpoint)}</strong>${totals.lo !== totals.hi ? ` (range ${usd(totals.lo)}–${usd(totals.hi)})` : ""}.`);
+      await bot(`Last step: <strong>pick a date</strong>. Once you do, I'll start the 24-hour countdown — and unlock tier-bonus perks if you commit fast.`);
+
+      clearChips();
+      setChips([
+        { label: "Pick my date →",              action: "pickdate", primary: true },
+        { label: "$500 — save the date now",    action: "deposit" },
+        { label: "Edit vendors",                action: "vendors" },
+      ], async pick => {
+        userSay(pick.label);
+        if (pick.action === "pickdate")     pickWeddingDate();
+        else if (pick.action === "deposit") openDepositModal();
+        else                                 showVendors();
+      });
+    }
+
+    /* ============ PICK-A-DATE STEP (after proposal) ============ */
+
+    /* Generate 6 weekend candidates anchored on pkg.date if parseable, else Q3-Q4 2027.
+       Each weekend is a Friday → Sunday triplet. */
+    function generateWeekendCandidates() {
+      const monthMap = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
+                         jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 };
+      let anchorYear = 2027;
+      let anchorMonth = 8; // Sep
+      const hint = (pkg.date || "").toLowerCase();
+      const yMatch = hint.match(/(20\d{2})/);
+      if (yMatch) anchorYear = parseInt(yMatch[1], 10);
+      const mMatch = hint.match(/jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec/);
+      if (mMatch) anchorMonth = monthMap[mMatch[0]];
+      else if (/spring/.test(hint)) anchorMonth = 3;
+      else if (/summer/.test(hint)) anchorMonth = 6;
+      else if (/(fall|autumn)/.test(hint)) anchorMonth = 9;
+      else if (/winter/.test(hint)) anchorMonth = 11;
+
+      const candidates = [];
+      const startDate = new Date(anchorYear, anchorMonth, 1);
+      // Skip a few weeks back, then walk Fridays forward.
+      let probe = new Date(startDate);
+      probe.setDate(probe.getDate() - 14);
+      while (probe.getDay() !== 5) probe.setDate(probe.getDate() + 1);
+      while (candidates.length < 6) {
+        const fri = new Date(probe);
+        const sun = new Date(probe); sun.setDate(sun.getDate() + 2);
+        candidates.push({ start: fri, end: sun });
+        probe.setDate(probe.getDate() + 7 * (candidates.length === 2 ? 2 : 1));
+      }
+      return candidates;
+    }
+
+    function fmtWeekend(start, end) {
+      const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+      const sm = months[start.getMonth()], em = months[end.getMonth()];
+      return sm === em
+        ? `${sm} ${start.getDate()}–${end.getDate()}, ${start.getFullYear()}`
+        : `${sm} ${start.getDate()} – ${em} ${end.getDate()}, ${start.getFullYear()}`;
+    }
+
+    function weeksOut(start) {
+      const ms = start.getTime() - Date.now();
+      const w = Math.max(1, Math.round(ms / (7 * 86400000)));
+      return `${w} weeks out`;
+    }
+
+    /* Deterministic but realistic-feeling demand level + buzz count per weekend. */
+    function weekendBuzz(start, hotelId) {
+      const seed = (hotelId || "x").length + start.getDate() + start.getMonth() * 7;
+      const tier = seed % 5;
+      // 0,1 → open · 2,3 → hot · 4 → last
+      const demand = tier <= 1 ? "open" : tier <= 3 ? "hot" : "last";
+      const watchingBase = demand === "open" ? 4 : demand === "hot" ? 14 : 38;
+      const watching = watchingBase + (seed % 9);
+      const demandLabel = demand === "open" ? "Wide open"
+                        : demand === "hot"  ? "High demand"
+                        :                      "Last open weekend";
+      return { demand, demandLabel, watching };
+    }
+
+    async function pickWeddingDate() {
+      const s = pkg.spaceId ? byId(SPACES, pkg.spaceId) : null;
+      const hotel = s ? byId(HOTELS, s.hotelId) : null;
+      if (!s || !hotel) { await bot("Need a venue first — let's go back."); return; }
+
+      await bot(`Pick the <strong>specific weekend</strong> you want me to lock. I'll show what's open at <strong>${escapeHtml(s.name)}</strong> with live demand from other couples.`);
+
+      const candidates = generateWeekendCandidates();
+      const tilesHtml = candidates.map((w, i) => {
+        const buzz = weekendBuzz(w.start, hotel.id);
+        return `
+          <div class="datepick-tile" data-demand="${buzz.demand}" data-idx="${i}" role="button" tabindex="0">
+            <div class="datepick-tile__top">
+              <span class="datepick-tile__date">${escapeHtml(fmtWeekend(w.start, w.end))}</span>
+              <span class="datepick-tile__weeks">${escapeHtml(weeksOut(w.start))}</span>
+            </div>
+            <div class="datepick-tile__row">
+              <span class="datepick-tile__demand"><span class="dot"></span>${escapeHtml(buzz.demandLabel)}</span>
+              <span class="datepick-tile__watching"><span class="pulse-dot"></span>${buzz.watching} watching now</span>
+            </div>
+          </div>`;
+      }).join("");
+
+      setCanvas(`
+        <div class="datepick" style="margin:-24px;">
+          <div class="datepick-head">
+            <p class="datepick-eyebrow">Step 8 · Pick your date</p>
+            <h2 class="datepick-title">When are we doing this?</h2>
+            <p class="datepick-sub">${escapeHtml(s.name)} · ${escapeHtml(hotel.city || "")}. Tap a weekend — I'll start the 24-hour hold the second you do.</p>
+          </div>
+          <div class="datepick-grid">${tilesHtml}</div>
+        </div>
+      `);
+
+      const select = (idx) => {
+        const w = candidates[idx];
+        if (!w) return;
+        const label = fmtWeekend(w.start, w.end);
+        const buzz = weekendBuzz(w.start, hotel.id);
+        userSay(`I want ${label}.`);
+        pkg.savedDate = label;
+        pkg.savedDateRange = { startISO: w.start.toISOString(), endISO: w.end.toISOString() };
+        pkg.dateLockedAt = Date.now();
+        pkg.heldUntil = pkg.dateLockedAt + 24 * 3600 * 1000;
+        pkg.savedDateBuzz = buzz;
+        renderSaveMyDateCanvas();
+      };
+
+      document.querySelectorAll(".datepick-tile[data-idx]").forEach(tile => {
+        const idx = parseInt(tile.getAttribute("data-idx"), 10);
+        tile.addEventListener("click", () => select(idx));
+        tile.addEventListener("keydown", e => {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); select(idx); }
+        });
+      });
+
+      clearChips();
+    }
+
+    /* ============ GAMIFIED SAVE MY DATE (Figma 290:392) ============ */
+
+    /* Three time-tier perks. Lower hours = better perks → urgency lever. */
+    const SMD_TIERS = [
+      { id: "dance",   label: "Free dance floor upgrade",
+        perk:  "Crystal floor + uplighting, no add-on charge.",
+        hours: 5,
+        icon:  `<path d="M9 18V5l12-2v13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="1.8" fill="none"/><circle cx="18" cy="16" r="3" stroke="currentColor" stroke-width="1.8" fill="none"/>` },
+      { id: "massage", label: "Free couples massage",
+        perk:  "90-minute spa morning for two, on the house.",
+        hours: 12,
+        icon:  `<path d="M12 11a4 4 0 1 0-4-4M12 11a4 4 0 0 1 4-4M12 11v8M5 21c0-2.21 3.13-4 7-4s7 1.79 7 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/>` },
+      { id: "rooms",   label: "20% off all guest room blocks",
+        perk:  "Applies to every room you block for the weekend.",
+        hours: 24,
+        icon:  `<path d="M3 22V11l9-7 9 7v11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M9 22V13h6v9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>` },
+    ];
+
+    /* Tier state at a given moment (active / expired) — gates the perk badge. */
+    function tierStateAt(tier, lockedAt, now) {
+      const elapsedMs = now - lockedAt;
+      const limitMs   = tier.hours * 3600 * 1000;
+      return elapsedMs <= limitMs ? "active" : "expired";
+    }
+    function fmtTierCountdown(tier, lockedAt, now) {
+      const remaining = (tier.hours * 3600 * 1000) - (now - lockedAt);
+      if (remaining <= 0) return "Window closed";
+      const h = Math.floor(remaining / 3600000);
+      const m = Math.floor((remaining % 3600000) / 60000);
+      const s = Math.floor((remaining % 60000) / 1000);
+      const pad = n => String(n).padStart(2, "0");
+      return `${pad(h)}:${pad(m)}:${pad(s)} remaining`;
+    }
+    function fmtMaster(remainingMs) {
+      if (remainingMs <= 0) return "00:00:00";
+      const h = Math.floor(remainingMs / 3600000);
+      const m = Math.floor((remainingMs % 3600000) / 60000);
+      const s = Math.floor((remainingMs % 60000) / 1000);
+      const pad = n => String(n).padStart(2, "0");
+      return `${pad(h)}:${pad(m)}:${pad(s)}`;
+    }
+
+    /* Active perks at this exact moment — used by confirmDeposit to celebrate. */
+    function smdEarnedPerks() {
+      if (!pkg.dateLockedAt) return [];
+      const now = Date.now();
+      return SMD_TIERS.filter(t => tierStateAt(t, pkg.dateLockedAt, now) === "active");
+    }
+
+    /* Plausible-feeling weddings count for a venue. */
+    function venueWeddingsCount(hotel) {
+      const seed = (hotel.id || "x").split("").reduce((a, c) => a + c.charCodeAt(0), 0);
+      return 60 + (seed * 7) % 320; // 60..379
+    }
+
+    let _smdTickHandle = null;
+    let _smdBrowseHandle = null;
+    function _stopSmdTimers() {
+      if (_smdTickHandle)   { clearInterval(_smdTickHandle); _smdTickHandle = null; }
+      if (_smdBrowseHandle) { clearInterval(_smdBrowseHandle); _smdBrowseHandle = null; }
+    }
+
+    function renderSaveMyDateCanvas() {
+      _stopSmdTimers();
+
+      const s = pkg.spaceId ? byId(SPACES, pkg.spaceId) : null;
+      const hotel = s ? byId(HOTELS, s.hotelId) : null;
+      if (!s || !hotel) { clearState(); void start(); return; }
+
+      const lockedAt = pkg.dateLockedAt || Date.now();
+      pkg.dateLockedAt = lockedAt;
+      pkg.heldUntil = lockedAt + 24 * 3600 * 1000;
+
+      const dateLabel = pkg.savedDate || pkg.date || "Your weekend";
+      const buzz = pkg.savedDateBuzz || { watching: 47 };
+      const weddingsHere = venueWeddingsCount(hotel);
+
+      // Avatar pile: prefer real brides at this hotel; fall back to broader BRIDES.
+      const localBrides = bridesOf(hotel.id);
+      const pool = (localBrides.length ? localBrides : BRIDES).slice();
+      const avatars = [];
+      for (let i = 0; i < 5; i++) avatars.push(pool[i % pool.length]);
+
+      const tiersHtml = SMD_TIERS.map(t => {
+        const state = tierStateAt(t, lockedAt, Date.now());
+        return `
+          <div class="smd-tier" data-state="${state}" data-tier="${t.id}" data-hours="${t.hours}">
+            <div class="smd-tier__head">
+              <div class="smd-tier__icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">${t.icon}</svg>
+              </div>
+              <div>
+                <p class="smd-tier__title">Within ${t.hours} hrs</p>
+                <p class="smd-tier__cd" data-cd>${fmtTierCountdown(t, lockedAt, Date.now())}</p>
+              </div>
+            </div>
+            <p class="smd-tier__perk"><strong>${escapeHtml(t.label)}.</strong> ${escapeHtml(t.perk)}</p>
+            <span class="smd-tier__status" data-status>${state === "active" ? "Available now" : "Window closed"}</span>
+          </div>`;
+      }).join("");
+
+      const avatarsHtml = avatars.map(b => {
+        const img = (b && (b.storyCardPhoto || storyCardImageUrl(b, b.hotelId))) || hotelCardImageUrl(hotel.id);
+        return `<div class="smd-social__avatar" style="background-image:url('${img}')"></div>`;
+      }).join("");
+
+      setCanvas(`
+        <div class="smd" style="margin:-24px;">
+          <section class="smd-celebration">
+            <div class="smd-gem" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.6" stroke-linejoin="round">
+                <path d="M5.5 2h13l4 6-10.5 14L1.5 8z"/>
+                <path d="M2 8h20"/>
+                <path d="M9 2 6 8l6 14 6-14-3-6"/>
+              </svg>
+            </div>
+            <h2 class="smd-celebration__title">Save my <em>date</em>.</h2>
+            <p class="smd-celebration__sub">${escapeHtml(s.name)} · ${escapeHtml(hotel.name)}. The countdown starts now — every hour you wait costs you a perk.</p>
+            <p class="smd-celebration__date">${escapeHtml(dateLabel)}</p>
+          </section>
+
+          <div class="smd-urgency">
+            <div class="smd-urgency__icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/>
+              </svg>
+            </div>
+            <div class="smd-urgency__copy">
+              <p class="smd-urgency__title">$500 deposit due to secure</p>
+              <p class="smd-urgency__sub">If we don't have your refundable deposit in <strong id="smd-urgency-time">24:00:00</strong>, your date opens back up to other couples — and tonight's tier perks are gone.</p>
+            </div>
+          </div>
+
+          <section class="smd-tiers">${tiersHtml}</section>
+
+          <div class="smd-master">
+            <div class="smd-master__bar">
+              <p class="smd-master__label">Your hold expires in</p>
+              <p class="smd-master__time" id="smd-master-time">24:00:00</p>
+              <p class="smd-master__sub">Pricing, vendor team, and room block all locked at today's rates until then.</p>
+            </div>
+            <div class="smd-master__progress" id="smd-master-progress" style="--smd-progress:0%;">
+              <div class="smd-master__progress-inner">24<br>HRS</div>
+            </div>
+          </div>
+
+          <section class="smd-social">
+            <div class="smd-social__row">
+              <div class="smd-social__avatars">${avatarsHtml}</div>
+              <p class="smd-social__count"><strong>${weddingsHere}</strong> brides have said <em>I do</em> at ${escapeHtml(hotel.name.split(" ").slice(0, 2).join(" "))}. You're about to be the next.</p>
+            </div>
+            <div class="smd-social__divider"></div>
+            <div class="smd-social__live">
+              <span class="smd-social__live-pulse" aria-hidden="true"></span>
+              <span class="smd-social__live-num" id="smd-browse-num">${buzz.watching}</span>
+              <p class="smd-social__live-text">other brides are <strong>browsing this exact weekend</strong> at ${escapeHtml(s.name)} right now.</p>
+            </div>
+          </section>
+
+          <div class="smd-cta-row">
+            <button id="smd-deposit" class="smd-cta-primary" type="button">
+              <span>Place deposit · lock my date</span>
+              <span class="smd-cta-primary__price">$500</span>
+            </button>
+            <button id="smd-hold" class="smd-cta-secondary" type="button">Hold without deposit (24h, no card)</button>
+            <p class="smd-cta-row__legal">Your $500 is fully refundable up to 60 days before your wedding. After that, it converts to a credit toward your final invoice.</p>
+          </div>
+        </div>
+      `);
+
+      // Wire CTAs
+      document.getElementById("smd-deposit")?.addEventListener("click", () => openDepositModal());
+      document.getElementById("smd-hold")?.addEventListener("click", () => holdState());
+
+      // Tickers
+      _smdTickHandle = setInterval(() => updateSmdCountdowns(), 1000);
+      updateSmdCountdowns();
+
+      // Live browsing ticker — fluctuates around the seed value.
+      let cur = buzz.watching || 47;
+      const numEl = document.getElementById("smd-browse-num");
+      _smdBrowseHandle = setInterval(() => {
+        if (!document.getElementById("smd-browse-num")) { _stopSmdTimers(); return; }
+        const drift = Math.floor(Math.random() * 5) - 2; // -2..+2
+        cur = Math.max(8, Math.min(cur + drift, (buzz.watching || 47) + 12));
+        if (numEl) {
+          numEl.textContent = cur;
+          numEl.dataset.bumped = "true";
+          setTimeout(() => { numEl.dataset.bumped = "false"; }, 220);
+        }
+      }, 4200);
+
+      // Closing chat moment + fallback chips
+      void (async () => {
+        await bot(`Locked. Your hold for <strong>${escapeHtml(dateLabel)}</strong> is live for the next <strong>24 hours</strong>.`);
+        await bot(`<strong>${weddingsHere}</strong> couples have already said <em>I do</em> at ${escapeHtml(hotel.name)}, and <strong>${buzz.watching || 47}</strong> are eyeing your exact weekend right now. Place the <strong>$500 refundable deposit</strong> in the next 5 hours and the dance floor upgrade is yours — free.`);
+        clearChips();
+        setChips([
+          { label: "Place $500 deposit",  action: "deposit", primary: true },
+          { label: "Hold without paying", action: "hold" },
+        ], async pick => {
+          userSay(pick.label);
+          if (pick.action === "deposit") openDepositModal();
+          else                            holdState();
+        });
+      })();
+    }
+
+    /* Drives the gamified countdowns + tier state transitions. */
+    function updateSmdCountdowns() {
+      const lockedAt = pkg.dateLockedAt;
+      if (!lockedAt) { _stopSmdTimers(); return; }
+      const now = Date.now();
+      const remaining = (lockedAt + 24 * 3600 * 1000) - now;
+
+      const masterEl = document.getElementById("smd-master-time");
+      const urgencyEl = document.getElementById("smd-urgency-time");
+      if (!masterEl) { _stopSmdTimers(); return; }
+      const masterTxt = fmtMaster(remaining);
+      masterEl.textContent = masterTxt;
+      if (urgencyEl) urgencyEl.textContent = masterTxt;
+
+      const progEl = document.getElementById("smd-master-progress");
+      if (progEl) {
+        const pctElapsed = Math.min(100, Math.max(0, ((now - lockedAt) / (24 * 3600 * 1000)) * 100));
+        progEl.style.setProperty("--smd-progress", `${pctElapsed}%`);
+      }
+
+      // Per-tier countdowns + state.
+      document.querySelectorAll(".smd-tier[data-tier]").forEach(el => {
+        const tierId = el.getAttribute("data-tier");
+        const tier = SMD_TIERS.find(t => t.id === tierId);
+        if (!tier) return;
+        const state = tierStateAt(tier, lockedAt, now);
+        const prevState = el.getAttribute("data-state");
+        el.setAttribute("data-state", state);
+        const cdEl = el.querySelector("[data-cd]");
+        const stEl = el.querySelector("[data-status]");
+        if (cdEl) cdEl.textContent = fmtTierCountdown(tier, lockedAt, now);
+        if (stEl) stEl.textContent = state === "active" ? "Available now" : "Window closed";
+
+        // Subtle chat nudge when a tier expires the first time.
+        if (prevState === "active" && state === "expired") {
+          bot(`Tier closed: <strong>${escapeHtml(tier.label)}</strong> is no longer on the table. The next tier is still open.`);
+        }
+      });
+
+      if (remaining <= 0) {
+        _stopSmdTimers();
+        bot(`The 24-hour window has closed. I'm releasing this date back into circulation — but I can re-quote you in seconds if you still want it.`);
+      }
     }
 
     async function holdState() {
@@ -1470,12 +4183,21 @@
       const hotel = s ? byId(HOTELS, s.hotelId) : null;
       if (!s || !hotel || !summary || !modal) return;
       const b = priceBreakdown();
+      const earnedNow = smdEarnedPerks();
       summary.innerHTML = `
-        <div class="flex justify-between"><span class="text-ink-soft">${hotel.name}</span><span>${hotel.city}</span></div>
-        <div class="flex justify-between"><span class="text-ink-soft">${s.name}</span><span>${pkg.guests||""} guests</span></div>
-        <div class="flex justify-between"><span class="text-ink-soft">Date</span><span>${pkg.date||"—"}</span></div>
+        <div class="flex justify-between"><span class="text-ink-soft">${escapeHtml(hotel.name)}</span><span>${escapeHtml(hotel.city || "")}</span></div>
+        <div class="flex justify-between"><span class="text-ink-soft">${escapeHtml(s.name)}</span><span>${pkg.guests || ""} guests</span></div>
+        <div class="flex justify-between"><span class="text-ink-soft">Date</span><span>${escapeHtml(pkg.savedDate || pkg.date || "—")}</span></div>
         <div class="flex justify-between border-t border-border-subtle pt-2 mt-2"><span class="text-ink-soft">Estimated total</span><span class="font-semibold">${usd(b.total)}</span></div>
         <div class="flex justify-between"><span class="text-ink-soft">Today's hold</span><span class="font-semibold text-copper">$500</span></div>
+        ${earnedNow.length ? `
+          <div class="border-t border-border-subtle pt-2 mt-2">
+            <p class="text-[11px] uppercase tracking-widest text-copper font-semibold mb-1">You'll lock in:</p>
+            <ul class="space-y-0.5">
+              ${earnedNow.map(p => `<li class="text-xs text-ink-soft">✓ ${escapeHtml(p.label)}</li>`).join("")}
+            </ul>
+          </div>
+        ` : ""}
       `;
       modal.classList.remove("hidden");
     }
@@ -1491,14 +4213,29 @@
     async function confirmDeposit() {
       depositModalEl?.classList.add("hidden");
       pkg.deposited = true;
+      _stopSmdTimers();
+
+      // Snapshot which gamified perks she actually earned by paying when she did.
+      const earned = smdEarnedPerks();
+      pkg.earnedPerks = earned.map(p => ({ id: p.id, label: p.label, perk: p.perk }));
       saveState({ ...pkg });
-      await bot(`<strong>It's official.</strong> $500 placed. Your concierge will reach out within 24 hours to introduce themselves and schedule your kickoff call.`);
+
       const s = pkg.spaceId ? byId(SPACES, pkg.spaceId) : null;
       const hotel = s ? byId(HOTELS, s.hotelId) : null;
       if (!s || !hotel) {
         console.warn("plan: confirmDeposit without valid space/hotel");
         return;
       }
+
+      const earnedHtml = earned.length
+        ? `You unlocked: ${earned.map(p => `<strong>${escapeHtml(p.label)}</strong>`).join(" · ")}.`
+        : `Your hold is locked in — every tier perk has already expired, but the venue, vendor team, and pricing are yours.`;
+
+      await bot(`<strong>It's official.</strong> $500 placed. ${earnedHtml}`);
+      await bot(`Your concierge will reach out within 24 hours to introduce themselves and schedule your kickoff call.`);
+
+      const dateLabel = pkg.savedDate || pkg.date || "";
+
       setCanvas(`
         <div class="h-full grid place-items-center text-center p-10">
           <div>
@@ -1507,12 +4244,20 @@
                 <path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
-            <p class="text-xs uppercase tracking-[0.22em] text-ink-muted mb-2">Step 8 · Saved</p>
+            <p class="text-xs uppercase tracking-[0.22em] text-ink-muted mb-2">Step 9 · Saved forever</p>
             <h2 class="font-title text-6xl tracking-tight italic">Forever &amp; always.</h2>
             <p class="text-ink-soft mt-3 max-w-md mx-auto">
-              ${hotel.name} · ${s.name} · ${pkg.date} · ${pkg.guests} guests.
+              ${escapeHtml(hotel.name)} · ${escapeHtml(s.name)} · ${escapeHtml(dateLabel)} · ${pkg.guests || ""} guests.
               We'll be in touch within 24 hours.
             </p>
+            ${earned.length ? `
+              <div class="mt-6 max-w-md mx-auto rounded-2xl border border-copper/40 bg-cream p-4 text-left">
+                <p class="text-[11px] uppercase tracking-widest text-copper font-semibold mb-2">Tier perks unlocked</p>
+                <ul class="text-sm text-ink-soft space-y-1">
+                  ${earned.map(p => `<li>✓ <strong class="text-ink">${escapeHtml(p.label)}</strong> — ${escapeHtml(p.perk)}</li>`).join("")}
+                </ul>
+              </div>
+            ` : ""}
             <div class="mt-8 flex flex-wrap gap-3 justify-center">
               <a href="./index.html" class="btn btn--ghost btn--default">Back to home</a>
               <button id="reset-flow" class="btn btn--primary btn--default">Plan another wedding</button>
@@ -1533,7 +4278,7 @@
     if (restored?.state?.spaceId) {
       try {
         Object.assign(pkg, restored.state, { heldUntil: restored.expiresAt });
-        bubble("bot", `Welcome back — it's Atelier. I held your configuration for the past ${Math.round((Date.now()-restored.savedAt)/60000)} minutes. Let's pick up exactly here.`);
+        bubble("bot", `Welcome back — it's Allie. I held your configuration for the past ${Math.round((Date.now()-restored.savedAt)/60000)} minutes. Let's pick up exactly here.`);
         refreshPackage();
         const s = byId(SPACES, pkg.spaceId);
         const hotel = s ? byId(HOTELS, s.hotelId) : null;
